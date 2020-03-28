@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">HappyPuppy</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifiche</string>
+    <string name="logo">Logo</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Accedi</string>
+    <string name="no_account">Non ho un account</string>
+    <string name="forgot_password">Password dimenticata</string>
+</resources>

@@ -1,0 +1,2 @@
+rootProject.name='HappyPuppy'
+include ':app'
