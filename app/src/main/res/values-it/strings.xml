@@ -4,6 +4,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifiche</string>
     <string name="logo">Logo</string>
+    <string name="logo_text">Logo con testo</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="sign_in">Accedi</string>

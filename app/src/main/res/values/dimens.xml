@@ -2,5 +2,8 @@
 <resources>
     <dimen name="logo_width">120dp</dimen>
     <dimen name="logo_height">120dp</dimen>
+    <dimen name="logo_text_width">160dp</dimen>
+    <dimen name="logo_text_height">160dp</dimen>
+    <dimen name="margin">24dp</dimen>
     <dimen name="padding">24dp</dimen>
 </resources>
