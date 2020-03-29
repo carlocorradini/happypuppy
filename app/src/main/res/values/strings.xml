@@ -7,7 +7,13 @@
     <string name="logo_text">Logo with text</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="sign_in">Sign In</string>
-    <string name="no_account">I don\'t have an account</string>
+    <string name="repeat_password">Repeat password</string>
     <string name="forgot_password">Forgot password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_out">Sign out</string>
+    <string name="yes_account">I have an account</string>
+    <string name="no_account">I don\'t have an account</string>
+    <string name="full_name">Full name</string>
+    <string name="email">Email</string>
 </resources>
