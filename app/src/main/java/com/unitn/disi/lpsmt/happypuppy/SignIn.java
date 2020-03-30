@@ -1,6 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -28,10 +27,10 @@ public class SignIn extends AppCompatActivity {
         buttonSignUp = findViewById(R.id.sign_in_button_sign_up);
         buttonForgotPassword = findViewById(R.id.sign_in_button_forgot_password);
 
-        final Intent intent = new Intent(this, SignUp.class);
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SignUp.class);
                 startActivity(intent);
             }
         });
