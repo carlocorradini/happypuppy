@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">HappyPuppy</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifiche</string>
     <string name="logo">Logo</string>
     <string name="logo_text">Logo con testo</string>
     <string name="username">Username</string>
