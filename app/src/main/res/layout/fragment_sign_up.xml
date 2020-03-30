@@ -82,8 +82,9 @@
             android:drawableTint="@color/colorTertiary"
             android:text="@string/sign_up" />
 
-        <TextView
+        <Button
             android:id="@+id/sign_up_button_sign_in"
+            style="@style/Button.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin"
