@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_auth"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_start"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <FrameLayout
         android:id="@+id/fragment_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/colorSecondary" >
+        <ImageView
+            android:id="@+id/start_icon_logo"
+            android:layout_height="@dimen/logo_height_start"
+            android:layout_width="@dimen/logo_width_start"
+            android:layout_gravity="center"
+            android:contentDescription="@string/logo_text"
+            app:srcCompat="@drawable/ic_logo_text" />
 
+        <ProgressBar
+            android:id="@+id/start_loader"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/logo_height"
+            android:background="#00FFFFFF"
+            android:rotation="180"/>
+    </FrameLayout>
 </RelativeLayout>

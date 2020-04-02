@@ -13,4 +13,8 @@
     <string name="no_account">I don\'t have an account</string>
     <string name="full_name">Full name</string>
     <string name="email">Email</string>
+    <string name="notification">Notification</string>
+    <string name="explore">Explore</string>
+    <string name="profile">Profile</string>
+    <string name="home">Home</string>
 </resources>

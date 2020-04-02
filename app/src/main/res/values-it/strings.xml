@@ -13,4 +13,8 @@
     <string name="no_account">Non ho un account</string>
     <string name="full_name">Nome completo</string>
     <string name="email">Email</string>
+    <string name="notification">Notifiche</string>
+    <string name="explore">Esplora</string>
+    <string name="profile">Profilo</string>
+    <string name="home">Home</string>
 </resources>
