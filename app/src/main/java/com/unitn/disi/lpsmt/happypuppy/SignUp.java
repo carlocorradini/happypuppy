@@ -11,7 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SignUp extends AppCompatActivity {
 
-    private EditText inputFullName;
+    private EditText inputFirstName;
+    private EditText inputLastName;
     private EditText inputUser;
     private EditText inputEMail;
     private EditText inputPassword;
@@ -24,7 +25,8 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_sign_up);
 
-        inputFullName = findViewById(R.id.sign_up_input_full_name);
+        inputFirstName = findViewById(R.id.sign_up_input_first_name);
+        inputLastName = findViewById(R.id.sign_up_input_last_name);
         inputUser = findViewById(R.id.sign_up_input_username);
         inputEMail = findViewById(R.id.sign_up_input_email);
         inputPassword = findViewById(R.id.sign_up_input_password);

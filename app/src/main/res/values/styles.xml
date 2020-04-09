@@ -23,6 +23,13 @@
         <item name="android:src">@drawable/ic_logo_text</item>
     </style>
 
+    <!-- Puppy Avatar with Text -->
+    <style name="Avatar.Text" parent="Logo">
+        <item name="android:layout_width">@dimen/logo_text_width</item>
+        <item name="android:layout_height">@dimen/logo_text_height</item>
+        <item name="android:src">@drawable/ic_dog_avatar</item>
+    </style>
+
     <!-- Button -->
     <style name="Button" parent="AppTheme">
         <item name="borderWidth">0dp</item>

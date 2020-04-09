@@ -5,16 +5,25 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="repeat_password">Ripeti password</string>
-    <string name="forgot_password">Password dimenticata</string>
+    <string name="forgot_password">Password dimenticata?</string>
     <string name="sign_in">Accedi</string>
     <string name="sign_up">Registrati</string>
     <string name="sign_out">Esci</string>
     <string name="yes_account">Ho un account</string>
     <string name="no_account">Non ho un account</string>
-    <string name="full_name">Nome completo</string>
+    <string name="first_name">Nome</string>
+    <string name="last_name">Cognome</string>
     <string name="email">Email</string>
     <string name="notification">Notifiche</string>
     <string name="explore">Esplora</string>
     <string name="profile">Profilo</string>
     <string name="home">Home</string>
+    <string name="security_code">Codice di sicurezza</string>
+    <string name="code_sent">È stata inviata un\'email con un codice di sicurezza da inserire.</string>
+    <string name="no_active_profile">L\'utente non è attivo, controlla la tua email per attivare l\'account. </string>
+    <string name="wrong_login">L\'username o la password non è corretto/a.</string>
+    <string name="upload_avatar">Carica una foto</string>
+    <string name="puppy_name">Nome Puppy</string>
+    <string name="age">Età</string>
+    <string name="gender">Sesso</string>
 </resources>

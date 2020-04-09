@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ public class SignIn extends AppCompatActivity {
     private Button buttonSignIn;
     private Button buttonSignUp;
     private Button buttonForgotPassword;
+    private TextView errorLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class SignIn extends AppCompatActivity {
         buttonSignIn = findViewById(R.id.sign_in_button_sign_in);
         buttonSignUp = findViewById(R.id.sign_in_button_sign_up);
         buttonForgotPassword = findViewById(R.id.sign_in_button_forgot_password);
+        errorLogin = findViewById(R.id.sign_in_text_invalid_login);
 
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,10 +41,15 @@ public class SignIn extends AppCompatActivity {
             /* Authentication */
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(v.getContext(), HomePage.class);
-                startActivity(intent);
+                if(false){
+                    Intent intent = new Intent(v.getContext(), HomePage.class);
+                    startActivity(intent);
+                }
+                else { /* Example of wrong login with message */
+                    errorLogin.clearComposingText();
+                    errorLogin.append(getString(R.string.no_active_profile));
+                }
             }
         });
     }
-
 }
