@@ -15,6 +15,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
+        <Button
+            android:id="@+id/home_page_button_back"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="49dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:foreground="@drawable/ic_arrow_back"
+            android:foregroundTint="@color/colorSecondary"
+            android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/home_page_icon_logo"
             android:layout_width="49dp"
@@ -32,7 +44,7 @@
             android:background="@color/colorPrimary"
             android:clickable="true"
             android:text="@string/app_name"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_standard"
             android:textStyle="bold" />
 
     </com.google.android.material.navigation.NavigationView>
@@ -67,7 +79,7 @@
                     android:layout_height="96dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_dog_avatar"
-                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_border_color="@color/colorSecondary"
                     app:civ_border_width="2dp" />
 
                 <TextView
@@ -77,6 +89,24 @@
                     android:text="@string/upload_avatar" />
             </LinearLayout>
 
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <RadioButton
+                    android:id="@+id/register_puppy_input_gender_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/male"/>
+                <RadioButton
+                    android:id="@+id/register_puppy_input_gender_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/female"/>
+            </RadioGroup>
             <EditText
                 android:id="@+id/register_puppy_input_name_puppy"
                 android:layout_width="match_parent"
@@ -96,53 +126,26 @@
                 android:drawableTint="@color/colorAccent"
                 android:hint="@string/age"
                 android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textNoSuggestions"
+                android:windowSoftInputMode="stateAlwaysHidden"/>
 
-            <EditText
-                android:id="@+id/register_puppy_input_gender"
+            <Spinner
+                android:id="@+id/register_puppy_input_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_gender"
-                android:drawableTint="@color/colorAccent"
-                android:hint="@string/gender"
-                android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
+                android:spinnerMode="dialog"
+                android:prompt="@string/size" />
 
-            <EditText
-                android:id="@+id/sign_up_input_email"
+            <Button
+                android:id="@+id/register_puppy_button_input_personality"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_email"
-                android:drawableTint="@color/colorAccent"
-                android:hint="@string/email"
-                android:importantForAutofill="no"
-                android:inputType="textEmailAddress" />
-
-            <EditText
-                android:id="@+id/sign_up_input_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_lock"
-                android:drawableTint="@color/colorAccent"
-                android:hint="@string/password"
-                android:importantForAutofill="no"
-                android:inputType="textPassword" />
-
-            <EditText
-                android:id="@+id/sign_up_input_password_repeat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_lock"
-                android:drawableTint="@color/colorAccent"
-                android:hint="@string/repeat_password"
-                android:importantForAutofill="no"
-                android:inputType="textPassword" />
+                android:textSize="@dimen/text_size_standard"
+                android:layout_margin="@dimen/margin"
+                android:backgroundTint="@color/colorSecondary"
+                android:text="@string/puppy_behaviour" />
         </LinearLayout>
-
     </ScrollView>
 
     <!-- Bottom Navigation Bar -->
@@ -158,6 +161,5 @@
         android:background="@color/colorPrimary"
         app:labelVisibilityMode="unlabeled"
         app:itemIconTint="@color/colorSecondary"
-        app:menu="@menu/bottom_navigation"
-        />
+        app:menu="@menu/bottom_navigation" />
 </RelativeLayout>

@@ -2,6 +2,7 @@
     <string name="app_name">HappyPuppy</string>
     <string name="logo">Logo</string>
     <string name="logo_text">Logo con testo</string>
+    <string name="information_privacy">Selezionando questa opzione accetti il trattamento dei dati personali, rispettando il Regolamento (UE) 2016/679 (il “GDPR”)</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="repeat_password">Ripeti password</string>
@@ -25,5 +26,12 @@
     <string name="upload_avatar">Carica una foto</string>
     <string name="puppy_name">Nome Puppy</string>
     <string name="age">Età</string>
+    <string name="size">Taglia</string>
     <string name="gender">Sesso</string>
+    <string name="male">Maschio</string>
+    <string name="female">Femmina</string>
+    <string name="puppy_behaviour">Personalità</string>
+
+    <string name="dismiss">Annulla</string>
+    <string name="clear_all">Cancella tutto</string>
 </resources>

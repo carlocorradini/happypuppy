@@ -40,6 +40,18 @@
             android:inputType="textNoSuggestions" />
 
         <EditText
+            android:id="@+id/sign_up_input_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:drawableEnd="@drawable/ic_time"
+            android:drawableTint="@color/colorAccent"
+            android:hint="@string/age"
+            android:importantForAutofill="no"
+            android:inputType="textNoSuggestions"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <EditText
             android:id="@+id/sign_up_input_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,6 +95,12 @@
             android:importantForAutofill="no"
             android:inputType="textPassword" />
 
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:textSize="14sp"
+            android:text="@string/information_privacy" />
 
         <Button
             android:id="@+id/sign_up_button_sign_up"

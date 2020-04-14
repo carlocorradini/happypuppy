@@ -8,4 +8,5 @@
     <dimen name="logo_text_height">160dp</dimen>
     <dimen name="margin">24dp</dimen>
     <dimen name="padding">24dp</dimen>
+    <dimen name="text_size_standard">18sp</dimen>
 </resources>
