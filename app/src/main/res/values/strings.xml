@@ -3,6 +3,7 @@
     <string name="logo">Logo</string>
     <string name="logo_text">Logo with text</string>
     <string name="information_privacy">By selecting this option you accept the processing of personal data, respecting the Regulation (EU) 2016/679 (the "GDPR")</string>
+    <string name="possession_puppy">Confermo che il cucciolo in mio possesso è stato identificato, regolarizzato e registrato dal veterinario all’anagrafe.</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="repeat_password">Repeat password</string>
@@ -24,9 +25,12 @@
     <string name="no_active_profile">The profile is not active, please check your email. </string>
     <string name="wrong_login">Invalid username or password.</string>
     <string name="upload_avatar">Upload a photo</string>
+    <string name="kind_animal">Animal</string>
+    <string name="puppy_race">Race</string>
     <string name="puppy_name">Puppy Name</string>
     <string name="age">Age</string>
     <string name="size">Size</string>
+    <string name="weight">Weight</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -43,4 +47,5 @@
 
     <string name="dismiss">Dismiss</string>
     <string name="clear_all">Clear all</string>
+    <string name="confirm">Confirm</string>
 </resources>

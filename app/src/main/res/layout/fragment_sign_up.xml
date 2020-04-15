@@ -96,6 +96,7 @@
             android:inputType="textPassword" />
 
         <Switch
+            android:id="@+id/sign_up_accord_privacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin"
