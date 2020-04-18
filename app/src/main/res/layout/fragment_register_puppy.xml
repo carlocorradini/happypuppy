@@ -59,7 +59,6 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:clickable="true"
             android:orientation="vertical"
             android:padding="10dip">
 
@@ -139,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_time"
+                android:drawableEnd="@drawable/ic_birthday"
                 android:drawableTint="@color/colorAccent"
                 android:hint="@string/age"
                 android:importantForAutofill="no"
@@ -154,6 +153,19 @@
                 android:spinnerMode="dialog"
                 android:prompt="@string/size" />
 
+        <LinearLayout
+            android:id="@+id/register_puppy_section_weight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/register_puppy_input_spinner_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:prompt="@string/weight"
+                android:spinnerMode="dialog" />
             <EditText
                 android:id="@+id/register_puppy_input_weight_puppy"
                 android:layout_width="match_parent"
@@ -162,7 +174,7 @@
                 android:drawableEnd="@drawable/ic_kg"
                 android:hint="@string/weight"
                 android:inputType="number" />
-
+        </LinearLayout>
             <Button
                 android:id="@+id/register_puppy_button_input_personality"
                 android:layout_width="match_parent"
@@ -171,22 +183,6 @@
                 android:layout_margin="@dimen/margin"
                 android:backgroundTint="@color/colorTertiary"
                 android:text="@string/puppy_behaviour" />
-
-            <Switch
-                android:id="@+id/register_puppy_privacy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:textSize="14sp"
-                android:text="@string/information_privacy" />
-
-            <Switch
-                android:id="@+id/register_puppy_puppy_privacy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:textSize="14sp"
-                android:text="@string/possession_puppy" />
 
             <Button
                 android:id="@+id/register_puppy_button_confirm"

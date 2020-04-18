@@ -1,41 +1,69 @@
 <resources>
+    <!-- General strings -->
     <string name="app_name">HappyPuppy</string>
     <string name="logo">Logo</string>
     <string name="logo_text">Logo with text</string>
-    <string name="information_privacy">By selecting this option you accept the processing of personal data, respecting the Regulation (EU) 2016/679 (the "GDPR")</string>
-    <string name="possession_puppy">Confermo che il cucciolo in mio possesso è stato identificato, regolarizzato e registrato dal veterinario all’anagrafe.</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="repeat_password">Repeat password</string>
-    <string name="forgot_password">Forgot password?</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_up">Sign up</string>
-    <string name="sign_out">Sign out</string>
-    <string name="yes_account">I have an account</string>
-    <string name="no_account">I don\'t have an account</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last name</string>
-    <string name="email">Email</string>
+
+    <string name="optional_field"> (optional)</string>
+    <!-- -->
+
+    <!-- Labels for Button -->
     <string name="notification">Notification</string>
     <string name="explore">Explore</string>
     <string name="profile">Profile</string>
     <string name="home">Home</string>
-    <string name="security_code">Security Code</string>
-    <string name="code_sent">A code was sent to your email address</string>
-    <string name="no_active_profile">The profile is not active, please check your email. </string>
-    <string name="wrong_login">Invalid username or password.</string>
-    <string name="upload_avatar">Upload a photo</string>
+    <string name="yes_account">I have an account</string>
+    <string name="no_account">I don\'t have an account</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_out">Sign out</string>
+    <!-- -->
+
+    <!-- User/Puppy fields -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
     <string name="kind_animal">Animal</string>
     <string name="puppy_race">Race</string>
     <string name="puppy_name">Puppy Name</string>
-    <string name="age">Age</string>
+    <string name="age">Birth date</string>
     <string name="size">Size</string>
     <string name="weight">Weight</string>
+    <string name="weight_unit">Weight Unit</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="puppy_behaviour">Personality</string>
+    <string name="upload_avatar">Upload a photo</string>
+    <!-- -->
 
+    <!-- Strings for privacy settings.. -->
+    <string name="information_privacy">By selecting this option you have read and you\'re agreeing to our EULA.</string>
+    <string name="security_code">Security Code</string>
+    <string name="code_sent">A code was sent to your email address</string>
+    <!-- -->
+
+    <!-- General Errors -->
+    <string name="no_active_profile">The profile is not active, please check your email. </string>
+    <string name="wrong_login">Invalid username or password.</string>
+    <string name="wrong_email">Invalid email address.</string>
+    <!-- -->
+
+    <!-- Strings "insert" -->
+    <string name="insert_email">Insert e-mail address</string>
+    <!-- -->
+
+    <!-- Strings for dialogs -->
+    <string name="dismiss">Dismiss</string>
+    <string name="clear_all">Clear all</string>
+    <string name="confirm">Confirm</string>
+    <!-- -->
+
+    <!-- Array Strings -->
     <string-array name="puppy_size">
         <item>Mini Small</item>
         <item>Small</item>
@@ -45,7 +73,12 @@
         <item>Extra Large</item>
     </string-array>
 
-    <string name="dismiss">Dismiss</string>
-    <string name="clear_all">Clear all</string>
-    <string name="confirm">Confirm</string>
+    <string-array name="puppy_unit_weight">
+        <item>Gr</item>
+        <item>Kg</item>
+        <item>q</item>
+        <item>t</item>
+    </string-array>
+    <!-- -->
+
 </resources>

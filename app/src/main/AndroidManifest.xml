@@ -22,6 +22,8 @@
         <activity android:name=".SignUp" />
         <activity android:name=".HomePage"/>
         <activity android:name=".RegisterPuppy"/>
+        <activity android:name=".ForgotPassword"/>
+        <activity android:name=".ActivateProfile"/>
     </application>
 
 </manifest>

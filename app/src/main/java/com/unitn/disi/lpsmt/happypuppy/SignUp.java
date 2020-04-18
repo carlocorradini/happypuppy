@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import net.rimoto.intlphoneinput.IntlPhoneInput;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 
@@ -28,22 +30,33 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
     private Button buttonSignIn;
     private Button buttonSignUp;
     private TextView date;
+    private IntlPhoneInput phoneInputView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_sign_up);
 
+        /* Input fields */
         inputFirstName = findViewById(R.id.sign_up_input_first_name);
         inputLastName = findViewById(R.id.sign_up_input_last_name);
         inputUser = findViewById(R.id.sign_up_input_username);
+        phoneInputView =  findViewById(R.id.sign_up_input_phone_intl);
         inputEMail = findViewById(R.id.sign_up_input_email);
         inputPassword = findViewById(R.id.sign_up_input_password);
         inputRepeatPassword = findViewById(R.id.sign_up_input_password_repeat);
+        date = findViewById(R.id.sign_up_input_age);
 
         buttonSignIn = findViewById(R.id.sign_up_button_sign_in);
         buttonSignUp = findViewById(R.id.sign_up_button_sign_up);
 
+        /* Reset hint for optional fields */
+        inputFirstName.setHint(inputFirstName.getHint() +" "+  getString(R.string.optional_field));
+        inputLastName.setHint(inputLastName.getHint() +" "+ getString(R.string.optional_field));
+        date.setHint(date.getHint() +" "+ getString(R.string.optional_field));
+
+
+        /* Button listeners */
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,8 +64,21 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                 startActivity(intent);
             }
         });
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SignUp.class);
+                startActivity(intent); /* TODO: set layout for otp codes */
+            }
+        });
 
-        date = findViewById(R.id.sign_up_input_age);
+        /* TODO: verify input phone number */
+        String myInternationalNumber;
+        if(phoneInputView.isValid()) {
+            myInternationalNumber = phoneInputView.getNumber();
+        }
+
+        /* Listeners for edit text birth date: date picker */
         date.setInputType(InputType.TYPE_NULL);
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +96,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        String userAge = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        String userAge = DateFormat.getDateInstance(DateFormat.MEDIUM).format(c.getTime());
         date.setText(userAge);
     }
 }

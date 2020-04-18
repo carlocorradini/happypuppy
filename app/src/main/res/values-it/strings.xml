@@ -1,42 +1,84 @@
 <resources>
+    <!-- General strings -->
     <string name="app_name">HappyPuppy</string>
     <string name="logo">Logo</string>
     <string name="logo_text">Logo con testo</string>
-    <string name="information_privacy">Selezionando questa opzione accetti il trattamento dei dati personali, rispettando il Regolamento (UE) 2016/679 (il “GDPR”)</string>
-    <string name="possession_puppy">Confermo che il cucciolo in mio possesso è stato identificato, regolarizzato e registrato dal veterinario all’anagrafe.</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="repeat_password">Ripeti password</string>
-    <string name="forgot_password">Password dimenticata?</string>
-    <string name="sign_in">Accedi</string>
-    <string name="sign_up">Registrati</string>
-    <string name="sign_out">Esci</string>
-    <string name="yes_account">Ho un account</string>
-    <string name="no_account">Non ho un account</string>
-    <string name="first_name">Nome</string>
-    <string name="last_name">Cognome</string>
-    <string name="email">Email</string>
+
+    <string name="optional_field"> (opzionale)</string>
+    <!-- -->
+
+    <!-- Labels for Button -->
     <string name="notification">Notifiche</string>
     <string name="explore">Esplora</string>
     <string name="profile">Profilo</string>
     <string name="home">Home</string>
-    <string name="security_code">Codice di sicurezza</string>
-    <string name="code_sent">È stata inviata un\'email con un codice di sicurezza da inserire.</string>
-    <string name="no_active_profile">L\'utente non è attivo, controlla la tua email per attivare l\'account. </string>
-    <string name="wrong_login">L\'username o la password non è corretto/a.</string>
-    <string name="upload_avatar">Carica una foto</string>
+    <string name="yes_account">Ho un account</string>
+    <string name="no_account">Non ho un account</string>
+    <string name="forgot_password">Password dimenticata?</string>
+    <string name="sign_in">Accedi</string>
+    <string name="sign_up">Registrati</string>
+    <string name="sign_out">Esci</string>
+    <!-- -->
+
+    <!-- User/Puppy fields -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Ripeti password</string>
+    <string name="first_name">Nome</string>
+    <string name="last_name">Cognome</string>
+    <string name="email">Email</string>
     <string name="kind_animal">Animale</string>
     <string name="puppy_race">Razza</string>
     <string name="puppy_name">Nome Puppy</string>
-    <string name="age">Età</string>
+    <string name="age">Data di nascita</string>
     <string name="size">Taglia</string>
     <string name="weight">Peso</string>
+    <string name="weight_unit">Unità del peso</string>
     <string name="gender">Sesso</string>
     <string name="male">Maschio</string>
     <string name="female">Femmina</string>
     <string name="puppy_behaviour">Personalità</string>
+    <string name="upload_avatar">Carica una foto</string>
+    <!-- -->
 
+    <!-- String for privacy settings.. -->
+    <string name="information_privacy">Selezionando questa opzione hai preso visione e accetti i termini EULA.</string>
+    <string name="security_code">Codice di sicurezza</string>
+    <string name="code_sent">È stata inviata un\'email con un link per resettare la password.</string>
+    <!-- -->
+
+    <!-- General Errors -->
+    <string name="wrong_email">Indirizzo email non corretto.</string>
+    <string name="no_active_profile">L\'utente non è attivo, controlla la tua email per attivare l\'account. </string>
+    <string name="wrong_login">L\'username o la password non è corretto/a.</string>
+    <!-- -->
+
+    <!-- Strings "insert" -->
+    <string name="insert_email">Inserisci indirizzo e-mail</string>
+    <!-- -->
+
+    <!-- String for dialogs -->
     <string name="dismiss">Annulla</string>
     <string name="clear_all">Cancella tutto</string>
     <string name="confirm">Conferma</string>
+    <!-- -->
+
+    <!-- Array Strings -->
+    <string-array name="puppy_size">
+        <item>Mini Small</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Medium-Large</item>
+        <item>Large</item>
+        <item>Extra Large</item>
+    </string-array>
+
+    <string-array name="puppy_unit_weight">
+        <item>Gr</item>
+        <item>Kg</item>
+        <item>q</item>
+        <item>t</item>
+    </string-array>
+    <!-- -->
+
 </resources>

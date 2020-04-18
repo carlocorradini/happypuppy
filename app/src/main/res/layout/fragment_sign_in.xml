@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_gravity="center_horizontal"
         android:padding="10dip">
 
         <ImageView
@@ -22,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin"
-            android:drawableEnd="@drawable/ic_account_box"
+            android:drawableEnd="@drawable/ic_user"
             android:drawableTint="@color/colorAccent"
             android:hint="@string/username"
             android:importantForAutofill="no"
@@ -53,12 +54,13 @@
             android:id="@+id/sign_in_button_sign_up"
             style="@style/Button.Text"
             android:layout_width="match_parent"
-            android:layout_height="51dp"
+            android:layout_height="wrap_content"
             android:text="@string/no_account" />
 
         <Button
             android:id="@+id/sign_in_button_forgot_password"
             style="@style/Button.Text"
+            android:background="@drawable/button_border_tb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/forgot_password"
@@ -72,6 +74,16 @@
             android:textStyle=""
             android:textColor="@color/design_default_color_error"
             android:text="" />
+
+        <ProgressBar
+            android:id="@+id/sign_in_login_loader"
+            android:visibility="invisible"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/logo_height"
+            android:background="#00FFFFFF"
+            android:rotation="180"/>
 
     </LinearLayout>
 </ScrollView>
