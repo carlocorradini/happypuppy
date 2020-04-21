@@ -73,7 +73,6 @@
                 android:id="@+id/sign_up_input_phone_intl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_standard"
                 app:flagPaddingBottom="4dp"
                 app:flagPaddingEnd="4dp"
                 app:flagPaddingStart="4dp"
@@ -133,8 +132,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin"
-            android:drawableEnd="@drawable/ic_arrow_forward"
-            android:drawableTint="@color/colorTertiary"
             android:text="@string/sign_up" />
 
         <Button

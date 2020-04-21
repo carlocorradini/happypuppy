@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
 
                 } finally {
-                    Intent intent = new Intent(MainActivity.this, SignIn.class);
+                    Intent intent = new Intent(MainActivity.this, RegisterPuppy.class);
                     startActivity(intent);
                     finish();
                 }

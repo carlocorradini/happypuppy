@@ -78,6 +78,7 @@
                     app:civ_border_width="2dp" />
 
                 <TextView
+                    android:id="@+id/register_puppy_uri_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -104,12 +105,22 @@
             </RadioGroup>
 
             <EditText
+                android:id="@+id/register_puppy_input_name_puppy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:drawableEnd="@drawable/ic_footprint"
+                android:hint="@string/puppy_name"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions" />
+
+            <EditText
                 android:id="@+id/register_puppy_input_kind_animal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
                 android:drawableEnd="@drawable/ic_monkey"
-                android:hint="@string/kind_animal"
+                android:hint="@string/animal_specie"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions" />
 
@@ -120,16 +131,6 @@
                 android:layout_marginTop="@dimen/margin"
                 android:drawableEnd="@drawable/ic_monkey_baby"
                 android:hint="@string/puppy_race"
-                android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
-
-            <EditText
-                android:id="@+id/register_puppy_input_name_puppy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_footprint"
-                android:hint="@string/puppy_name"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions" />
 
@@ -177,20 +178,22 @@
         </LinearLayout>
             <Button
                 android:id="@+id/register_puppy_button_input_personality"
+                style="@style/Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_standard"
                 android:layout_margin="@dimen/margin"
-                android:backgroundTint="@color/colorTertiary"
-                android:text="@string/puppy_behaviour" />
+                android:text="@string/puppy_behaviour"
+                android:drawableTint="@color/colorSecondary"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"/>
 
             <Button
                 android:id="@+id/register_puppy_button_confirm"
+                style="@style/Button.Colored.Inverted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_standard"
                 android:layout_margin="@dimen/margin"
-                android:backgroundTint="@color/colorSecondary"
                 android:text="@string/confirm" />
         </LinearLayout>
     </ScrollView>

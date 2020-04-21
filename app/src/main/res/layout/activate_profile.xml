@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorPrimary"
+    android:padding="@dimen/padding">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:padding="10dip">
+
+        <ImageView
+            style="@style/Logo"
+            android:contentDescription="@string/logo"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/otp_codes"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="@dimen/margin"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/otp_sms" />
+
+        <EditText
+            android:id="@+id/activate_profile_input_otp_sms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableTint="@color/colorAccent"
+            android:drawableEnd="@drawable/ic_sms"
+            android:hint="00000" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/otp_email" />
+
+        <EditText
+            android:id="@+id/activate_profile_input_otp_mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_envelope"
+            android:drawableTint="@color/colorAccent"
+            android:hint="00000" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:id="@+id/activate_profile_button_resend_codes"
+            style="@style/Button.Colored.Tertiary"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:text="@string/resend_otp_codes" />
+        <Button
+            android:id="@+id/activate_profile_button_send"
+            style="@style/Button.Colored.Inverted"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:text="@string/send" />
+    </LinearLayout>
+
+        <TextView
+            android:id="@+id/activate_profile_error_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:textColor="@color/design_default_color_error"
+            android:visibility="invisible"
+            android:text="" />
+    </LinearLayout>
+</ScrollView>

@@ -67,8 +67,8 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SignUp.class);
-                startActivity(intent); /* TODO: set layout for otp codes */
+                Intent intent = new Intent(v.getContext(), ActivateProfile.class);
+                startActivity(intent);
             }
         });
 
