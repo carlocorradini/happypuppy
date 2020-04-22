@@ -6,4 +6,5 @@
     <color name="colorTertiary">#FF80C0</color>
     <color name="colorAccent">#333131</color>
     <color name="colorAccentOpacity">#BF333131</color>
+    <color name="colorBlueAdd">#2185d0</color>
 </resources>
