@@ -16,4 +16,6 @@ public class AnimalSpecie {
         this.id = id;
         this.name = name;
     }
+
+    public AnimalSpecie() {}
 }

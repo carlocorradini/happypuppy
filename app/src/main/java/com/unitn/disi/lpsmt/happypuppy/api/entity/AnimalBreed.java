@@ -21,4 +21,6 @@ public class AnimalBreed {
         this.name = name;
         this.specie = specie;
     }
+
+    public AnimalBreed() {}
 }
