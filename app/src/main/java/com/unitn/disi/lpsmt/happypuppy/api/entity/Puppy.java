@@ -3,8 +3,10 @@ package com.unitn.disi.lpsmt.happypuppy.api.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class Puppy {
     public enum Gender {
@@ -27,7 +29,7 @@ public class Puppy {
 
     @SerializedName("id")
     @Expose
-    public String id;
+    public Long id;
 
     @SerializedName("name")
     @Expose
@@ -39,7 +41,7 @@ public class Puppy {
 
     @SerializedName("date_of_birth")
     @Expose
-    public LocalDate dateOfBirth; // todo Change to LocalDate type
+    public LocalDate dateOfBirth;
 
     @SerializedName("weight")
     @Expose
@@ -47,11 +49,11 @@ public class Puppy {
 
     @SerializedName("avatar")
     @Expose
-    public String avatar;
+    public URL avatar;
 
     @SerializedName("user")
     @Expose
-    public String user;
+    public UUID user;
 
     @SerializedName("specie")
     @Expose
@@ -65,7 +67,7 @@ public class Puppy {
     @Expose
     public List<Long> personalities;
 
-    public Puppy(String id, String name, Gender gender, LocalDate dateOfBirth, Long weight, String avatar, String user, Long specie, List<Long> breeds, List<Long> personalities) {
+    public Puppy(Long id, String name, Gender gender, LocalDate dateOfBirth, Long weight, URL avatar, UUID user, Long specie, List<Long> breeds, List<Long> personalities) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -77,4 +79,6 @@ public class Puppy {
         this.breeds = breeds;
         this.personalities = personalities;
     }
+
+    public Puppy() {}
 }

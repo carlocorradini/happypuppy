@@ -3,7 +3,8 @@
     package="com.unitn.disi.lpsmt.happypuppy">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<!-- todo REMOVE clear traffic -->
+
+    <!-- todo REMOVE clear traffic -->
     <application
 
         android:usesCleartextTraffic="true"

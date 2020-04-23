@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.api.serializer;
+package com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;

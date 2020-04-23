@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.unitn.disi.lpsmt.happypuppy.api.deserializer.LocalDateDeserializer;
+import com.unitn.disi.lpsmt.happypuppy.api.adapter.deserializer.LocalDateDeserializer;
 import com.unitn.disi.lpsmt.happypuppy.api.interceptor.AuthInterceptor;
-import com.unitn.disi.lpsmt.happypuppy.api.serializer.LocalDateSerializer;
+import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateSerializer;
 
 import java.time.LocalDate;
 
@@ -18,9 +18,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class API {
     private static API instance = null;
 
-    private final Retrofit client;
+    public final Retrofit client;
 
-    private static final String BASE_URL = "http://192.168.0.25:8080/api/v1/"; // todo cambiare url
+    public static final String BASE_URL = "http://192.168.0.25:8080/api/v1/"; // todo cambiare url
 
     private API() {
         client = buildClient();
@@ -39,14 +39,14 @@ public class API {
 
     private Retrofit buildClient() {
         // Interceptor
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
         AuthInterceptor authInterceptor = new AuthInterceptor();
         // END Interceptor
         // Gson
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
-        gson.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                .create();
         // END Gson
 
         return new Retrofit.Builder()
@@ -57,80 +57,36 @@ public class API {
                                 .addInterceptor(authInterceptor)
                                 .build()
                 )
-                .addConverterFactory(GsonConverterFactory.create(gson.create()))
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-    }
-
-    public Retrofit getClient() {
-        return client;
     }
 
     public static class Response<T> {
         @SerializedName("status")
         @Expose
-        private String status;
+        public String status;
 
         @SerializedName("is_success")
         @Expose
-        private Boolean isSuccess;
+        public Boolean isSuccess;
 
         @SerializedName("status_code")
         @Expose
-        private Short statusCode;
+        public Short statusCode;
 
         @SerializedName("status_code_name")
         @Expose
-        private String statusCodeName;
+        public String statusCodeName;
 
         @SerializedName("data")
         @Expose
-        private T data;
+        public T data;
 
         public Response(String status, Boolean isSuccess, Short statusCode, String statusCodeName, T data) {
             this.status = status;
             this.isSuccess = isSuccess;
             this.statusCode = statusCode;
             this.statusCodeName = statusCodeName;
-            this.data = data;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public Boolean getSuccess() {
-            return isSuccess;
-        }
-
-        public void setSuccess(Boolean success) {
-            isSuccess = success;
-        }
-
-        public Short getStatusCode() {
-            return statusCode;
-        }
-
-        public void setStatusCode(Short statusCode) {
-            this.statusCode = statusCode;
-        }
-
-        public String getStatusCodeName() {
-            return statusCodeName;
-        }
-
-        public void setStatusCodeName(String statusCodeName) {
-            this.statusCodeName = statusCodeName;
-        }
-
-        public T getData() {
-            return data;
-        }
-
-        public void setData(T data) {
             this.data = data;
         }
     }

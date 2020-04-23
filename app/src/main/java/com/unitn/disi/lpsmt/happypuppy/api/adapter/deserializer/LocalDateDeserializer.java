@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.api.deserializer;
+package com.unitn.disi.lpsmt.happypuppy.api.adapter.deserializer;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

@@ -3,7 +3,10 @@ package com.unitn.disi.lpsmt.happypuppy.api.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class User {
     public enum Gender {
@@ -47,53 +50,53 @@ public class User {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    public UUID id;
 
     @SerializedName("username")
     @Expose
-    private String username;
+    public String username;
 
     @SerializedName("password")
     @Expose
-    private String password;
+    public String password;
 
     @SerializedName("role")
     @Expose
-    private Role role;
+    public Role role;
 
     @SerializedName("name")
     @Expose
-    private String name;
+    public String name;
 
     @SerializedName("surname")
     @Expose
-    private String surname;
+    public String surname;
 
     @SerializedName("gender")
     @Expose
-    private Gender gender;
+    public Gender gender;
 
     @SerializedName("date_of_birth")
     @Expose
-    private String dateOfBirth; // todo Change to LocalDate type
+    public LocalDate dateOfBirth;
 
     @SerializedName("email")
     @Expose
-    private String email;
+    public String email;
 
     @SerializedName("phone")
     @Expose
-    private String phone;
+    public String phone;
 
     @SerializedName("avatar")
     @Expose
-    private String avatar;
+    public URL avatar;
 
     @SerializedName("puppies")
     @Expose
-    private List<Long> puppies;
+    public List<Long> puppies;
 
-    public User(String id, String username, String password, Role role, String name, String surname, Gender gender, String dateOfBirth, String email, String phone, String avatar, List<Long> puppies) {
+    public User(UUID id, String username, String password, Role role, String name, String surname, Gender gender, LocalDate dateOfBirth, String email, String phone, URL avatar, List<Long> puppies) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -105,102 +108,6 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.avatar = avatar;
-        this.puppies = puppies;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public List<Long> getPuppies() {
-        return puppies;
-    }
-
-    public void setPuppies(List<Long> puppies) {
         this.puppies = puppies;
     }
 }

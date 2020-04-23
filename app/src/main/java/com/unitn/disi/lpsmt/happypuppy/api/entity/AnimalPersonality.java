@@ -6,30 +6,14 @@ import com.google.gson.annotations.SerializedName;
 public class AnimalPersonality {
     @SerializedName("id")
     @Expose
-    private Long id;
+    public Long id;
 
     @SerializedName("name")
     @Expose
-    private String name;
+    public String name;
 
     public AnimalPersonality(Long id, String name) {
         this.id = id;
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 }

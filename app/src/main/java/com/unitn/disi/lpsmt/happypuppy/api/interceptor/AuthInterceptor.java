@@ -11,7 +11,8 @@ import okhttp3.Response;
 public class AuthInterceptor implements Interceptor {
     private static final String AUTHORIZATION = "Authorization";
 
-    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3YTQ2ZmVhLTZmOGEtNGFjNS05NWJlLWNiYzUxMmI3Y2IyYSIsInJvbGUiOiJzdGFuZGFyZCIsImlhdCI6MTU4NzM5MTA3MywiZXhwIjoxNTkwMTU1ODczfQ.ptfWUJEK8DSlf_oY5UwtmFYo3iK7FUGzaHC6OlCoow0";
+    // todo cambia
+    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3YTQ2ZmVhLTZmOGEtNGFjNS05NWJlLWNiYzUxMmI3Y2IyYSIsImlhdCI6MTU4NzY0MjI0NCwiZXhwIjoxNTkwNDA3MDQ0fQ.e4hSukhrZsLSMZXaPgizbZJFLRLpAKksVi0ZIByHuvU";
 
     @NotNull
     @Override
