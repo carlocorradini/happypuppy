@@ -16,4 +16,6 @@ public class AnimalPersonality {
         this.id = id;
         this.name = name;
     }
+
+    public AnimalPersonality() {}
 }

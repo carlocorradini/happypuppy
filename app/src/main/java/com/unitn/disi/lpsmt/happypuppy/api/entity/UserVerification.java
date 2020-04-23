@@ -17,4 +17,12 @@ public class UserVerification {
     @SerializedName("otp_phone")
     @Expose
     public String otpPhone;
+
+    public UserVerification(UUID user, String otpEmail, String otpPhone) {
+        this.user = user;
+        this.otpEmail = otpEmail;
+        this.otpPhone = otpPhone;
+    }
+
+    public UserVerification() {}
 }

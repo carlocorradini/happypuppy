@@ -110,4 +110,6 @@ public class User {
         this.avatar = avatar;
         this.puppies = puppies;
     }
+
+    public User() {}
 }
