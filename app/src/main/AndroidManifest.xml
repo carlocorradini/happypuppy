@@ -6,6 +6,7 @@
 
     <!-- todo REMOVE clear traffic -->
     <application
+        android:name=".App"
 
         android:usesCleartextTraffic="true"
 
