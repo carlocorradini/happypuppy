@@ -24,12 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignIn" />
-        <activity android:name=".SignUp" />
+        <activity android:name=".auth.SignIn" />
+        <activity android:name=".auth.SignUp" />
         <activity android:name=".HomePage"/>
         <activity android:name=".RegisterPuppy"/>
-        <activity android:name=".ForgotPassword"/>
-        <activity android:name=".ActivateProfile"/>
+        <activity android:name=".auth.ForgotPassword"/>
+        <activity android:name=".auth.ActivateProfile"/>
         <activity android:name=".AndroidListViewActivity"/>
     </application>
 

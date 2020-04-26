@@ -1,9 +1,8 @@
-package com.unitn.disi.lpsmt.happypuppy;
+package com.unitn.disi.lpsmt.happypuppy.auth;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+
+import com.unitn.disi.lpsmt.happypuppy.DatePickerFragment;
+import com.unitn.disi.lpsmt.happypuppy.R;
 
 import net.rimoto.intlphoneinput.IntlPhoneInput;
 

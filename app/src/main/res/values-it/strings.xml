@@ -58,6 +58,11 @@
     <string name="wrong_login">L\'username o la password non è corretto/a.</string>
     <!-- -->
 
+    <!-- Server LOG -->
+    <string name="internal_server_error">Errore interno al server.</string>
+    <string name="no_internet">No internet.</string>
+    <!-- -->
+
     <!-- Strings "insert" -->
     <string name="insert_email">Inserisci indirizzo e-mail</string>
     <!-- -->

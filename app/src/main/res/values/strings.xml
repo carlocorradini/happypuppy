@@ -58,6 +58,11 @@
     <string name="wrong_email">Invalid email address.</string>
     <!-- -->
 
+    <!-- Server LOG -->
+    <string name="internal_server_error">Internal server error.</string>
+    <string name="no_internet">No internet.</string>
+    <!-- -->
+
     <!-- Strings "insert" -->
     <string name="insert_email">Insert e-mail address</string>
     <!-- -->

@@ -1,4 +1,5 @@
-package com.unitn.disi.lpsmt.happypuppy;
+package com.unitn.disi.lpsmt.happypuppy.auth;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.unitn.disi.lpsmt.happypuppy.HomePage;
+import com.unitn.disi.lpsmt.happypuppy.R;
 
 public class ActivateProfile extends AppCompatActivity {
     private Button sendCodes;

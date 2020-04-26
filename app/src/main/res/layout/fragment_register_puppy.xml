@@ -67,20 +67,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/register_puppy_profile_image"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_dog_avatar"
-                    app:civ_border_color="@color/colorSecondary"
-                    app:civ_border_width="2dp" />
+                    android:src="@drawable/ic_dog_avatar" />
 
                 <Button
                     android:id="@+id/register_puppy_button_image"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignEnd="@+id/register_puppy_profile_image"
                     android:background="@color/colorPrimary"

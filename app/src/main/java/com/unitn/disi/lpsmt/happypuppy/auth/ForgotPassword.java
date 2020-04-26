@@ -1,14 +1,17 @@
-package com.unitn.disi.lpsmt.happypuppy;
+package com.unitn.disi.lpsmt.happypuppy.auth;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.unitn.disi.lpsmt.happypuppy.R;
+
 public class ForgotPassword extends AppCompatActivity {
-    private ImageButton sendEmail;
+    private Button sendEmail;
     private TextView sentData;
 
     @Override
