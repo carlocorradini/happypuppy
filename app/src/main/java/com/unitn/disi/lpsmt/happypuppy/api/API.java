@@ -8,10 +8,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.unitn.disi.lpsmt.happypuppy.BuildConfig;
 import com.unitn.disi.lpsmt.happypuppy.api.adapter.deserializer.LocalDateDeserializer;
+import com.unitn.disi.lpsmt.happypuppy.api.adapter.deserializer.LocalDateTimeDeserializer;
+import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateTimeSerializer;
 import com.unitn.disi.lpsmt.happypuppy.api.interceptor.AuthInterceptor;
 import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateSerializer;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -58,6 +61,8 @@ public final class API {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
                 .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
                 .create();
         // END Gson
 

@@ -1,6 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy.api;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 

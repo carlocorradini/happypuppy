@@ -39,5 +39,4 @@ public interface UserService {
 
     @DELETE("auth/user")
     Call<API.Response> delete();
-
 }
