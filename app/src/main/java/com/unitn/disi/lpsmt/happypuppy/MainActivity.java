@@ -5,13 +5,59 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.unitn.disi.lpsmt.happypuppy.api.API;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.UserFriend;
+import com.unitn.disi.lpsmt.happypuppy.api.service.UserFriendService;
 import com.unitn.disi.lpsmt.happypuppy.auth.SignIn;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        UserFriend userFriend = new UserFriend();
+        userFriend.createdAt = LocalDateTime.now();
+
+        Call<API.Response> call = API.getInstance().getClient().create(UserFriendService.class).update(UUID.fromString("23858604-8fe1-49a1-9b2a-0b15946d6c2b"), userFriend);
+        call.enqueue(new Callback<API.Response>() {
+            @Override
+            public void onResponse(Call<API.Response> call, Response<API.Response> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<API.Response> call, Throwable t) {
+                System.err.println("[ERRORE]: " + t);
+            }
+        });
+
+        Call<API.Response<UserFriend>> call2 = API.getInstance().getClient().create(UserFriendService.class).findById(UUID.fromString("23858604-8fe1-49a1-9b2a-0b15946d6c2b"));
+        call2.enqueue(new Callback<API.Response<UserFriend>>() {
+            @Override
+            public void onResponse(Call<API.Response<UserFriend>> call, Response<API.Response<UserFriend>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    UserFriend userFriend = response.body().data;
+                    System.out.println("[USER_FRIEND]: " + new Gson().toJson(userFriend));
+                    System.out.println("[USER_FRIEND_CREATED_AT]: " + userFriend.createdAt);
+                } else {
+                    System.err.println("[CODE]: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<API.Response<UserFriend>> call, Throwable t) {
+                System.err.println("[ERRORE]: " + t);
+            }
+        });
 
         /*User carlo = new User();
         carlo.name = "Carlo";
@@ -144,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        Thread welcomeThread = new Thread() {
+        /*Thread welcomeThread = new Thread() {
             @Override
             public void run() {
                 try {
@@ -159,6 +205,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        welcomeThread.start();
+        welcomeThread.start();*/
     }
 }

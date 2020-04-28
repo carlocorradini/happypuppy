@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
-public class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime> {
+public final class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime> {
     @Override
     public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         return ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString()).toLocalDateTime();

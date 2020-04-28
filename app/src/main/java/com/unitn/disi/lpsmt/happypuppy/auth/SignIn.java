@@ -55,7 +55,7 @@ public class SignIn extends AppCompatActivity {
             User loginUser = new User();
             loginUser.username = inputUsername.getText().toString();
             loginUser.password = inputPassword.getText().toString();
-            Call<API.Response<String>> call = API.getInstance().client.create(UserService.class).signIn(loginUser);
+            Call<API.Response<String>> call = API.getInstance().getClient().create(UserService.class).signIn(loginUser);
 
             /* Example of wrong login with message */
             for (int i = 0; i < root.getChildCount(); i++) {
