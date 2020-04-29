@@ -18,10 +18,7 @@ public class UserFriend {
         FRIEND_REQUEST("friend_request"),
 
         @SerializedName("waiting_acceptance")
-        WAITING_ACCEPTANCE("waiting_acceptance"),
-
-        @SerializedName("deleted")
-        DELETED("deleted");
+        WAITING_ACCEPTANCE("waiting_acceptance");
 
         private final String value;
 
