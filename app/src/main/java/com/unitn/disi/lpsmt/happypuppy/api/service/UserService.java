@@ -1,5 +1,6 @@
 package com.unitn.disi.lpsmt.happypuppy.api.service;
 
+import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 
@@ -25,7 +26,7 @@ public interface UserService {
     Call<API.Response<UUID>> create(@Body User user);
 
     @POST("auth/user/sign_in")
-    Call<API.Response<String>> signIn(@Body User user);
+    Call<API.Response<JWT>> signIn(@Body User user);
 
     @POST("auth/user/password_reset/{email}")
     Call<API.Response> passwordReset(@Path("email") String email);
