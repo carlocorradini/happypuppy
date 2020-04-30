@@ -46,7 +46,8 @@
     <!-- String for privacy settings.. -->
     <string name="information_privacy">Selezionando questa opzione hai preso visione e accetti i termini EULA.</string>
     <string name="security_code">Codice di sicurezza</string>
-
+    <string name="otp_codes_sent">Inserisci qui sotto i codici OTP inviati sul tuo cellulare e sulla tua email.</string>
+    <string name="otp_codes_empty">Almeno un codice non è stato inserito.</string>
     <string name="otp_codes">Per completare la registrazione, inserisci qui sotto i codici OTP inviati sul tuo cellulare e sulla tua email.</string>
     <string name="resend_otp_codes">Rinvia codici</string>
     <string name="email_sent">Un\'email è stata inviata al tuo indirizzo email per reimpostare la tua password, controlla la tua mail.</string>
@@ -54,17 +55,27 @@
 
     <!-- General Errors -->
     <string name="wrong_email">Indirizzo email non corretto.</string>
-    <string name="no_active_profile">L\'utente non è attivo, controlla la tua email per attivare l\'account. </string>
-    <string name="wrong_login">L\'username o la password non è corretto/a.</string>
     <!-- -->
 
     <!-- Server LOG -->
+    <string name="unauthorized">Non autorizzato</string>
     <string name="internal_server_error">Errore interno al server.</string>
+    <string name="user_already_exist">L\'utente già esiste.</string>
+    <string name="user_not_found">Utente non trovato.</string>
+    <string name="user_mail_not_found">Utente non trovato con questa email.</string>
     <string name="no_internet">No internet.</string>
+    <string name="wrong_login">L\'username o la password non è corretto/a.</string>
+    <string name="fill_data">Compila i campi non opzionali.</string>
+    <string name="insert_data_login">Inserisci i dati per effettuare il login.</string>
     <!-- -->
 
     <!-- Strings "insert" -->
     <string name="insert_email">Inserisci indirizzo e-mail</string>
+    <string name="insert_username">Inserisci nome utente.</string>
+    <string name="insert_phone">Numero di telefono non inserito o non corretto.</string>
+    <string name="accept_eula">Accetta l\'EULA.</string>
+    <string name="insert_password">Password non inserita.</string>
+    <string name="pw_not_equals">La password non corrispondono.</string>
     <!-- -->
 
     <!-- String for dialogs -->

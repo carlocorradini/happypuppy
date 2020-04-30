@@ -71,15 +71,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/forgot_password"
                 android:textAllCaps="false" />
-
-            <TextView
-                android:id="@+id/sign_in_text_invalid_login"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textStyle=""
-                android:layout_margin="@dimen/margin"
-                android:textColor="@color/design_default_color_error"
-                android:text="" />
         </LinearLayout>
     </ScrollView>
 

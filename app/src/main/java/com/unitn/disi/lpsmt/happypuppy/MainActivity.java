@@ -4,22 +4,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.unitn.disi.lpsmt.happypuppy.api.API;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
-import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.UUID;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,13 +166,20 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(3000);  //Delay of 3 seconds
+                    sleep(2500);  //Delay of 3 seconds
                 } catch (Exception e) {
-
-                } finally {
-                    Intent intent = new Intent(MainActivity.this, SignIn.class);
-                    startActivity(intent);
-                    finish();
+                }
+                finally {
+                    AuthManager.getInstance().clearToken(); /* TODO: remove this line: only for testing */
+                    if(AuthManager.getInstance().isAuth()){
+                        Intent intent = new Intent(MainActivity.this, HomePage.class);
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        Intent intent = new Intent(MainActivity.this, SignIn.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         };

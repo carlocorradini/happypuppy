@@ -48,23 +48,35 @@
     <string name="security_code">Security Code</string>
 
     <string name="otp_codes">To complete registration, please insert below the OTP codes sent to your phone number and your email.</string>
+    <string name="otp_codes_sent">Please insert below the OTP codes sent to your phone number and your email.</string>
     <string name="resend_otp_codes">Resend codes</string>
+    <string name="otp_codes_empty">At least one code is empty.</string>
     <string name="email_sent">An email was sent to your email address to reset your password, please check your inbox.</string>
     <!-- -->
 
     <!-- General Errors -->
-    <string name="no_active_profile">The profile is not active, please check your email. </string>
-    <string name="wrong_login">Invalid username or password.</string>
     <string name="wrong_email">Invalid email address.</string>
     <!-- -->
 
     <!-- Server LOG -->
+    <string name="unauthorized">Unauthorized</string>
     <string name="internal_server_error">Internal server error.</string>
+    <string name="user_already_exist">The user already exists.</string>
+    <string name="user_not_found">User not found.</string>
+    <string name="user_mail_not_found">User not found with this email.</string>
     <string name="no_internet">No internet.</string>
+    <string name="wrong_login">Invalid username or password.</string>
+    <string name="fill_data">Insert data in non optional fields.</string>
+    <string name="insert_data_login">Required data for login.</string>
     <!-- -->
 
     <!-- Strings "insert" -->
-    <string name="insert_email">Insert e-mail address</string>
+    <string name="insert_email">E-mail field is empty.</string>
+    <string name="insert_username">Username field is empty.</string>
+    <string name="insert_phone">Phone number field is empty or invalid.</string>
+    <string name="accept_eula">Accept the EULA to sign up.</string>
+    <string name="insert_password">Password field is empty, must to be 8 characters minimum. </string>
+    <string name="pw_not_equals">Passwords are not equal.</string>
     <!-- -->
 
     <!-- Strings for dialogs -->
