@@ -56,72 +56,72 @@ public class ActivateProfile extends AppCompatActivity {
 
 
         sendCodes.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 if (validate()) {
-                     verifyCodes(v);
-                 } else {
-                     Toast.makeText(getApplicationContext(), R.string.unauthorized, Toast.LENGTH_SHORT).show();
-                 }
-             }
+            @Override
+            public void onClick(View v) {
+                if (validate()) {
+                    verifyCodes(v);
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.unauthorized, Toast.LENGTH_SHORT).show();
+                }
+            }
 
-             private boolean validate() {
-                 if (otpEmail.getText().toString().equals("") || otpSMS.getText().toString().equals(""))
-                     return false;
-                 return true;
-             }
+            private boolean validate() {
+                if (otpEmail.getText().toString().equals("") || otpSMS.getText().toString().equals(""))
+                    return false;
+                return true;
+            }
 
-             private void verifyCodes(View v) {
-                 for (int i = 0; i < root.getChildCount(); i++) {
-                     View child = root.getChildAt(i);
-                     child.setEnabled(false);
-                     child.setClickable(false);
-                 }
-                 activateProfileLoader.setVisibility(View.VISIBLE);
-                 /* Fill UserVerification with codes */
-                 confirmNewUser.otpPhone = otpSMS.getText().toString();
-                 confirmNewUser.otpEmail = otpEmail.getText().toString();
-                 Call<API.Response<String>> call = API.getInstance().getClient().create(UserVerificationService.class).verify(confirmNewUser);
-                 call.enqueue(new Callback<API.Response<String>>() {
-                     @Override
-                     public void onResponse(Call<API.Response<String>> call, Response<API.Response<String>> response) {
-                         if (response.isSuccessful() && response.body() != null) {
-                             AuthManager.getInstance().setToken(new JWT(response.body().data));
-                             Intent intent = new Intent(v.getContext(), HomePage.class);
-                             startActivity(intent);
-                         } else {
-                             activateProfileLoader.setVisibility(View.GONE);
-                             switch (response.code()) {
-                                 case 403:
-                                     Toast.makeText(getApplicationContext(), R.string.user_already_exist, Toast.LENGTH_LONG).show();
-                                     break;
-                                 case 404:
-                                     Toast.makeText(getApplicationContext(), R.string.user_not_found, Toast.LENGTH_LONG).show();
-                                     break;
-                                 default:
-                                     Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_LONG).show();
-                                     break;
-                             }
-                             for (int i = 0; i < root.getChildCount(); i++) {
-                                 View child = root.getChildAt(i);
-                                 child.setEnabled(true);
-                                 child.setClickable(true);
-                             }
-                         }
-                     }
+            private void verifyCodes(View v) {
+                for (int i = 0; i < root.getChildCount(); i++) {
+                    View child = root.getChildAt(i);
+                    child.setEnabled(false);
+                    child.setClickable(false);
+                }
+                activateProfileLoader.setVisibility(View.VISIBLE);
+                /* Fill UserVerification with codes */
+                confirmNewUser.otpPhone = otpSMS.getText().toString();
+                confirmNewUser.otpEmail = otpEmail.getText().toString();
+                Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserVerificationService.class).verify(confirmNewUser);
+                call.enqueue(new Callback<API.Response<JWT>>() {
+                    @Override
+                    public void onResponse(Call<API.Response<JWT>> call, Response<API.Response<JWT>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            AuthManager.getInstance().setToken(response.body().data);
+                            Intent intent = new Intent(v.getContext(), HomePage.class);
+                            startActivity(intent);
+                        } else {
+                            activateProfileLoader.setVisibility(View.GONE);
+                            switch (response.code()) {
+                                case 403:
+                                    Toast.makeText(getApplicationContext(), R.string.user_already_exist, Toast.LENGTH_LONG).show();
+                                    break;
+                                case 404:
+                                    Toast.makeText(getApplicationContext(), R.string.user_not_found, Toast.LENGTH_LONG).show();
+                                    break;
+                                default:
+                                    Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_LONG).show();
+                                    break;
+                            }
+                            for (int i = 0; i < root.getChildCount(); i++) {
+                                View child = root.getChildAt(i);
+                                child.setEnabled(true);
+                                child.setClickable(true);
+                            }
+                        }
+                    }
 
-                     @Override
-                     public void onFailure(Call<API.Response<String>> call, Throwable t) {
-                         activateProfileLoader.setVisibility(View.GONE);
-                         Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-                         for (int i = 0; i < root.getChildCount(); i++) {
-                             View child = root.getChildAt(i);
-                             child.setEnabled(true);
-                             child.setClickable(true);
-                         }
-                     }
-                 });
-             }
+                    @Override
+                    public void onFailure(Call<API.Response<JWT>> call, Throwable t) {
+                        activateProfileLoader.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                        for (int i = 0; i < root.getChildCount(); i++) {
+                            View child = root.getChildAt(i);
+                            child.setEnabled(true);
+                            child.setClickable(true);
+                        }
+                    }
+                });
+            }
         });
         resendCodes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,14 +131,14 @@ public class ActivateProfile extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<API.Response> call, Response<API.Response> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            Toast.makeText(getApplicationContext(),R.string.otp_codes_sent,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.otp_codes_sent, Toast.LENGTH_SHORT).show();
                         } else {
                             switch (response.code()) {
                                 case 403:
-                                    Toast.makeText(getApplicationContext(),R.string.unauthorized,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), R.string.unauthorized, Toast.LENGTH_SHORT).show();
                                     break;
                                 default:
-                                    Toast.makeText(getApplicationContext(),R.string.internal_server_error,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }
@@ -146,7 +146,7 @@ public class ActivateProfile extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<API.Response> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(),R.string.no_internet,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
