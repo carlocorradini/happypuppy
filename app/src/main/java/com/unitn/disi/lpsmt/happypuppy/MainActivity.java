@@ -1,8 +1,26 @@
 package com.unitn.disi.lpsmt.happypuppy;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.gson.Gson;
+import com.unitn.disi.lpsmt.happypuppy.api.API;
+import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
+import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+import com.unitn.disi.lpsmt.happypuppy.auth.SignIn;
+
+import java.util.List;
+import java.util.UUID;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import org.apache.http.HttpStatus;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -11,23 +29,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         User user = new User();
+        user.username = "carlocorradini";
+        user.password = "password";
+        user.email = "carlo.ita98@gmail.com";
+        user.phone = "+393273679553";
 
         Call<API.Response<UUID>> call = API.getInstance().getClient().create(UserService.class).create(user);
 
         call.enqueue(new Callback<API.Response<UUID>>() {
-            @Override
-            public void onResponse(Call<API.Response<UUID>> call, Response<API.Response<UUID>> response) {
-                if (response.errorBody() != null) {
-                    API.Response<List<UnprocessableEntityError>> error = API.ErrorConverter.convert(response.errorBody());
-                    System.out.println("[INFO]: " + new Gson().toJson(error.data.size()));
-                }
-            }
+                 @Override
+                 public void onResponse(Call<API.Response<UUID>> call, Response<API.Response<UUID>> response) {
+                     if(response.isSuccessful() && response.body() != null) {
+                         System.out.println("[INFO]: "+ response.body().data);
+                     } else if (response.errorBody() != null) {
+                        switch (response.code()) {
+                            case HttpStatus.SC_UNPROCESSABLE_ENTITY: {
+                                API.Response<List<UnprocessableEntityError>> error = API.ErrorConverter.convert(response.errorBody());
+                                System.err.println("[ERROR]: " + error.data.size());
+                                break;
+                            }
+                            case HttpStatus.SC_CONFLICT: {
+                                API.Response<List<ConflictError>> error = API.ErrorConverter.convert(response.errorBody());
+                                System.err.println("[ERROR]: " + error.data.size());
+                                break;
+                            }
+                            default: {
+                                System.err.println("???????????????");
+                                break;
+                            }
+                        }
+                     } else {
 
-            @Override
-            public void onFailure(Call<API.Response<UUID>> call, Throwable t) {
+                     }
+                 }
 
-            }
-        });
+                 @Override
+                 public void onFailure(Call<API.Response<UUID>> call, Throwable t) {
+
+                 }
+             }
+        );
 
 
         /*User carlo = new User();
@@ -171,15 +212,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 finally {
                     AuthManager.getInstance().clearToken(); /* TODO: remove this line: only for testing */
-                    if(AuthManager.getInstance().isAuth()){
-                        Intent intent = new Intent(MainActivity.this, HomePage.class);
-                        startActivity(intent);
-                        finish();
-                    }else {
-                        Intent intent = new Intent(MainActivity.this, SignIn.class);
-                        startActivity(intent);
-                        finish();
-                    }
+        if (AuthManager.getInstance().isAuth()) {
+            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(MainActivity.this, SignIn.class);
+            startActivity(intent);
+            finish();
+        }
+                    /*
                 }
             }
         };

@@ -68,9 +68,9 @@ public class SignIn extends AppCompatActivity {
             loginLoader.setVisibility(View.VISIBLE);
             call.enqueue(new Callback<API.Response<JWT>>() {
                 @Override
-                public void onResponse(Call<API.Response<String>> call, Response<API.Response<String>> response) {
+                public void onResponse(Call<API.Response<JWT>> call, Response<API.Response<JWT>> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        AuthManager.getInstance().setToken(new JWT(response.body().data));
+                        AuthManager.getInstance().setToken(response.body().data);
                         Intent intent = new Intent(v.getContext(), HomePage.class);
                         startActivity(intent);
                     } else {
