@@ -112,7 +112,10 @@ public final class API {
     }
 
     public static final class ErrorConverter {
+
         private static final String TAG = ErrorConverter.class.getName();
+
+        private static final Gson gson = new Gson();
 
         public static <T> Response<T> convert(ResponseBody errorBody) {
             Converter<ResponseBody, Response<T>> converter = API.getInstance().getClient().responseBodyConverter(API.Response.class, new Annotation[0]);
