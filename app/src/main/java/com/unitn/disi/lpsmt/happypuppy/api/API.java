@@ -15,6 +15,7 @@ import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateSerialize
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -115,10 +116,10 @@ public final class API {
 
         private static final String TAG = ErrorConverter.class.getName();
 
-        private static final Gson gson = new Gson();
+        public static <T> API.Response<T> convert(ResponseBody errorBody, Type type) {
+            if (errorBody == null) return null;
 
-        public static <T> Response<T> convert(ResponseBody errorBody) {
-            Converter<ResponseBody, Response<T>> converter = API.getInstance().getClient().responseBodyConverter(API.Response.class, new Annotation[0]);
+            Converter<ResponseBody, API.Response<T>> converter = API.getInstance().getClient().responseBodyConverter(type, new Annotation[0]);
             API.Response<T> error = null;
 
             try {

@@ -6,11 +6,14 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
+import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.auth.SignIn;
 
@@ -20,7 +23,9 @@ import java.util.UUID;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import org.apache.http.HttpStatus;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -37,37 +42,35 @@ public class MainActivity extends AppCompatActivity {
         Call<API.Response<UUID>> call = API.getInstance().getClient().create(UserService.class).create(user);
 
         call.enqueue(new Callback<API.Response<UUID>>() {
-                 @Override
-                 public void onResponse(Call<API.Response<UUID>> call, Response<API.Response<UUID>> response) {
-                     if(response.isSuccessful() && response.body() != null) {
-                         System.out.println("[INFO]: "+ response.body().data);
-                     } else if (response.errorBody() != null) {
-                        switch (response.code()) {
-                            case HttpStatus.SC_UNPROCESSABLE_ENTITY: {
-                                API.Response<List<UnprocessableEntityError>> error = API.ErrorConverter.convert(response.errorBody());
-                                System.err.println("[ERROR]: " + error.data.size());
-                                break;
-                            }
-                            case HttpStatus.SC_CONFLICT: {
-                                API.Response<List<ConflictError>> error = API.ErrorConverter.convert(response.errorBody());
-                                System.err.println("[ERROR]: " + error.data.size());
-                                break;
-                            }
-                            default: {
-                                System.err.println("???????????????");
-                                break;
-                            }
-                        }
-                     } else {
+                         @Override
+                         public void onResponse(Call<API.Response<UUID>> call, Response<API.Response<UUID>> response) {
+                             if (response.isSuccessful() && response.body() != null) {
+                                 System.out.println("[INFO]: " + response.body().data);
+                             } else if (response.errorBody() != null) {
+                                 switch (response.code()) {
+                                     case HttpStatus.SC_UNPROCESSABLE_ENTITY: {
+                                         API.Response<List<UnprocessableEntityError>> error = API.ErrorConverter.convert(response.errorBody(), new TypeToken<API.Response<List<UnprocessableEntityError>>>(){}.getType());
+                                         System.err.println("[ERROR]: " + error.data.get(0).property);
+                                         break;
+                                     }
+                                     case HttpStatus.SC_CONFLICT: {
+                                         API.Response<List<ConflictError>> error = API.ErrorConverter.convert(response.errorBody(), new TypeToken<API.Response<List<ConflictError>>>(){}.getType());
+                                         System.err.println("[ERROR]: " + error.data.get(0).property);
+                                         break;
+                                     }
+                                     default: {
+                                         System.err.println("???????????????");
+                                         break;
+                                     }
+                                 }
+                             }
+                         }
 
+                         @Override
+                         public void onFailure(Call<API.Response<UUID>> call, Throwable t) {
+
+                         }
                      }
-                 }
-
-                 @Override
-                 public void onFailure(Call<API.Response<UUID>> call, Throwable t) {
-
-                 }
-             }
         );
 
 
@@ -165,26 +168,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<API.Response<Long>> call, Throwable t) {
                 System.err.println("[ERROR]: " + t);
             }
-        });
-
-        Call<API.Response<Puppy>> callFindPuppy = API.getInstance().client.create(PuppyService.class).findById(74L);
-
-        callFindPuppy.enqueue(new Callback<API.Response<Puppy>>() {
-            @Override
-            public void onResponse(Call<API.Response<Puppy>> call, Response<API.Response<Puppy>> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    API.Response<Puppy> responsePuppy = response.body();
-                    System.out.println("PUPPY!!!!: " + responsePuppy.data.specie);
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<API.Response<Puppy>> call, Throwable t) {
-            }
-        });
-
+        });*/
         /*call.enqueue(new Callback<API.Response<Puppy>>() {
             @Override
             public void onResponse(@NotNull Call<API.Response<Puppy>> call, @NotNull Response<API.Response<Puppy>> response) {
