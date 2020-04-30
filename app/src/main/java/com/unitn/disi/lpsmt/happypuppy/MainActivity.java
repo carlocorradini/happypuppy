@@ -1,18 +1,34 @@
 package com.unitn.disi.lpsmt.happypuppy;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
-import com.unitn.disi.lpsmt.happypuppy.auth.SignIn;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        User user = new User();
+
+        Call<API.Response<UUID>> call = API.getInstance().getClient().create(UserService.class).create(user);
+
+        call.enqueue(new Callback<API.Response<UUID>>() {
+            @Override
+            public void onResponse(Call<API.Response<UUID>> call, Response<API.Response<UUID>> response) {
+                if (response.errorBody() != null) {
+                    API.Response<List<UnprocessableEntityError>> error = API.ErrorConverter.convert(response.errorBody());
+                    System.out.println("[INFO]: " + new Gson().toJson(error.data.size()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<API.Response<UUID>> call, Throwable t) {
+
+            }
+        });
+
 
         /*User carlo = new User();
         carlo.name = "Carlo";
@@ -145,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        Thread welcomeThread = new Thread() {
+        /*Thread welcomeThread = new Thread() {
             @Override
             public void run() {
                 try {
@@ -167,6 +183,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        welcomeThread.start();
+        welcomeThread.start();*/
     }
 }

@@ -12,15 +12,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.auth0.android.jwt.JWT;
-import com.google.gson.Gson;
 import com.unitn.disi.lpsmt.happypuppy.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
-
-import java.io.Console;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,7 +57,7 @@ public class SignIn extends AppCompatActivity {
             User loginUser = new User();
             loginUser.username = inputUsername.getText().toString();
             loginUser.password = inputPassword.getText().toString();
-            Call<API.Response<String>> call = API.getInstance().getClient().create(UserService.class).signIn(loginUser);
+            Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserService.class).signIn(loginUser);
 
             /* Example of wrong login with message */
             for (int i = 0; i < root.getChildCount(); i++) {
@@ -69,7 +66,7 @@ public class SignIn extends AppCompatActivity {
                 child.setClickable(false);
             }
             loginLoader.setVisibility(View.VISIBLE);
-            call.enqueue(new Callback<API.Response<String>>() {
+            call.enqueue(new Callback<API.Response<JWT>>() {
                 @Override
                 public void onResponse(Call<API.Response<String>> call, Response<API.Response<String>> response) {
                     if (response.isSuccessful() && response.body() != null) {
@@ -102,7 +99,7 @@ public class SignIn extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<API.Response<String>> call, Throwable t) {
+                public void onFailure(Call<API.Response<JWT>> call, Throwable t) {
                     loginLoader.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(),R.string.no_internet,Toast.LENGTH_SHORT).show();
                     //errorLogin.setText();

@@ -3,6 +3,8 @@ package com.unitn.disi.lpsmt.happypuppy.api.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.time.LocalDateTime;
+
 public class AnimalBreed {
     @SerializedName("id")
     @Expose
@@ -16,11 +18,22 @@ public class AnimalBreed {
     @Expose
     public Long specie;
 
-    public AnimalBreed(Long id, String name, Long specie) {
+    @SerializedName("created_at")
+    @Expose
+    public LocalDateTime createdAt;
+
+    @SerializedName("updated_at")
+    @Expose
+    public LocalDateTime updatedAt;
+
+    public AnimalBreed(Long id, String name, Long specie, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.specie = specie;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public AnimalBreed() {}
+    public AnimalBreed() {
+    }
 }

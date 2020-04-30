@@ -1,6 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy.api;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -11,7 +10,6 @@ import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.App;
 
 public final class AuthManager {
-
     private static final String TAG = AuthManager.class.getName();
 
     private static final String AUTH_TOKEN = "auth_token";

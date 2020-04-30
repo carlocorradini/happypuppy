@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,7 +68,15 @@ public class Puppy {
     @Expose
     public List<Long> personalities;
 
-    public Puppy(Long id, String name, Gender gender, LocalDate dateOfBirth, Long weight, URL avatar, UUID user, Long specie, List<Long> breeds, List<Long> personalities) {
+    @SerializedName("created_at")
+    @Expose
+    public LocalDateTime createdAt;
+
+    @SerializedName("updated_at")
+    @Expose
+    public LocalDateTime updatedAt;
+
+    public Puppy(Long id, String name, Gender gender, LocalDate dateOfBirth, Long weight, URL avatar, UUID user, Long specie, List<Long> breeds, List<Long> personalities, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -78,7 +87,10 @@ public class Puppy {
         this.specie = specie;
         this.breeds = breeds;
         this.personalities = personalities;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public Puppy() {}
+    public Puppy() {
+    }
 }

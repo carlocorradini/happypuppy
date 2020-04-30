@@ -1,5 +1,6 @@
 package com.unitn.disi.lpsmt.happypuppy.api.service;
 
+import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.UserVerification;
 
@@ -12,7 +13,7 @@ import retrofit2.http.Path;
 
 public interface UserVerificationService {
     @POST("user_verification")
-    Call<API.Response<String>> verify(@Body UserVerification userVerification);
+    Call<API.Response<JWT>> verify(@Body UserVerification userVerification);
 
     @POST("user_verification/{id}/resend")
     Call<API.Response> resend(@Path("id") UUID id);
