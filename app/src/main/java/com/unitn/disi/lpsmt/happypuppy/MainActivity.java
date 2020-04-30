@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.auth.SignIn;
 
 public class MainActivity extends AppCompatActivity {
@@ -149,13 +150,20 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(3000);  //Delay of 3 seconds
+                    sleep(2500);  //Delay of 3 seconds
                 } catch (Exception e) {
-
-                } finally {
-                    Intent intent = new Intent(MainActivity.this, SignIn.class);
-                    startActivity(intent);
-                    finish();
+                }
+                finally {
+                    AuthManager.getInstance().clearToken(); /* TODO: remove this line: only for testing */
+                    if(AuthManager.getInstance().isAuth()){
+                        Intent intent = new Intent(MainActivity.this, HomePage.class);
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        Intent intent = new Intent(MainActivity.this, SignIn.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         };

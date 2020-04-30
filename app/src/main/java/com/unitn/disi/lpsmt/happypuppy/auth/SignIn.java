@@ -7,14 +7,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.auth0.android.jwt.JWT;
+import com.google.gson.Gson;
 import com.unitn.disi.lpsmt.happypuppy.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
+import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+
+import java.io.Console;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +48,6 @@ public class SignIn extends AppCompatActivity {
         buttonSignIn = findViewById(R.id.sign_in_button_sign_in);
         buttonSignUp = findViewById(R.id.sign_in_button_sign_up);
         buttonForgotPassword = findViewById(R.id.sign_in_button_forgot_password);
-        errorLogin = findViewById(R.id.sign_in_text_invalid_login);
         loginLoader = findViewById(R.id.sign_in_view_loader);
 
         buttonSignUp.setOnClickListener(v -> {
@@ -55,7 +60,7 @@ public class SignIn extends AppCompatActivity {
             User loginUser = new User();
             loginUser.username = inputUsername.getText().toString();
             loginUser.password = inputPassword.getText().toString();
-            Call<API.Response<String>> call = API.getInstance().client.create(UserService.class).signIn(loginUser);
+            Call<API.Response<String>> call = API.getInstance().getClient().create(UserService.class).signIn(loginUser);
 
             /* Example of wrong login with message */
             for (int i = 0; i < root.getChildCount(); i++) {
@@ -67,15 +72,31 @@ public class SignIn extends AppCompatActivity {
             call.enqueue(new Callback<API.Response<String>>() {
                 @Override
                 public void onResponse(Call<API.Response<String>> call, Response<API.Response<String>> response) {
-                    if(response.isSuccessful() && response.body() != null) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        AuthManager.getInstance().setToken(new JWT(response.body().data));
+                        Intent intent = new Intent(v.getContext(), HomePage.class);
+                        startActivity(intent);
+                    } else {
+                        loginLoader.setVisibility(View.GONE);
                         switch (response.code()){
-                            case 200:
-                                
-                                Intent intent = new Intent(v.getContext(), HomePage.class);
+                            case 401:
+                                Toast.makeText(getApplicationContext(),R.string.wrong_login,Toast.LENGTH_LONG).show();
+                                break;
+                            case 403:
+                                /* TODO: RESOLVE CRASH TEST WHEN USER IS NOT VERIFIED */
+                                Intent intent = new Intent(v.getContext(),ActivateProfile.class);
+                                assert response.errorBody() != null;
+                                intent.putExtra("uuid", "ddcf9b0d-0abc-4953-9a5e-ed125fde5495");
                                 startActivity(intent);
                                 break;
                             default:
+                                Toast.makeText(getApplicationContext(),R.string.insert_data_login,Toast.LENGTH_LONG).show();
                                 break;
+                        }
+                        for (int i = 0; i < root.getChildCount(); i++) {
+                            View child = root.getChildAt(i);
+                            child.setEnabled(true);
+                            child.setClickable(true);
                         }
                     }
                 }
@@ -83,7 +104,8 @@ public class SignIn extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<API.Response<String>> call, Throwable t) {
                     loginLoader.setVisibility(View.GONE);
-                    errorLogin.setText(R.string.no_internet);
+                    Toast.makeText(getApplicationContext(),R.string.no_internet,Toast.LENGTH_SHORT).show();
+                    //errorLogin.setText();
                     for (int i = 0; i < root.getChildCount(); i++) {
                         View child = root.getChildAt(i);
                         child.setEnabled(true);
