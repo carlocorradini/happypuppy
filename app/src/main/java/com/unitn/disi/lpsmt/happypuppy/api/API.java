@@ -13,11 +13,15 @@ import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateTimeSeria
 import com.unitn.disi.lpsmt.happypuppy.api.interceptor.AuthInterceptor;
 import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateSerializer;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -77,7 +81,7 @@ public final class API {
         return client;
     }
 
-    public static class Response<T> {
+    public static final class Response<T> {
         @SerializedName("status")
         @Expose
         public String status;
@@ -104,6 +108,23 @@ public final class API {
             this.statusCode = statusCode;
             this.statusCodeName = statusCodeName;
             this.data = data;
+        }
+    }
+
+    public static final class ErrorConverter {
+        private static final String TAG = ErrorConverter.class.getName();
+
+        public static <T> Response<T> convert(ResponseBody errorBody) {
+            Converter<ResponseBody, Response<T>> converter = API.getInstance().getClient().responseBodyConverter(API.Response.class, new Annotation[0]);
+            API.Response<T> error = null;
+
+            try {
+                error = converter.convert(errorBody);
+            } catch (IOException ex) {
+                Log.e(TAG, "Unable to convert error body due to " + ex.getMessage());
+            }
+
+            return error;
         }
     }
 }

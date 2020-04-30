@@ -10,11 +10,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,7 +58,7 @@ public class SignIn extends AppCompatActivity {
             User loginUser = new User();
             loginUser.username = inputUsername.getText().toString();
             loginUser.password = inputPassword.getText().toString();
-            Call<API.Response<String>> call = API.getInstance().getClient().create(UserService.class).signIn(loginUser);
+            Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserService.class).signIn(loginUser);
 
             /* Example of wrong login with message */
             for (int i = 0; i < root.getChildCount(); i++) {
@@ -64,9 +67,9 @@ public class SignIn extends AppCompatActivity {
                 child.setClickable(false);
             }
             loginLoader.setVisibility(View.VISIBLE);
-            call.enqueue(new Callback<API.Response<String>>() {
+            call.enqueue(new Callback<API.Response<JWT>>() {
                 @Override
-                public void onResponse(Call<API.Response<String>> call, Response<API.Response<String>> response) {
+                public void onResponse(Call<API.Response<JWT>> call, Response<API.Response<JWT>> response) {
                     if(response.isSuccessful() && response.body() != null) {
                         switch (response.code()){
                             case 200:
@@ -81,7 +84,7 @@ public class SignIn extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<API.Response<String>> call, Throwable t) {
+                public void onFailure(Call<API.Response<JWT>> call, Throwable t) {
                     loginLoader.setVisibility(View.GONE);
                     errorLogin.setText(R.string.no_internet);
                     for (int i = 0; i < root.getChildCount(); i++) {

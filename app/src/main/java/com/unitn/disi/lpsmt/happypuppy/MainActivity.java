@@ -1,19 +1,21 @@
 package com.unitn.disi.lpsmt.happypuppy;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.UserFriend;
-import com.unitn.disi.lpsmt.happypuppy.api.service.UserFriendService;
-import com.unitn.disi.lpsmt.happypuppy.auth.SignIn;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
+import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 
-import java.time.LocalDateTime;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.UUID;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,40 +26,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        UserFriend userFriend = new UserFriend();
-        userFriend.createdAt = LocalDateTime.now();
+        User user = new User();
 
-        Call<API.Response> call = API.getInstance().getClient().create(UserFriendService.class).update(UUID.fromString("23858604-8fe1-49a1-9b2a-0b15946d6c2b"), userFriend);
-        call.enqueue(new Callback<API.Response>() {
+        Call<API.Response<UUID>> call = API.getInstance().getClient().create(UserService.class).create(user);
+
+        call.enqueue(new Callback<API.Response<UUID>>() {
             @Override
-            public void onResponse(Call<API.Response> call, Response<API.Response> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<API.Response> call, Throwable t) {
-                System.err.println("[ERRORE]: " + t);
-            }
-        });
-
-        Call<API.Response<UserFriend>> call2 = API.getInstance().getClient().create(UserFriendService.class).findById(UUID.fromString("23858604-8fe1-49a1-9b2a-0b15946d6c2b"));
-        call2.enqueue(new Callback<API.Response<UserFriend>>() {
-            @Override
-            public void onResponse(Call<API.Response<UserFriend>> call, Response<API.Response<UserFriend>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    UserFriend userFriend = response.body().data;
-                    System.out.println("[USER_FRIEND]: " + new Gson().toJson(userFriend));
-                    System.out.println("[USER_FRIEND_CREATED_AT]: " + userFriend.createdAt);
-                } else {
-                    System.err.println("[CODE]: " + response.code());
+            public void onResponse(Call<API.Response<UUID>> call, Response<API.Response<UUID>> response) {
+                if (response.errorBody() != null) {
+                    API.Response<List<UnprocessableEntityError>> error = API.ErrorConverter.convert(response.errorBody());
+                    System.out.println("[INFO]: " + new Gson().toJson(error.data.size()));
                 }
             }
 
             @Override
-            public void onFailure(Call<API.Response<UserFriend>> call, Throwable t) {
-                System.err.println("[ERRORE]: " + t);
+            public void onFailure(Call<API.Response<UUID>> call, Throwable t) {
+
             }
         });
+
 
         /*User carlo = new User();
         carlo.name = "Carlo";
