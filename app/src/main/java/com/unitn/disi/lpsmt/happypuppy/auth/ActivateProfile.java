@@ -17,8 +17,9 @@ import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.UserVerification;
-import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserVerificationService;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -26,130 +27,164 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import org.apache.http.HttpStatus;
+
 public class ActivateProfile extends AppCompatActivity {
-    private Button sendCodes;
-    private Button resendCodes;
-    private EditText otpSMS;
-    private EditText otpEmail;
-    private TextView message;
+    private UUID userId;
 
-    private UserVerification confirmNewUser;
-
-    private LinearLayout activateProfileLoader;
     private LinearLayout root;
+    private Button buttonSendCodes;
+    private Button buttonResendCodes;
+    private EditText inputOtpSms;
+    private EditText inputOtpEmail;
+    private TextView txtMessage;
+    private LinearLayout loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activate_profile);
-        Intent thisIntent = getIntent(); // gets the previously created intent
-        confirmNewUser = new UserVerification();
-        confirmNewUser.user = UUID.fromString(thisIntent.getStringExtra("uuid"));
-        /* Elements of the activity */
-        sendCodes = findViewById(R.id.activate_profile_button_send);
-        resendCodes = findViewById(R.id.activate_profile_button_resend_codes);
-        otpEmail = findViewById(R.id.activate_profile_input_otp_mail);
-        otpSMS = findViewById(R.id.activate_profile_input_otp_sms);
-        message = findViewById(R.id.activate_profile_error_message);
-        activateProfileLoader = findViewById(R.id.activate_profile_view_loader);
+
+        userId = UUID.fromString(getIntent().getStringExtra("uuid"));
+        /* Elements */
+        buttonSendCodes = findViewById(R.id.activate_profile_button_send);
+        buttonResendCodes = findViewById(R.id.activate_profile_button_resend_codes);
+        inputOtpEmail = findViewById(R.id.activate_profile_input_otp_mail);
+        inputOtpSms = findViewById(R.id.activate_profile_input_otp_sms);
+        txtMessage = findViewById(R.id.activate_profile_error_message);
+        loader = findViewById(R.id.activate_profile_view_loader);
         root = findViewById(R.id.activate_profile_root_view);
 
+        buttonSendCodes.setOnClickListener(v -> {
+            if (!validate()) {
+                Toast.makeText(getApplicationContext(), R.string.otp_codes_empty, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        sendCodes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validate()) {
-                    verifyCodes(v);
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.unauthorized, Toast.LENGTH_SHORT).show();
+            UserVerification userVerification = new UserVerification();
+            userVerification.user = userId;
+            userVerification.otpPhone = inputOtpSms.getText().toString();
+            userVerification.otpEmail = inputOtpEmail.getText().toString();
+
+            for (int i = 0; i < root.getChildCount(); i++) {
+                View child = root.getChildAt(i);
+                child.setEnabled(false);
+                child.setClickable(false);
+            }
+            loader.setVisibility(View.VISIBLE);
+
+            Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserVerificationService.class).verify(userVerification);
+            call.enqueue(new Callback<API.Response<JWT>>() {
+                @Override
+                public void onResponse(@NotNull Call<API.Response<JWT>> call, @NotNull Response<API.Response<JWT>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        AuthManager.getInstance().setToken(response.body().data);
+                        Intent intent = new Intent(v.getContext(), HomePage.class);
+                        startActivity(intent);
+                        finish();
+                    } else if (response.errorBody() != null) {
+                        switch (response.code()) {
+                            case HttpStatus.SC_FORBIDDEN: {
+                                Toast.makeText(getApplicationContext(), R.string.user_already_verified, Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            case HttpStatus.SC_NOT_FOUND: {
+                                Toast.makeText(getApplicationContext(), R.string.user_not_found, Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            case HttpStatus.SC_UNAUTHORIZED: {
+                                Toast.makeText(getApplicationContext(), R.string.otp_codes_invalid, Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            default: {
+                                Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.unknown_error, Toast.LENGTH_LONG).show();
+                    }
+
+                    for (int i = 0; i < root.getChildCount(); i++) {
+                        View child = root.getChildAt(i);
+                        child.setEnabled(true);
+                        child.setClickable(true);
+                    }
+                    loader.setVisibility(View.GONE);
                 }
-            }
 
-            private boolean validate() {
-                if (otpEmail.getText().toString().equals("") || otpSMS.getText().toString().equals(""))
-                    return false;
-                return true;
-            }
+                @Override
+                public void onFailure(@NotNull Call<API.Response<JWT>> call, @NotNull Throwable t) {
+                    loader.setVisibility(View.GONE);
+                    for (int i = 0; i < root.getChildCount(); i++) {
+                        View child = root.getChildAt(i);
+                        child.setEnabled(true);
+                        child.setClickable(true);
+                    }
 
-            private void verifyCodes(View v) {
-                for (int i = 0; i < root.getChildCount(); i++) {
-                    View child = root.getChildAt(i);
-                    child.setEnabled(false);
-                    child.setClickable(false);
+                    Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
                 }
-                activateProfileLoader.setVisibility(View.VISIBLE);
-                /* Fill UserVerification with codes */
-                confirmNewUser.otpPhone = otpSMS.getText().toString();
-                confirmNewUser.otpEmail = otpEmail.getText().toString();
-                Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserVerificationService.class).verify(confirmNewUser);
-                call.enqueue(new Callback<API.Response<JWT>>() {
-                    @Override
-                    public void onResponse(Call<API.Response<JWT>> call, Response<API.Response<JWT>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            AuthManager.getInstance().setToken(response.body().data);
-                            Intent intent = new Intent(v.getContext(), HomePage.class);
-                            startActivity(intent);
-                        } else {
-                            activateProfileLoader.setVisibility(View.GONE);
-                            switch (response.code()) {
-                                case 403:
-                                    Toast.makeText(getApplicationContext(), R.string.user_already_exist, Toast.LENGTH_LONG).show();
-                                    break;
-                                case 404:
-                                    Toast.makeText(getApplicationContext(), R.string.user_not_found, Toast.LENGTH_LONG).show();
-                                    break;
-                                default:
-                                    Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_LONG).show();
-                                    break;
+            });
+        });
+
+        buttonResendCodes.setOnClickListener(v -> {
+            for (int i = 0; i < root.getChildCount(); i++) {
+                View child = root.getChildAt(i);
+                child.setEnabled(false);
+                child.setClickable(false);
+            }
+
+            loader.setVisibility(View.VISIBLE);
+
+            Call<API.Response> call = API.getInstance().getClient().create(UserVerificationService.class).resend(userId);
+            call.enqueue(new Callback<API.Response>() {
+                @Override
+                public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Toast.makeText(getApplicationContext(), R.string.otp_codes_sent, Toast.LENGTH_SHORT).show();
+                    } else if (response.errorBody() != null) {
+                        switch (response.code()) {
+                            case HttpStatus.SC_FORBIDDEN: {
+                                Toast.makeText(getApplicationContext(), R.string.user_already_verified, Toast.LENGTH_SHORT).show();
+                                break;
                             }
-                            for (int i = 0; i < root.getChildCount(); i++) {
-                                View child = root.getChildAt(i);
-                                child.setEnabled(true);
-                                child.setClickable(true);
+                            case HttpStatus.SC_NOT_FOUND: {
+                                Toast.makeText(getApplicationContext(), R.string.user_not_found, Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            default: {
+                                Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_SHORT).show();
+                                break;
                             }
                         }
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.unknown_error, Toast.LENGTH_LONG).show();
                     }
 
-                    @Override
-                    public void onFailure(Call<API.Response<JWT>> call, Throwable t) {
-                        activateProfileLoader.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-                        for (int i = 0; i < root.getChildCount(); i++) {
-                            View child = root.getChildAt(i);
-                            child.setEnabled(true);
-                            child.setClickable(true);
-                        }
+                    for (int i = 0; i < root.getChildCount(); i++) {
+                        View child = root.getChildAt(i);
+                        child.setEnabled(true);
+                        child.setClickable(true);
                     }
-                });
-            }
-        });
-        resendCodes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Call<API.Response> call = API.getInstance().getClient().create(UserVerificationService.class).resend(confirmNewUser.user);
-                call.enqueue(new Callback<API.Response>() {
-                    @Override
-                    public void onResponse(Call<API.Response> call, Response<API.Response> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            Toast.makeText(getApplicationContext(), R.string.otp_codes_sent, Toast.LENGTH_SHORT).show();
-                        } else {
-                            switch (response.code()) {
-                                case 403:
-                                    Toast.makeText(getApplicationContext(), R.string.unauthorized, Toast.LENGTH_SHORT).show();
-                                    break;
-                                default:
-                                    Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                        }
+                    loader.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
+                    loader.setVisibility(View.GONE);
+                    for (int i = 0; i < root.getChildCount(); i++) {
+                        View child = root.getChildAt(i);
+                        child.setEnabled(true);
+                        child.setClickable(true);
                     }
 
-                    @Override
-                    public void onFailure(Call<API.Response> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+                    Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                }
+            });
         });
+    }
+
+    private boolean validate() {
+        return !inputOtpEmail.getText().toString().isEmpty() && !inputOtpSms.getText().toString().isEmpty();
     }
 }

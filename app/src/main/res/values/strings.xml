@@ -51,7 +51,8 @@
     <string name="otp_codes_sent">Please insert below the OTP codes sent to your phone number and your email.</string>
     <string name="resend_otp_codes">Resend codes</string>
     <string name="otp_codes_empty">At least one code is empty.</string>
-    <string name="email_sent">An email was sent to your email address to reset your password, please check your inbox.</string>
+    <string name="otp_codes_invalid">OTP codes are invalid</string>
+    <string name="email_sent">A reset password email was sent, please check your inbox.</string>
     <!-- -->
 
     <!-- General Errors -->
@@ -59,15 +60,17 @@
     <!-- -->
 
     <!-- Server LOG -->
+    <string name="unknown_error">Unknown Error</string>
     <string name="unauthorized">Unauthorized</string>
-    <string name="internal_server_error">Internal server error.</string>
-    <string name="user_already_exist">The user already exists.</string>
-    <string name="user_not_found">User not found.</string>
-    <string name="user_mail_not_found">User not found with this email.</string>
-    <string name="no_internet">No internet.</string>
-    <string name="wrong_login">Invalid username or password.</string>
-    <string name="fill_data">Insert data in non optional fields.</string>
-    <string name="insert_data_login">Required data for login.</string>
+    <string name="internal_server_error">Internal server error</string>
+    <string name="user_already_exist">The user already exists</string>
+    <string name="user_already_verified">User already verified</string>
+    <string name="user_not_found">User not found</string>
+    <string name="user_mail_not_found">User not found with this email</string>
+    <string name="no_internet">No internet</string>
+    <string name="wrong_login">Invalid username or password</string>
+    <string name="fill_data">Insert data in non optional fields</string>
+    <string name="insert_data_login">Required data for login</string>
     <!-- -->
 
     <!-- Strings "insert" -->
