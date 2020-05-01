@@ -8,7 +8,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class JWTDeserializer implements JsonDeserializer<JWT> {
+public final class JWTDeserializer implements JsonDeserializer<JWT> {
 
     @Override
     public JWT deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
