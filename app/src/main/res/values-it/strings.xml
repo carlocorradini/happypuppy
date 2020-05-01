@@ -50,7 +50,8 @@
     <string name="otp_codes_empty">Almeno un codice non è stato inserito.</string>
     <string name="otp_codes">Per completare la registrazione, inserisci qui sotto i codici OTP inviati sul tuo cellulare e sulla tua email.</string>
     <string name="resend_otp_codes">Rinvia codici</string>
-    <string name="email_sent">Un\'email è stata inviata al tuo indirizzo email per reimpostare la tua password, controlla la tua mail.</string>
+    <string name="otp_codes_invalid">I codici non sono validi</string>
+    <string name="email_sent">Un\'email di reset password è stata inviata, controlla il tuo inbox</string>
     <!-- -->
 
     <!-- General Errors -->
@@ -58,15 +59,17 @@
     <!-- -->
 
     <!-- Server LOG -->
+    <string name="unknown_error">Errore Sconosciuto</string>
     <string name="unauthorized">Non autorizzato</string>
-    <string name="internal_server_error">Errore interno al server.</string>
-    <string name="user_already_exist">L\'utente già esiste.</string>
-    <string name="user_not_found">Utente non trovato.</string>
-    <string name="user_mail_not_found">Utente non trovato con questa email.</string>
-    <string name="no_internet">No internet.</string>
-    <string name="wrong_login">L\'username o la password non è corretto/a.</string>
-    <string name="fill_data">Compila i campi non opzionali.</string>
-    <string name="insert_data_login">Inserisci i dati per effettuare il login.</string>
+    <string name="internal_server_error">Errore interno del server</string>
+    <string name="user_already_exist">L\'utente già esiste</string>
+    <string name="user_already_verified">L\'utente è già stato verificato</string>
+    <string name="user_not_found">Utente non trovato</string>
+    <string name="user_mail_not_found">Utente non trovato con questa email</string>
+    <string name="no_internet">No internet</string>
+    <string name="wrong_login">L\'username o la password non è corretto/a</string>
+    <string name="fill_data">Compila i campi non opzionali</string>
+    <string name="insert_data_login">Inserisci i dati per effettuare il login</string>
     <!-- -->
 
     <!-- Strings "insert" -->

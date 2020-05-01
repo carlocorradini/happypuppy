@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,16 +22,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import org.apache.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
+
 public class SignIn extends AppCompatActivity {
 
+    private LinearLayout root;
     private EditText inputUsername;
     private EditText inputPassword;
     private Button buttonSignIn;
     private Button buttonSignUp;
     private Button buttonForgotPassword;
-    private TextView errorLogin;
-    private LinearLayout loginLoader;
-    private LinearLayout root;
+    private LinearLayout loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,64 +48,80 @@ public class SignIn extends AppCompatActivity {
         buttonSignIn = findViewById(R.id.sign_in_button_sign_in);
         buttonSignUp = findViewById(R.id.sign_in_button_sign_up);
         buttonForgotPassword = findViewById(R.id.sign_in_button_forgot_password);
-        loginLoader = findViewById(R.id.sign_in_view_loader);
+        loader = findViewById(R.id.sign_in_view_loader);
 
         buttonSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), SignUp.class);
             startActivity(intent);
+            finish();
+        });
+
+        buttonForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), ForgotPassword.class);
+            startActivity(intent);
+            finish();
         });
 
         /* Authentication */
         buttonSignIn.setOnClickListener(v -> {
-            User loginUser = new User();
-            loginUser.username = inputUsername.getText().toString();
-            loginUser.password = inputPassword.getText().toString();
-            Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserService.class).signIn(loginUser);
-
             /* Example of wrong login with message */
             for (int i = 0; i < root.getChildCount(); i++) {
                 View child = root.getChildAt(i);
                 child.setEnabled(false);
                 child.setClickable(false);
             }
-            loginLoader.setVisibility(View.VISIBLE);
+
+            loader.setVisibility(View.VISIBLE);
+
+            User user = new User();
+            user.username = inputUsername.getText().toString();
+            user.password = inputPassword.getText().toString();
+
+            Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserService.class).signIn(user);
             call.enqueue(new Callback<API.Response<JWT>>() {
                 @Override
-                public void onResponse(Call<API.Response<JWT>> call, Response<API.Response<JWT>> response) {
+                public void onResponse(@NotNull Call<API.Response<JWT>> call, @NotNull Response<API.Response<JWT>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         AuthManager.getInstance().setToken(response.body().data);
                         Intent intent = new Intent(v.getContext(), HomePage.class);
                         startActivity(intent);
-                    } else {
-                        loginLoader.setVisibility(View.GONE);
-                        switch (response.code()){
-                            case 401:
-                                Toast.makeText(getApplicationContext(),R.string.wrong_login,Toast.LENGTH_LONG).show();
+                        finish();
+                    } else if (response.errorBody() != null) {
+                        switch (response.code()) {
+                            case HttpStatus.SC_UNAUTHORIZED: {
+                                Toast.makeText(getApplicationContext(), R.string.wrong_login, Toast.LENGTH_LONG).show();
                                 break;
-                            case 403:
-                                /* TODO: RESOLVE CRASH TEST WHEN USER IS NOT VERIFIED */
-                                Intent intent = new Intent(v.getContext(),ActivateProfile.class);
-                                assert response.errorBody() != null;
-                                intent.putExtra("uuid", "ddcf9b0d-0abc-4953-9a5e-ed125fde5495");
+                            }
+                            case HttpStatus.SC_FORBIDDEN: {
+                                API.Response<UUID> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_UUID);
+                                Intent intent = new Intent(v.getContext(), ActivateProfile.class);
+                                intent.putExtra("uuid", error.data.toString());
                                 startActivity(intent);
+                                finish();
                                 break;
-                            default:
-                                Toast.makeText(getApplicationContext(),R.string.insert_data_login,Toast.LENGTH_LONG).show();
+                            }
+                            default: {
+                                Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_LONG).show();
                                 break;
+                            }
                         }
-                        for (int i = 0; i < root.getChildCount(); i++) {
-                            View child = root.getChildAt(i);
-                            child.setEnabled(true);
-                            child.setClickable(true);
-                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.unknown_error, Toast.LENGTH_LONG).show();
                     }
+
+                    for (int i = 0; i < root.getChildCount(); i++) {
+                        View child = root.getChildAt(i);
+                        child.setEnabled(true);
+                        child.setClickable(true);
+                    }
+                    loader.setVisibility(View.GONE);
                 }
 
                 @Override
-                public void onFailure(Call<API.Response<JWT>> call, Throwable t) {
-                    loginLoader.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(),R.string.no_internet,Toast.LENGTH_SHORT).show();
-                    //errorLogin.setText();
+                public void onFailure(@NotNull Call<API.Response<JWT>> call, @NotNull Throwable t) {
+                    System.err.println("ERRORE: " + t.getMessage());
+                    loader.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < root.getChildCount(); i++) {
                         View child = root.getChildAt(i);
                         child.setEnabled(true);
@@ -110,10 +129,6 @@ public class SignIn extends AppCompatActivity {
                     }
                 }
             });
-        });
-        buttonForgotPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), ForgotPassword.class);
-            startActivity(intent);
         });
     }
 }
