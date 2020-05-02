@@ -15,7 +15,7 @@ import retrofit2.http.Path;
 
 public interface UserFriendService {
     @GET("auth/user_friend")
-    Call<API.Response<List<UserFriend>>> all();
+    Call<API.Response<List<UserFriend>>> find();
 
     @GET("auth/user_friend/{id}")
     Call<API.Response<UserFriend>> findById(@Path("id") UUID id);

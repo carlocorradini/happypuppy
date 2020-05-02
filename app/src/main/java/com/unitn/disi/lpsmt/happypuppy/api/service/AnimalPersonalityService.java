@@ -11,7 +11,7 @@ import retrofit2.http.Path;
 
 public interface AnimalPersonalityService {
     @GET("animal_personality")
-    Call<API.Response<List<AnimalPersonality>>> all();
+    Call<API.Response<List<AnimalPersonality>>> find();
 
     @GET("animal_personality/{id}")
     Call<API.Response<AnimalPersonality>> findById(@Path("id") Long id);

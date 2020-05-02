@@ -23,10 +23,10 @@ import retrofit2.http.QueryMap;
 
 public interface UserService {
     @GET("auth/user")
-    Call<API.Response<List<User>>> all(@QueryMap Map<String, String> options);
+    Call<API.Response<List<User>>> find(@QueryMap Map<String, String> options);
 
     @GET("auth/user")
-    Call<API.Response<List<User>>> all();
+    Call<API.Response<List<User>>> find();
 
     @GET("auth/user/{id}")
     Call<API.Response<User>> findById(@Path("id") UUID id);

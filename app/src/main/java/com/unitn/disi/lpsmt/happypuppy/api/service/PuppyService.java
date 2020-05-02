@@ -21,10 +21,10 @@ import retrofit2.http.QueryMap;
 
 public interface PuppyService {
     @GET("auth/puppy")
-    Call<API.Response<List<Puppy>>> all(@QueryMap Map<String, String> options);
+    Call<API.Response<List<Puppy>>> find(@QueryMap Map<String, String> options);
 
     @GET("auth/puppy")
-    Call<API.Response<List<Puppy>>> all();
+    Call<API.Response<List<Puppy>>> find();
 
     @GET("auth/puppy/{id}")
     Call<API.Response<Puppy>> findById(@Path("id") Long id);
