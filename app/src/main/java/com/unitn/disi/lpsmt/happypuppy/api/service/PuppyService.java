@@ -4,6 +4,8 @@ import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -15,8 +17,15 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 public interface PuppyService {
+    @GET("auth/puppy")
+    Call<API.Response<List<Puppy>>> all(@QueryMap Map<String, String> options);
+
+    @GET("auth/puppy")
+    Call<API.Response<List<Puppy>>> all();
+
     @GET("auth/puppy/{id}")
     Call<API.Response<Puppy>> findById(@Path("id") Long id);
 

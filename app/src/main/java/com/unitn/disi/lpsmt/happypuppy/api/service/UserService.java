@@ -5,6 +5,8 @@ import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import okhttp3.MultipartBody;
@@ -17,8 +19,15 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 public interface UserService {
+    @GET("auth/user")
+    Call<API.Response<List<User>>> all(@QueryMap Map<String, String> options);
+
+    @GET("auth/user")
+    Call<API.Response<List<User>>> all();
+
     @GET("auth/user/{id}")
     Call<API.Response<User>> findById(@Path("id") UUID id);
 
