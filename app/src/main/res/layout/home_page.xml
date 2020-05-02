@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
         <!-- Main content -->
-        <!-- Bottom Navigation Bar -->
+        <!-- Top Navigation Bar -->
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/top_navigation"
             android:layout_width="match_parent"

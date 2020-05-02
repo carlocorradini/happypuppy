@@ -42,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:drawableTint="@color/colorAccent"
                 android:drawableEnd="@drawable/ic_sms"
+                android:maxLength="5"
                 android:hint="00000" />
             <TextView
                 android:layout_width="wrap_content"
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_envelope"
                 android:drawableTint="@color/colorAccent"
+                android:maxLength="5"
                 android:hint="00000" />
 
         <LinearLayout

@@ -21,6 +21,7 @@ import com.unitn.disi.lpsmt.happypuppy.DatePickerFragment;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 
 import net.rimoto.intlphoneinput.IntlPhoneInput;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -56,6 +58,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
     private Switch inputPrivacy;
     public Calendar calendar;
     private LinearLayout loader;
+    private Button buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
 
         buttonSignIn = findViewById(R.id.sign_up_button_sign_in);
         buttonSignUp = findViewById(R.id.sign_up_button_sign_up);
+        buttonBack = findViewById(R.id.sign_up_button_back);
 
         /* Reset hint for optional fields */
         inputName.setHint(inputName.getHint() + " " + getString(R.string.optional_field));
@@ -116,7 +120,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                 user.gender = User.Gender.MALE;
 
             // Validation
-            if (validateUser(user)) {
+            if (validateUser(v,user)) {
                 signUp(v, user);
             }
         });
@@ -126,6 +130,10 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
         inputDateOfBirth.setOnClickListener(v -> {
             DialogFragment datePicker = new DatePickerFragment();
             datePicker.show(getSupportFragmentManager(), "date picker");
+        });
+
+        buttonBack.setOnClickListener(v -> {
+            finish();
         });
     }
 
@@ -140,29 +148,29 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
         inputDateOfBirth.setText(userAge);
     }
 
-    private boolean validateUser(final User user) {
+    private boolean validateUser(final View v,final User user) {
         if (user.username.isEmpty()) {
-            Toast.makeText(getApplicationContext(), R.string.insert_username, Toast.LENGTH_LONG).show();
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_username));
             return false;
         }
         if (user.email.isEmpty()) {
-            Toast.makeText(getApplicationContext(), R.string.insert_email, Toast.LENGTH_LONG).show();
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_email));
             return false;
         }
         if (user.password.isEmpty() || inputPasswordRepeat.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), R.string.insert_password, Toast.LENGTH_LONG).show();
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_password));
             return false;
         }
         if (!inputPhone.isValid()) {
-            Toast.makeText(getApplicationContext(), R.string.insert_phone, Toast.LENGTH_LONG).show();
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_phone));
             return false;
         }
         if (!user.password.equals(inputPasswordRepeat.getText().toString())) {
-            Toast.makeText(getApplicationContext(), R.string.pw_not_equals, Toast.LENGTH_LONG).show();
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.pw_not_equals));
             return false;
         }
         if (!inputPrivacy.isChecked()) {
-            Toast.makeText(getApplicationContext(), R.string.accept_eula, Toast.LENGTH_LONG).show();
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.accept_eula));
             return false;
         }
 
@@ -190,21 +198,26 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                     finish();
                 } else if (response.errorBody() != null) {
                     switch (response.code()) {
-                        case HttpStatus.SC_UNAUTHORIZED: {
-                            Toast.makeText(getApplicationContext(), R.string.wrong_login, Toast.LENGTH_LONG).show();
-                            break;
-                        }
                         case HttpStatus.SC_CONFLICT: {
-                            Toast.makeText(getApplicationContext(), R.string.user_already_exist, Toast.LENGTH_LONG).show();
+                            String conflicts = "";
+                            API.Response<List<ConflictError>> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_CONFLICT_LIST);
+                            for (int i = 0; i < error.data.size(); i++) {
+                                conflicts += error.data.get(i).property;
+                                if(i != error.data.size()-1)
+                                    conflicts += ", ";
+                            }
+                            System.out.println("INFO: " + conflicts);
+                            String message = getResources().getString(R.string.conflicts_on)+conflicts;
+                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, message);
                             break;
                         }
                         default: {
-                            Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_LONG).show();
+                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
                             break;
                         }
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.unknown_error, Toast.LENGTH_LONG).show();
+                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
                 }
 
                 for (int i = 0; i < root.getChildCount(); i++) {
@@ -224,7 +237,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                     child.setClickable(true);
                 }
 
-                Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
             }
         });
     }

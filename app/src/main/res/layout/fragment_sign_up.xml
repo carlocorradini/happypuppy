@@ -4,6 +4,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1" >
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/top_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary">
+
+        <Button
+            android:id="@+id/sign_up_button_back"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="49dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:foreground="@drawable/ic_arrow_back"
+            android:foregroundTint="@color/colorSecondary"
+            android:textStyle="bold" />
+
+    </com.google.android.material.navigation.NavigationView>
     <ScrollView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"

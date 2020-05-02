@@ -27,6 +27,7 @@ public class ForgotPassword extends AppCompatActivity {
     private EditText inputEmail;
     private TextView txtResultData;
     private LinearLayout loader;
+    private Button buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +39,13 @@ public class ForgotPassword extends AppCompatActivity {
         inputEmail = findViewById(R.id.forgot_password_input_email);
         txtResultData = findViewById(R.id.forgot_password_email_sent);
         loader = findViewById(R.id.forgot_password_view_loader);
+        buttonBack = findViewById(R.id.forgot_password_button_back);
 
         buttonSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!validateMail()) {
-                    Toast.makeText(getApplicationContext(), R.string.insert_email, Toast.LENGTH_SHORT).show();
+                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_email));
                     return;
                 }
 
@@ -62,16 +64,16 @@ public class ForgotPassword extends AppCompatActivity {
                         } else if (response.errorBody() != null) {
                             switch (response.code()) {
                                 case HttpStatus.SC_NOT_FOUND: {
-                                    Toast.makeText(getApplicationContext(), R.string.user_mail_not_found, Toast.LENGTH_SHORT).show();
+                                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.user_mail_not_found));
                                     break;
                                 }
                                 default: {
-                                    Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_SHORT).show();
+                                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
                                     break;
                                 }
                             }
                         } else {
-                            Toast.makeText(getApplicationContext(), R.string.unknown_error, Toast.LENGTH_LONG).show();
+                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
                         }
 
                         for (int i = 0; i < root.getChildCount(); i++) {
@@ -84,7 +86,7 @@ public class ForgotPassword extends AppCompatActivity {
 
                     @Override
                     public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
-                        Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                        new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
                         for (int i = 0; i < root.getChildCount(); i++) {
                             View child = root.getChildAt(i);
                             child.setEnabled(true);
@@ -97,6 +99,9 @@ public class ForgotPassword extends AppCompatActivity {
             private boolean validateMail() {
                 return !inputEmail.getText().toString().isEmpty();
             }
+        });
+        buttonBack.setOnClickListener(v -> {
+            finish();
         });
     }
 }

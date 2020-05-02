@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -53,13 +53,11 @@ public class SignIn extends AppCompatActivity {
         buttonSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), SignUp.class);
             startActivity(intent);
-            finish();
         });
 
         buttonForgotPassword.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), ForgotPassword.class);
             startActivity(intent);
-            finish();
         });
 
         /* Authentication */
@@ -77,58 +75,88 @@ public class SignIn extends AppCompatActivity {
             user.username = inputUsername.getText().toString();
             user.password = inputPassword.getText().toString();
 
-            Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserService.class).signIn(user);
-            call.enqueue(new Callback<API.Response<JWT>>() {
-                @Override
-                public void onResponse(@NotNull Call<API.Response<JWT>> call, @NotNull Response<API.Response<JWT>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        AuthManager.getInstance().setToken(response.body().data);
-                        Intent intent = new Intent(v.getContext(), HomePage.class);
-                        startActivity(intent);
-                        finish();
-                    } else if (response.errorBody() != null) {
-                        switch (response.code()) {
-                            case HttpStatus.SC_UNAUTHORIZED: {
-                                Toast.makeText(getApplicationContext(), R.string.wrong_login, Toast.LENGTH_LONG).show();
-                                break;
-                            }
-                            case HttpStatus.SC_FORBIDDEN: {
-                                API.Response<UUID> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_UUID);
-                                Intent intent = new Intent(v.getContext(), ActivateProfile.class);
-                                intent.putExtra("uuid", error.data.toString());
-                                startActivity(intent);
-                                finish();
-                                break;
-                            }
-                            default: {
-                                Toast.makeText(getApplicationContext(), R.string.internal_server_error, Toast.LENGTH_LONG).show();
-                                break;
-                            }
+            // Validation
+            if (validateLogin(v,user)) {
+                signIn(v, user);
+            }else{
+                for (int i = 0; i < root.getChildCount(); i++) {
+                    View child = root.getChildAt(i);
+                    child.setEnabled(true);
+                    child.setClickable(true);
+                }
+                loader.setVisibility(View.GONE);
+            }
+        });
+    }
+    private boolean validateLogin(final View v, final User user){
+        if (user.username.isEmpty()) {
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_username));
+            return false;
+        }
+        if (user.password.isEmpty()) {
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_password));
+            return false;
+        }
+        if (user.password.length() < 8) {
+            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_password_length));
+            return false;
+        }
+        return true;
+    }
+    private void signIn(final View v, final User user){
+        Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserService.class).signIn(user);
+        call.enqueue(new Callback<API.Response<JWT>>() {
+            @Override
+            public void onResponse(@NotNull Call<API.Response<JWT>> call, @NotNull Response<API.Response<JWT>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    AuthManager.getInstance().setToken(response.body().data);
+                    Intent intent = new Intent(v.getContext(), HomePage.class);
+                    startActivity(intent);
+                    finish();
+                } else if (response.errorBody() != null) {
+                    switch (response.code()) {
+                        case HttpStatus.SC_UNAUTHORIZED: {
+                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.wrong_login));
+                            break;
                         }
-                    } else {
-                        Toast.makeText(getApplicationContext(), R.string.unknown_error, Toast.LENGTH_LONG).show();
+                        case HttpStatus.SC_FORBIDDEN: {
+                            API.Response<UUID> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_UUID);
+                            Intent intent = new Intent(v.getContext(), ActivateProfile.class);
+                            intent.putExtra("uuid", error.data.toString());
+                            startActivity(intent);
+                            finish();
+                            break;
+                        }
+                        default: {
+                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
+                            break;
+                        }
                     }
-
-                    for (int i = 0; i < root.getChildCount(); i++) {
-                        View child = root.getChildAt(i);
-                        child.setEnabled(true);
-                        child.setClickable(true);
-                    }
-                    loader.setVisibility(View.GONE);
+                } else {
+                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
                 }
 
-                @Override
-                public void onFailure(@NotNull Call<API.Response<JWT>> call, @NotNull Throwable t) {
-                    System.err.println("ERRORE: " + t.getMessage());
-                    loader.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-                    for (int i = 0; i < root.getChildCount(); i++) {
-                        View child = root.getChildAt(i);
-                        child.setEnabled(true);
-                        child.setClickable(true);
-                    }
+                for (int i = 0; i < root.getChildCount(); i++) {
+                    View child = root.getChildAt(i);
+                    child.setEnabled(true);
+                    child.setClickable(true);
                 }
-            });
+                loader.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<API.Response<JWT>> call, @NotNull Throwable t) {
+                System.err.println("ERRORE: " + t.getMessage());
+                loader.setVisibility(View.GONE);
+
+                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
+
+                for (int i = 0; i < root.getChildCount(); i++) {
+                    View child = root.getChildAt(i);
+                    child.setEnabled(true);
+                    child.setClickable(true);
+                }
+            }
         });
     }
 }
