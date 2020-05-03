@@ -4,6 +4,7 @@ import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.UserFriend;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -12,8 +13,12 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 public interface UserFriendService {
+    @GET("auth/user_friend")
+    Call<API.Response<List<UserFriend>>> find(@QueryMap Map<String, String> options);
+
     @GET("auth/user_friend")
     Call<API.Response<List<UserFriend>>> find();
 
