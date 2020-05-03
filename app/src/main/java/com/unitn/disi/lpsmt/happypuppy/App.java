@@ -4,8 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
+/**
+ * Application class
+ *
+ * @author Carlo Corradini
+ */
 public class App extends Application {
 
+    /**
+     * The {@link Application} context
+     *
+     * @see Application
+     */
     @SuppressLint("StaticFieldLeak")
     private static Context context;
 
@@ -15,6 +25,11 @@ public class App extends Application {
         App.context = getApplicationContext();
     }
 
+    /**
+     * Return the {@link Application} context
+     *
+     * @return {@link Application} context
+     */
     public static Context getContext() {
         return App.context;
     }

@@ -11,13 +11,35 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
+/**
+ * Animal Specie API Service
+ *
+ * @see AnimalSpecie
+ */
 public interface AnimalSpecieService {
+    /**
+     * Find all {@link AnimalSpecie} available that correspond to the given options
+     *
+     * @param options Find options
+     * @return An {@link API.Response} with the {@link List} of {@link AnimalSpecie} founds
+     */
     @GET("animal_specie")
     Call<API.Response<List<AnimalSpecie>>> find(@QueryMap Map<String, String> options);
 
+    /**
+     * Find all {@link AnimalSpecie} available
+     *
+     * @return An {@link API.Response} with the {@link List} of {@link AnimalSpecie} founds
+     */
     @GET("animal_specie")
     Call<API.Response<List<AnimalSpecie>>> find();
 
+    /**
+     * Find the {@link AnimalSpecie} that has the given id
+     *
+     * @param id The {@link AnimalSpecie} id
+     * @return An {@link API.Response} with the {@link AnimalSpecie} found
+     */
     @GET("animal_specie/{id}")
     Call<API.Response<AnimalSpecie>> findById(@Path("id") Long id);
 }
