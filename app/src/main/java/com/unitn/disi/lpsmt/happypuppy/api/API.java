@@ -49,15 +49,9 @@ public final class API {
 
     // todo CAMBIARE BASE_URL !!!
     /**
-     * API base {@link HttpUrl URL}
+     * API base URL
      */
-    public static final HttpUrl BASE_URL = new HttpUrl.Builder()
-            .scheme("http")
-            .host("192.168.0.25")
-            .port(8080)
-            .addPathSegment("api")
-            .addPathSegment("v1")
-            .build();
+    public static final String BASE_URL = "http://192.168.0.25:8080/api/v1/";
 
     /**
      * Instance of the current {@link API} class assigned when the first {@link API#getInstance()} is called
