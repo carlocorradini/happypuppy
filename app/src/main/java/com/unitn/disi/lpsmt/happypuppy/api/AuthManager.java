@@ -11,6 +11,8 @@ import com.auth0.android.jwt.DecodeException;
 import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.App;
 
+import java.util.UUID;
+
 /**
  * Authentication Manager class
  *
@@ -27,6 +29,11 @@ public final class AuthManager {
      * Key name of {@link SharedPreferences} field where to save the token
      */
     private static final String AUTH_TOKEN = "auth_token";
+
+    /**
+     * Key name of {@link JWT} claim for {@link User} {@link UUID id}
+     */
+    private static final String CLAIM_USER_ID = "id";
 
     /**
      * Instance of the current {@link AuthManager} class assigned when the first {@link AuthManager#getInstance()} is called
@@ -112,6 +119,21 @@ public final class AuthManager {
     }
 
     /**
+     * Return the {@link User} {@link UUID id} decoded from the {@link JWT token} if it's present
+     *
+     * @return {@link User} {@link UUID id} if present, null otherwise
+     */
+    public UUID getAuthUserId() {
+        UUID id = null;
+        try {
+            id = UUID.fromString(getToken().getClaim(CLAIM_USER_ID).asString());
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        return id;
+    }
+
+    /**
      * Check if the current {@link User} is authenticated
      *
      * @return True if {@link User} is authenticated, false otherwise
@@ -119,5 +141,15 @@ public final class AuthManager {
      */
     public boolean isAuth() {
         return getToken() != null;
+    }
+
+    /**
+     * Check if the current authenticated {@link User} {@link UUID ID} decoded from {@link JWT token} is the same as the given id
+     *
+     * @param id The {@link User} {@link UUID id} to compare with
+     * @return True if is the same {@link User} {@link UUID id}, false otherwise
+     */
+    public boolean isCurrentAuthUser(UUID id) {
+        return isAuth() && id != null && id.equals(getAuthUserId());
     }
 }
