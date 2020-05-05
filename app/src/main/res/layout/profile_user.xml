@@ -77,7 +77,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="5dp"
                 android:weightSum="1"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:id="@+id/profile_user_card_friends"
@@ -96,7 +97,7 @@
                         android:id="@+id/profile_user_number_friends"
                         android:textSize="@dimen/text_size_standard"
                         android:layout_height="wrap_content"
-                        android:text="@string/user_friends2"
+                        android:text="@string/user_friends_number"
                         android:textAlignment="center"
                         android:textStyle="bold"
                         android:layout_width="match_parent" />
@@ -119,7 +120,7 @@
                         android:id="@+id/profile_user_number_puppies"
                         android:textSize="@dimen/text_size_standard"
                         android:layout_height="wrap_content"
-                        android:text="@string/user_friends2"
+                        android:text="@string/user_friends_number"
                         android:textAlignment="center"
                         android:textStyle="bold"
                         android:layout_width="match_parent" />

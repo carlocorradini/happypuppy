@@ -6,8 +6,8 @@
 
     <string name="user_friends">Friends</string>
     <string name="user_puppies">Puppies</string>
-    <string name="user_friends2">2</string>
-    <string name="user_puppies2">2</string>
+    <string name="user_friends_number"></string>
+    <string name="user_puppies_number"></string>
     <!-- -->
 
     <!-- Labels for Button -->

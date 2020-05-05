@@ -1,5 +1,6 @@
 package com.unitn.disi.lpsmt.happypuppy.api;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.auth0.android.jwt.JWT;
@@ -38,7 +39,7 @@ public final class API {
 
     private static final String TAG = API.class.getName();
 
-    public static final String BASE_URL = "http://192.168.0.25:8080/api/v1/"; // todo cambiare url
+    public static final String BASE_URL = "http://192.168.1.6:8080/api/v1/"; // todo cambiare url
 
     private static API instance = null;
 
