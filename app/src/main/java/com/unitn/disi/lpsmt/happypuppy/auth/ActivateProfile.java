@@ -28,6 +28,9 @@ import retrofit2.Response;
 
 import org.apache.http.HttpStatus;
 
+/**
+ * @author 39345
+ */
 public class ActivateProfile extends AppCompatActivity {
     private UUID userId;
 
@@ -39,6 +42,10 @@ public class ActivateProfile extends AppCompatActivity {
     private TextView txtMessage;
     private LinearLayout loader;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +190,10 @@ public class ActivateProfile extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @return boolean
+     */
     private boolean validate() {
         return !inputOtpEmail.getText().toString().isEmpty() && !inputOtpSms.getText().toString().isEmpty();
     }

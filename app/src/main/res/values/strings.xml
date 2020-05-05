@@ -3,6 +3,11 @@
     <string name="app_name">HappyPuppy</string>
     <string name="logo">Logo</string>
     <string name="logo_text">Logo with text</string>
+
+    <string name="user_friends">Friends</string>
+    <string name="user_puppies">Puppies</string>
+    <string name="user_friends2">2</string>
+    <string name="user_puppies2">2</string>
     <!-- -->
 
     <!-- Labels for Button -->
@@ -16,6 +21,8 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_out">Sign out</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="add_puppy">Add Puppy</string>
     <!-- -->
 
     <!-- User/Puppy fields -->
@@ -92,6 +99,7 @@
     <string name="clear_all">Clear all</string>
     <string name="confirm">Confirm</string>
     <string name="send">Send</string>
+    <string name="search">Search</string>
     <!-- -->
 
     <!-- Array Strings -->

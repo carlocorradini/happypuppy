@@ -48,6 +48,10 @@
         <item name="android:backgroundTint">@color/colorSecondary</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
+    <style name="Button.Colored.InvertedAccent" parent="Button">
+        <item name="android:backgroundTint">@color/colorSecondary</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
     <style name="Button.Colored.Tertiary" parent="Button">
         <item name="android:backgroundTint">@color/colorTertiary</item>
         <item name="android:textColor">@color/colorAccent</item>
