@@ -167,7 +167,6 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
             } else {
                 map.setMyLocationEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
-                getLocationPermission();
             }
         } catch (SecurityException e) {
             Log.e(TAG, "Unable to update maps UI due to " + e.getMessage(), e);
