@@ -10,8 +10,12 @@ import androidx.preference.PreferenceManager;
 import com.auth0.android.jwt.DecodeException;
 import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.App;
+import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 
+import java.io.IOException;
 import java.util.UUID;
+
+import retrofit2.Response;
 
 /**
  * Authentication Manager class
@@ -151,5 +155,28 @@ public final class AuthManager {
      */
     public boolean isCurrentAuthUser(UUID id) {
         return isAuth() && id != null && id.equals(getAuthUserId());
+    }
+
+    /**
+     * Return the current authenticated {@link User} doing a sync call.
+     * If the call failed or thrown an exception the returned {@link User} is null.
+     *
+     * @return The current authenticated {@link User}, null otherwise
+     */
+    public User getAuthUser() {
+        User user = null;
+
+        try {
+            Response<API.Response<User>> response = API.getInstance().getClient().create(UserService.class).me().execute();
+            if (response.isSuccessful() && response.body() != null) {
+                user = response.body().data;
+            } else {
+                Log.e(TAG, "Unable to get current authenticated User due to failure response " + response.code() + "received");
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Unable to get current authenticated User due to " + e.getMessage(), e);
+        }
+
+        return user;
     }
 }
