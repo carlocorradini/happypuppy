@@ -15,7 +15,6 @@ import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import java.io.IOException;
 import java.util.UUID;
 
-import retrofit2.Call;
 import retrofit2.Response;
 
 /**
