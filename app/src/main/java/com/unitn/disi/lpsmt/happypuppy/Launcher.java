@@ -14,7 +14,7 @@ public class Launcher extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launcher_activity);
 
-        AuthManager.getInstance().clearToken(); /* TODO: remove this line: only for testing */
+        //AuthManager.getInstance().clearToken(); /* TODO: remove this line: only for testing */
 
         Thread welcomeThread = new Thread() {
             @Override

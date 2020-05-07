@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy;
+package com.unitn.disi.lpsmt.happypuppy.ui.components;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.unitn.disi.lpsmt.happypuppy.R;
 
 public class AndroidListViewActivity extends Activity {
     ListView myList;

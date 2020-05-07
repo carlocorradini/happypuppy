@@ -22,16 +22,21 @@
     <string name="forgot_password">Password dimenticata?</string>
     <string name="sign_in">Accedi</string>
     <string name="sign_up">Registrati</string>
+    <string name="save_changes">Salva modifiche</string>
     <string name="sign_out">Esci</string>
+    <string name="sign_out_confirm">Sei sicuro di voler uscire?</string>
     <string name="edit_profile">Modifica Profilo</string>
     <string name="edit_puppy">Modifica Puppy</string>
     <string name="add_puppy">Aggiungi Puppy</string>
     <string name="add_friend">Aggiungi amico</string>
     <string name="remove_friend">Rimuovi amico</string>
     <string name="remove_puppy">Rimuovi Puppy</string>
+    <string name="view_puppies">Vedi Puppies</string>
+    <string name="view_owner">Vedi Proprietario</string>
     <!-- -->
 
     <!-- User/Puppy fields -->
+    <string name="info">Info Personal</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="repeat_password">Ripeti password</string>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profile.">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/colorPrimary"
+        android:padding="@dimen/padding">
+
+        <LinearLayout
+            android:id="@+id/profile_user_edit_root_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dip">
+
+            <EditText
+                android:id="@+id/profile_user_edit_input_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:drawableEnd="@drawable/ic_user"
+                android:drawableTint="@color/colorAccent"
+                android:hint="@string/first_name"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions" />
+
+            <EditText
+                android:id="@+id/profile_user_edit_input_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:drawableEnd="@drawable/ic_user"
+                android:drawableTint="@color/colorAccent"
+                android:hint="@string/last_name"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <RadioButton
+                    android:id="@+id/profile_user_edit_input_gender_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/male"/>
+                <RadioButton
+                    android:id="@+id/profile_user_edit_input_gender_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/female"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/profile_user_edit_input_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:drawableEnd="@drawable/ic_birthday"
+                android:drawableTint="@color/colorAccent"
+                android:hint="@string/age"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions"
+                android:windowSoftInputMode="stateAlwaysHidden"/>
+
+            <EditText
+                android:id="@+id/profile_user_edit_input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:drawableEnd="@drawable/ic_lock"
+                android:drawableTint="@color/colorAccent"
+                android:hint="@string/password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/profile_user_edit_button_save_changes"
+                style="@style/Button.Colored.Inverted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/save_changes" />
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/profile_user_edit_view_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorAccentOpacity"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/profile_user_edit_loader"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:progressTint="@color/colorPrimary"
+            android:layout_marginBottom="@dimen/logo_height"
+            android:rotation="180" />
+    </LinearLayout>
+</FrameLayout>

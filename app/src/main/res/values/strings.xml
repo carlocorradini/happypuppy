@@ -20,16 +20,21 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
+    <string name="save_changes">Save Changes</string>
     <string name="sign_out">Sign out</string>
+    <string name="sign_out_confirm">Are you sure to sign out?</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="edit_puppy">Edit Puppy</string>
     <string name="add_puppy">Add Puppy</string>
     <string name="add_friend">Add Friend</string>
     <string name="remove_friend">Remove Friend</string>
     <string name="remove_puppy">Remove Puppy</string>
+    <string name="view_puppies">View Puppies</string>
+    <string name="view_owner">View Owner</string>
     <!-- -->
 
     <!-- User/Puppy fields -->
+    <string name="info">Personal info</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="repeat_password">Repeat password</string>

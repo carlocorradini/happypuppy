@@ -17,14 +17,14 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="49dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
+            android:layout_gravity="center_vertical"
             android:clickable="true"
             android:foreground="@drawable/ic_arrow_back"
             android:foregroundTint="@color/colorSecondary"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/profile_puppy_username"
+            android:id="@+id/profile_puppy_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -124,7 +124,7 @@
                             android:layout_width="match_parent" />
 
                         <TextView
-                            android:id="@+id/profile_puppy_number_puppies"
+                            android:id="@+id/profile_puppy_user_owner"
                             android:textSize="@dimen/text_size_standard"
                             android:layout_height="wrap_content"
                             android:text="@string/user_friends_number"

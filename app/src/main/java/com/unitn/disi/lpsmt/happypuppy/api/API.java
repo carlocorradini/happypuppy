@@ -48,15 +48,10 @@ public final class API {
      */
     private static final String TAG = API.class.getName();
 
-<<<<<<< HEAD
-    public static final String BASE_URL = "http://192.168.1.6:8080/api/v1/"; // todo cambiare url
-=======
-    // todo CAMBIARE BASE_URL !!!
     /**
      * API base URL
-     */
-    public static final String BASE_URL = "http://192.168.0.25:8080/api/v1/";
->>>>>>> origin/develop_api
+     **/
+    public static final String BASE_URL = "http://192.168.1.6:8080/api/v1/"; // todo cambiare url
 
     /**
      * Instance of the current {@link API} class assigned when the first {@link API#getInstance()} is called

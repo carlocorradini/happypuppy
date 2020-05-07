@@ -16,7 +16,7 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <Button
-            android:id="@+id/home_page_button_back"
+            android:id="@+id/profile_puppy_edit_button_back"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="49dp"
             android:layout_height="wrap_content"
@@ -35,18 +35,6 @@
             android:contentDescription="@string/logo"
             app:srcCompat="@drawable/ic_logo" />
 
-        <Button
-            android:id="@+id/home_page_button_reload"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="209dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/colorPrimary"
-            android:clickable="true"
-            android:text="@string/app_name"
-            android:textSize="@dimen/text_size_standard"
-            android:textStyle="bold" />
-
     </com.google.android.material.navigation.NavigationView>
 
     <ScrollView
@@ -62,28 +50,15 @@
             android:orientation="vertical"
             android:padding="10dip">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/profile_puppy_edit_input_name_puppy"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
-
-                <ImageView
-                    android:id="@+id/register_puppy_profile_image"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_dog_avatar" />
-
-                <Button
-                    android:id="@+id/register_puppy_button_image"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignEnd="@+id/register_puppy_profile_image"
-                    android:background="@color/colorPrimary"
-                    android:drawableEnd="@drawable/ic_add_avatar" />
-            </RelativeLayout>
+                android:layout_marginTop="@dimen/margin"
+                android:drawableEnd="@drawable/ic_footprint"
+                android:hint="@string/puppy_name"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -93,29 +68,19 @@
                 android:layout_marginTop="20dp">
 
                 <RadioButton
-                    android:id="@+id/register_puppy_input_gender_male"
+                    android:id="@+id/profile_puppy_edit_input_gender_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/male"/>
                 <RadioButton
-                    android:id="@+id/register_puppy_input_gender_female"
+                    android:id="@+id/profile_puppy_edit_input_gender_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/female"/>
             </RadioGroup>
 
             <EditText
-                android:id="@+id/register_puppy_input_name_puppy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_footprint"
-                android:hint="@string/puppy_name"
-                android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
-
-            <EditText
-                android:id="@+id/register_puppy_input_kind_animal"
+                android:id="@+id/profile_puppy_edit_input_kind_animal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
@@ -125,7 +90,7 @@
                 android:inputType="textNoSuggestions" />
 
             <EditText
-                android:id="@+id/register_puppy_input_race"
+                android:id="@+id/profile_puppy_edit_input_race"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
@@ -135,7 +100,7 @@
                 android:inputType="textNoSuggestions" />
 
             <EditText
-                android:id="@+id/register_puppy_input_age"
+                android:id="@+id/profile_puppy_edit_input_age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
@@ -147,37 +112,37 @@
                 android:windowSoftInputMode="stateAlwaysHidden"/>
 
             <Spinner
-                android:id="@+id/register_puppy_input_size"
+                android:id="@+id/profile_puppy_edit_input_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
                 android:spinnerMode="dialog"
                 android:prompt="@string/size" />
 
-        <LinearLayout
-            android:id="@+id/register_puppy_section_weight"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/register_puppy_input_spinner_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:prompt="@string/weight"
-                android:spinnerMode="dialog" />
-            <EditText
-                android:id="@+id/register_puppy_input_weight_puppy"
+            <LinearLayout
+                android:id="@+id/profile_puppy_edit_section_weight"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_kg"
-                android:hint="@string/weight"
-                android:inputType="number" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/profile_puppy_edit_input_spinner_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:prompt="@string/weight"
+                    android:spinnerMode="dialog" />
+                <EditText
+                    android:id="@+id/profile_puppy_edit_input_weight_puppy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:drawableEnd="@drawable/ic_kg"
+                    android:hint="@string/weight"
+                    android:inputType="number" />
+            </LinearLayout>
             <Button
-                android:id="@+id/register_puppy_button_input_personality"
+                android:id="@+id/profile_puppy_edit_button_input_personality"
                 style="@style/Button.Colored"
                 android:background="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
@@ -189,13 +154,31 @@
                 android:drawableEnd="@drawable/ic_drop_down_arrow"/>
 
             <Button
-                android:id="@+id/register_puppy_button_confirm"
+                android:id="@+id/profile_puppy_edit_button_confirm"
                 style="@style/Button.Colored.Inverted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_standard"
                 android:layout_margin="@dimen/margin"
-                android:text="@string/confirm" />
+                android:text="@string/save_changes" />
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:id="@+id/profile_puppy_edit_view_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorAccentOpacity"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/profile_puppy_edit_loader"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:progressTint="@color/colorPrimary"
+            android:layout_marginBottom="@dimen/logo_height"
+            android:rotation="180" />
+    </LinearLayout>
 </RelativeLayout>

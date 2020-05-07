@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTertiary">
+    xmlns:tools="http://schemas.android.com/tools">
         <!-- Main content -->
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/profile_user_top_navigation"
+        android:id="@+id/home_page_top_navigation"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="top"
         android:background="@color/colorPrimary">
 
         <TextView
-            android:id="@+id/profile_user_username"
+            android:id="@+id/home_page_name_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -26,11 +26,26 @@
             android:layout_width="49dp"
             android:layout_height="49dp"
             android:layout_gravity="end"
-            android:src="@drawable/ic_logo"
             android:padding="4dp"
             android:background="@drawable/shadow_box" />
 
     </com.google.android.material.navigation.NavigationView>
+
+    <FrameLayout
+        android:id="@+id/content_bla"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/home_page_top_navigation"
+        android:layout_above="@id/home_page_bottom_nav">
+        <androidx.fragment.app.FragmentContainerView
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/map_2"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragment.MapsFragment"/>
+    </FrameLayout>
+
     <!-- Bottom Navigation Bar -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/home_page_bottom_nav"

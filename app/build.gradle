@@ -30,6 +30,7 @@ android {
             res.srcDirs = [
                     '/src/main/res/layouts/auth',
                     '/src/main/res/layouts/components',
+                    '/src/main/res/layouts/profile',
                     '/src/main/res/layouts',
                     '/src/main/res'
             ]

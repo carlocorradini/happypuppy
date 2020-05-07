@@ -1,35 +1,24 @@
 package com.unitn.disi.lpsmt.happypuppy;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageDecoder;
-import android.graphics.drawable.Drawable;
-import android.media.ImageReader;
 import android.os.Bundle;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.auth0.android.jwt.JWT;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.JsonElement;
 import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
-import com.unitn.disi.lpsmt.happypuppy.auth.ForgotPassword;
+import com.unitn.disi.lpsmt.happypuppy.profile.user.ProfileUser;
+import com.unitn.disi.lpsmt.happypuppy.ui.fragment.MapsFragment;
 
 import org.apache.http.HttpStatus;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.List;
-import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,13 +26,20 @@ import retrofit2.Response;
 
 public class HomePage extends AppCompatActivity {
 
+    /**
+     * {@link Log} TAG of this class
+     */
+    private static final String TAG = HomePage.class.getName();
+
     BottomNavigationView bottomNavigation;
     ImageView icon_user;
     User userLogged;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page_activity);
+
         bottomNavigation = findViewById(R.id.home_page_bottom_nav);
         icon_user = findViewById(R.id.home_page_icon_user);
 
@@ -81,8 +77,17 @@ public class HomePage extends AppCompatActivity {
 
         icon_user.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), ProfileUser.class);
-            intent.putExtra("uuid_user",AuthManager.getInstance().getAuthUserId().toString());
+            intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
             startActivity(intent);
         });
+
+        /*
+        runOnUiThread(() -> {
+            User user = AuthManager.getInstance().getAuthUser();
+            if(user != null) {
+                Picasso.get().load(user.avatar.toString()).into(icon_user);
+            }
+        });
+        */
     }
 }

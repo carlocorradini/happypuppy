@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy;
+package com.unitn.disi.lpsmt.happypuppy.profile.puppy;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -25,6 +25,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.unitn.disi.lpsmt.happypuppy.HomePage;
+import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
 
 import java.io.File;
@@ -36,8 +38,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private static final int FILE_SELECT_CODE = 0;
-    private static final String TAG = "RegisterActivity";
     private static final int REQUEST_CODE = 6384; //onActivityResult request
 
     private RadioButton genderMale;
@@ -54,6 +54,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
     private Button personality;
     private Button confirm;
     private Button imgPuppy;
+    private Button buttonBack;
 
     /* Checklist objects for puppy Personality */
     String[] listItems;
@@ -79,6 +80,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
 
         personality = findViewById(R.id.register_puppy_button_input_personality);
         confirm = findViewById(R.id.register_puppy_button_confirm);
+        buttonBack = findViewById(R.id.register_puppy_button_back);
 
         /* Image input for puppy */
         imgPuppy = findViewById(R.id.register_puppy_button_image);
