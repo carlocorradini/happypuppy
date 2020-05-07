@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy;
+package com.unitn.disi.lpsmt.happypuppy.ui.components;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
 
-public class DatePickerFragment extends DialogFragment {
+public class DatePicker extends DialogFragment {
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState){

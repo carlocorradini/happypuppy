@@ -39,7 +39,7 @@ public class SignIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_sign_in);
+        setContentView(R.layout.sign_in_activity);
 
         root = findViewById(R.id.sign_in_root_view);
         inputUsername = findViewById(R.id.sign_in_input_username);
@@ -124,6 +124,10 @@ public class SignIn extends AppCompatActivity {
                             intent.putExtra("uuid", error.data.toString());
                             startActivity(intent);
                             finish();
+                            break;
+                        }
+                        case HttpStatus.SC_NOT_FOUND: {
+                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.user_not_found));
                             break;
                         }
                         default: {

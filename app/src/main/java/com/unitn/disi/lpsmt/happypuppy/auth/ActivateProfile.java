@@ -39,7 +39,6 @@ public class ActivateProfile extends AppCompatActivity {
     private Button buttonResendCodes;
     private EditText inputOtpSms;
     private EditText inputOtpEmail;
-    private TextView txtMessage;
     private LinearLayout loader;
 
     /**
@@ -49,7 +48,7 @@ public class ActivateProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activate_profile);
+        setContentView(R.layout.activate_profile_activity);
 
         userId = UUID.fromString(getIntent().getStringExtra("uuid"));
         /* Elements */
@@ -57,7 +56,6 @@ public class ActivateProfile extends AppCompatActivity {
         buttonResendCodes = findViewById(R.id.activate_profile_button_resend_codes);
         inputOtpEmail = findViewById(R.id.activate_profile_input_otp_mail);
         inputOtpSms = findViewById(R.id.activate_profile_input_otp_sms);
-        txtMessage = findViewById(R.id.activate_profile_error_message);
         loader = findViewById(R.id.activate_profile_view_loader);
         root = findViewById(R.id.activate_profile_root_view);
 

@@ -8,11 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.auth.SignIn;
 
-public class MainActivity extends AppCompatActivity {
+public class Launcher extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.launcher_activity);
 
         AuthManager.getInstance().clearToken(); /* TODO: remove this line: only for testing */
 
@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception ignored) {
                 } finally {
                     Intent intent = AuthManager.getInstance().isAuth()
-                            ? new Intent(MainActivity.this, HomePage.class)
-                            : new Intent(MainActivity.this, SignIn.class);
+                            ? new Intent(Launcher.this, HomePage.class)
+                            : new Intent(Launcher.this, SignIn.class);
                     startActivity(intent);
                     finish();
                 }

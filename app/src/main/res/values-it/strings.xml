@@ -24,7 +24,11 @@
     <string name="sign_up">Registrati</string>
     <string name="sign_out">Esci</string>
     <string name="edit_profile">Modifica Profilo</string>
+    <string name="edit_puppy">Modifica Puppy</string>
     <string name="add_puppy">Aggiungi Puppy</string>
+    <string name="add_friend">Aggiungi amico</string>
+    <string name="remove_friend">Rimuovi amico</string>
+    <string name="remove_puppy">Rimuovi Puppy</string>
     <!-- -->
 
     <!-- User/Puppy fields -->
@@ -45,6 +49,7 @@
     <string name="male">Maschio</string>
     <string name="female">Femmina</string>
     <string name="puppy_behaviour">Personalità</string>
+    <string name="puppy_owner">Proprietario</string>
     <string name="otp_sms">Codice OTP SMS</string>
     <string name="otp_email">Codice OTP Email</string>
     <string name="upload_avatar">Carica una foto</string>

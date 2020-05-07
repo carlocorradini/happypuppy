@@ -1,59 +1,84 @@
 package com.unitn.disi.lpsmt.happypuppy;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageDecoder;
-import android.graphics.drawable.Drawable;
-import android.media.ImageReader;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.auth0.android.jwt.JWT;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.JsonElement;
 import com.squareup.picasso.Picasso;
+import com.unitn.disi.lpsmt.happypuppy.HomePage;
+import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
-import com.unitn.disi.lpsmt.happypuppy.auth.ForgotPassword;
-
-import org.apache.http.HttpStatus;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.List;
-import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomePage extends AppCompatActivity {
+import org.apache.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 
-    BottomNavigationView bottomNavigation;
-    ImageView icon_user;
+import java.util.UUID;
+
+public class ProfileUser extends AppCompatActivity {
+    Button buttonBack;
+    TextView usernameTop;
+    ImageView settings;
+    ImageView userAvatar;
+    Button changeAvatar;
+    TextView numberFriends;
+    TextView numberPuppies;
+    LinearLayout buttonsUser;
+    LinearLayout buttonsVisit;
+
     User userLogged;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_page_activity);
-        bottomNavigation = findViewById(R.id.home_page_bottom_nav);
-        icon_user = findViewById(R.id.home_page_icon_user);
+        setContentView(R.layout.profile_user_activity);
 
-        Call<API.Response<User>> call = API.getInstance().getClient().create(UserService.class).me();
+
+        buttonBack = findViewById(R.id.profile_user_button_back);
+        usernameTop = findViewById(R.id.profile_user_username);
+        settings = findViewById(R.id.profile_user_settings);
+        userAvatar = findViewById(R.id.profile_user_profile_image);
+        changeAvatar = findViewById(R.id.profile_user_button_image);
+        numberFriends = findViewById(R.id.profile_user_number_friends);
+        numberPuppies = findViewById(R.id.profile_user_number_puppies);
+
+        buttonsUser = findViewById(R.id.profile_user_buttons_profile);
+        buttonsVisit = findViewById(R.id.profile_user_buttons_visit);
+
+        UUID uuid = UUID.fromString(getIntent().getStringExtra("uuid_user"));
+
+        if(uuid != AuthManager.getInstance().getAuthUserId()){
+            buttonsUser.setVisibility(View.VISIBLE);
+            buttonsVisit.setVisibility(View.GONE);
+            changeAvatar.setVisibility(View.VISIBLE);
+        }else{
+            buttonsUser.setVisibility(View.GONE);
+            buttonsVisit.setVisibility(View.VISIBLE);
+            changeAvatar.setVisibility(View.GONE);
+        }
+
+        Call<API.Response<User>> call = API.getInstance().getClient().create(UserService.class).findById(uuid);
         call.enqueue(new Callback<API.Response<User>>() {
             @Override
             public void onResponse(Call<API.Response<User>> call, Response<API.Response<User>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     userLogged = response.body().data;
-                    Picasso.get().load(userLogged.avatar.toString()).resize(49, 49).into(icon_user);
+                    Picasso.get().load(userLogged.avatar.toString()).into(userAvatar);
+                    usernameTop.setText(userLogged.username);
+
                 } else if (response.errorBody() != null) {
                     switch (response.code()) {
                         case HttpStatus.SC_NOT_FOUND: {
@@ -79,10 +104,8 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-        icon_user.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), ProfileUser.class);
-            intent.putExtra("uuid_user",AuthManager.getInstance().getAuthUserId().toString());
-            startActivity(intent);
+        buttonBack.setOnClickListener(v -> {
+            finish();
         });
     }
 }

@@ -15,9 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -27,6 +25,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +34,6 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final int FILE_SELECT_CODE = 0;
@@ -65,7 +63,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_register_puppy);
+        setContentView(R.layout.register_puppy_activity);
 
         /* Input fields */
         genderFemale = findViewById(R.id.register_puppy_input_gender_female);
@@ -140,7 +138,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
                         }
                     }
                 });
-                pBuilder.setView(inflater.inflate(R.layout.custom_multiple_choice, null));
+                pBuilder.setView(inflater.inflate(R.layout.custom_multiple_choice_fragment, null));
                 pBuilder.setCancelable(false);
                 pBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -184,7 +182,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment datePicker = new DatePickerFragment();
+                DialogFragment datePicker = new DatePicker();
                 datePicker.show(getSupportFragmentManager(), "date picker");
             }
         });
@@ -193,7 +191,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
 
     /* Date selected */
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);

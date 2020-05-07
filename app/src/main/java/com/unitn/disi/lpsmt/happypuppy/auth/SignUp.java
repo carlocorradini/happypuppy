@@ -6,18 +6,16 @@ import android.content.Intent;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.unitn.disi.lpsmt.happypuppy.DatePickerFragment;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
@@ -63,7 +61,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_sign_up);
+        setContentView(R.layout.sign_up_activity);
 
         /* Layouts */
         root = findViewById(R.id.sign_up_root_view);
@@ -128,7 +126,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
         /* Listeners for edit text birth date: date picker */
         inputDateOfBirth.setInputType(InputType.TYPE_NULL);
         inputDateOfBirth.setOnClickListener(v -> {
-            DialogFragment datePicker = new DatePickerFragment();
+            DialogFragment datePicker = new DatePicker();
             datePicker.show(getSupportFragmentManager(), "date picker");
         });
 
@@ -138,7 +136,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
         calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);

@@ -19,7 +19,7 @@ public class AndroidListViewActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.custom_multiple_choice);
+        setContentView(R.layout.custom_multiple_choice_fragment);
         myList = findViewById(R.id.custom_view_list_personalities);
         getChoice = findViewById(R.id.custom_view_name_personality);
 

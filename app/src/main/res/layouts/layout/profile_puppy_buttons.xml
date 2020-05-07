@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/profile_user_buttons_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/profile_user_button_edit_profile"
+            style="@style/Button.Colored.InvertedAccent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/edit_puppy"
+            android:layout_width="match_parent" />
+
+        <Button
+            android:id="@+id/profile_user_button_add_puppy"
+            style="@style/Button.Colored.InvertedAccent"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:text="@string/remove_puppy"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/profile_user_buttons_visit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/profile_user_button_friendship"
+            style="@style/Button.Colored.InvertedAccent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/add_friend"
+            android:layout_width="match_parent" />
+
+        <Button
+            android:id="@+id/profile_user_button_"
+            style="@style/Button.Colored.InvertedAccent"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:text="@string/remove_friend"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+</merge>

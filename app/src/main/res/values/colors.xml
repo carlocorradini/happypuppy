@@ -8,4 +8,5 @@
     <color name="colorError">#eb1c1c</color>
     <color name="colorAccentOpacity">#BF333131</color>
     <color name="colorBlueAdd">#2185d0</color>
+    <color name="ic_launcher_background">#FFCE11</color>
 </resources>
