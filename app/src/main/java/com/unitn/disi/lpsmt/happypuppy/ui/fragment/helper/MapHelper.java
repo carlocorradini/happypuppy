@@ -138,35 +138,79 @@ public class MapHelper {
         for (AnimalPlace animalPlace : animalPlaceList) {
             if (animalPlace.type == null || !animalPlaces.containsKey(animalPlace.type)) continue;
 
-            Bitmap icon = null;
-
-            switch (animalPlace.type) {
-                case PARK: {
-                    icon = ImageUtil.fromDrawable(R.drawable.ic_map_marker_animal_place_park, ANIMAL_PLACE_MARKER_SIZE.getLeft(), ANIMAL_PLACE_MARKER_SIZE.getRight());
-                    break;
-                }
-                case SHOP: {
-                    icon = ImageUtil.fromDrawable(R.drawable.ic_map_marker_animal_place_shop, ANIMAL_PLACE_MARKER_SIZE.getLeft(), ANIMAL_PLACE_MARKER_SIZE.getRight());
-                    break;
-                }
-                case GROOMING: {
-                    icon = ImageUtil.fromDrawable(R.drawable.ic_map_marker_animal_place_grooming, ANIMAL_PLACE_MARKER_SIZE.getLeft(), ANIMAL_PLACE_MARKER_SIZE.getRight());
-                    break;
-                }
-                case VETERINARY: {
-                    icon = ImageUtil.fromDrawable(R.drawable.ic_map_marker_animal_place_veterinary, ANIMAL_PLACE_MARKER_SIZE.getLeft(), ANIMAL_PLACE_MARKER_SIZE.getRight());
-                    break;
-                }
-            }
-
             Objects.requireNonNull(animalPlaces.get(animalPlace.type)).add(
                     map.addMarker(new MarkerOptions()
                             .position(new LatLng(animalPlace.latitude, animalPlace.longitude))
                             .title(animalPlace.name)
                             .snippet(StringUtils.capitalize(animalPlace.type.getValue()))
-                            .icon(BitmapDescriptorFactory.fromBitmap(icon))));
+                            .icon(BitmapDescriptorFactory.fromBitmap(getAnimalPlaceIcon(animalPlace.type)))));
         }
 
         Log.i(TAG, "Drawn " + animalPlaceList.size() + " Animal Places");
+    }
+
+    /**
+     * Return the {@link Bitmap icon} that correspond to the {@link AnimalPlace.Type type} given
+     *
+     * @param type The {@link AnimalPlace.Type type}
+     * @return The {@link Bitmap icon} of the given {@link AnimalPlace.Type type}, null otherwise
+     */
+    private Bitmap getAnimalPlaceIcon(AnimalPlace.Type type) {
+        Bitmap icon = null;
+
+        switch (type) {
+            case PARK: {
+                icon = ImageUtil.fromDrawable(R.drawable.ic_map_marker_animal_place_park, ANIMAL_PLACE_MARKER_SIZE.getLeft(), ANIMAL_PLACE_MARKER_SIZE.getRight());
+                break;
+            }
+            case SHOP: {
+                icon = ImageUtil.fromDrawable(R.drawable.ic_map_marker_animal_place_shop, ANIMAL_PLACE_MARKER_SIZE.getLeft(), ANIMAL_PLACE_MARKER_SIZE.getRight());
+                break;
+            }
+            case GROOMING: {
+                icon = ImageUtil.fromDrawable(R.drawable.ic_map_marker_animal_place_grooming, ANIMAL_PLACE_MARKER_SIZE.getLeft(), ANIMAL_PLACE_MARKER_SIZE.getRight());
+                break;
+            }
+            case VETERINARY: {
+                icon = ImageUtil.fromDrawable(R.drawable.ic_map_marker_animal_place_veterinary, ANIMAL_PLACE_MARKER_SIZE.getLeft(), ANIMAL_PLACE_MARKER_SIZE.getRight());
+                break;
+            }
+        }
+
+        return icon;
+    }
+
+    /**
+     * Hide the {@link Marker markers} of {@link AnimalPlace.Type}
+     *
+     * @param types The {@link AnimalPlace.Type types} to set the {@link Marker markers} visible
+     */
+    public void hideAnimalPlace(AnimalPlace.Type... types) {
+        for (AnimalPlace.Type type : types) {
+            setAnimalPlaceMarkerVisibility(type, false);
+        }
+    }
+
+    /**
+     * Show the {@link Marker markers} of {@link AnimalPlace.Type}
+     *
+     * @param types The {@link AnimalPlace.Type types} to set the {@link Marker markers} hidden
+     */
+    public void showAnimalPlace(AnimalPlace.Type... types) {
+        for (AnimalPlace.Type type : types) {
+            setAnimalPlaceMarkerVisibility(type, true);
+        }
+    }
+
+    /**
+     * Set the visibility of {@link AnimalPlace} {@link Marker markers} to the isVisible value
+     *
+     * @param type      The {@link AnimalPlace.Type} to set the isVisible value
+     * @param isVisible True if set type visible, false otherwise
+     */
+    private void setAnimalPlaceMarkerVisibility(AnimalPlace.Type type, boolean isVisible) {
+        for (Marker marker : Objects.requireNonNull(animalPlaces.get(type))) {
+            marker.setVisible(isVisible);
+        }
     }
 }
