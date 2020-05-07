@@ -23,7 +23,7 @@ public interface AnimalSpecieService {
      * @param options Find options
      * @return An {@link API.Response} with the {@link List} of {@link AnimalSpecie} founds
      */
-    @GET("animal_specie")
+    @GET("auth/animal_specie")
     Call<API.Response<List<AnimalSpecie>>> find(@QueryMap Map<String, String> options);
 
     /**
@@ -31,7 +31,7 @@ public interface AnimalSpecieService {
      *
      * @return An {@link API.Response} with the {@link List} of {@link AnimalSpecie} founds
      */
-    @GET("animal_specie")
+    @GET("auth/animal_specie")
     Call<API.Response<List<AnimalSpecie>>> find();
 
     /**
@@ -40,6 +40,6 @@ public interface AnimalSpecieService {
      * @param id The {@link AnimalSpecie} id
      * @return An {@link API.Response} with the {@link AnimalSpecie} found
      */
-    @GET("animal_specie/{id}")
+    @GET("auth/animal_specie/{id}")
     Call<API.Response<AnimalSpecie>> findById(@Path("id") Long id);
 }

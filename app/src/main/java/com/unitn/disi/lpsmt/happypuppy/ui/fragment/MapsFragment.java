@@ -29,6 +29,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+import com.unitn.disi.lpsmt.happypuppy.ui.fragment.helper.MapHelper;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -55,7 +58,22 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     private static final long LOCATION_UPDATE_INTERVAL = 5000;
 
     /**
-     * The map
+     * Default map zoom
+     */
+    private static final float DEFAULT_ZOOM = 17.0f;
+
+    /**
+     * Threshold in meters used for reloading API resources that defines the maximum distance from lastLocationPivot
+     */
+    private static final float DISTANCE_THRESHOLD = 2000f;
+
+    /**
+     * {@link User} {@link Marker} size
+     */
+    private static final Pair<Integer, Integer> USER_MARKER_SIZE = Pair.of(128, 128);
+
+    /**
+     * The {@link GoogleMap} map instance
      */
     private GoogleMap map;
 
@@ -75,9 +93,14 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     private LocationCallback locationUpdateCallback;
 
     /**
-     * Current position marker on the {@link GoogleMap map}
+     * Current position marker of the {@link User} on the {@link GoogleMap map}
      */
     private Marker locationMarker = null;
+
+    /**
+     * Last {@link Location} of the {@link User} used for API resource filtering
+     */
+    private Location lastLocationPivot = null;
 
     /**
      * Current authenticated {@link User}
@@ -88,6 +111,11 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
      * Current authenticated {@link User} {@link Bitmap avatar}
      */
     private Bitmap userAvatar = null;
+
+    /**
+     * Map Helper class instance
+     */
+    private MapHelper mapHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +129,7 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
 
         // Maps
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        // Update Location callback
         locationUpdateCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -108,21 +137,27 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
 
                 for (Location location : locationResult.getLocations()) {
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
                     if (locationMarker == null) {
                         // First loading
                         locationMarker = map.addMarker(new MarkerOptions().position(latLng));
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
+                        lastLocationPivot = location;
+                        mapHelper.loadAnimalPlaces(latLng);
+                    } else if (lastLocationPivot != null && lastLocationPivot.distanceTo(location) >= DISTANCE_THRESHOLD) {
+                        // Distance Threshold reached
+                        lastLocationPivot = location;
+                        mapHelper.loadAnimalPlaces(location);
                     }
 
                     locationMarker.setPosition(latLng);
                     locationMarker.setTitle(user != null ? user.username : "YOU");
                     locationMarker.setIcon(userAvatar != null ? BitmapDescriptorFactory.fromBitmap(userAvatar) : null);
-                    locationMarker.showInfoWindow();
                 }
             }
         };
 
-        // User data
+        // Load User data
         loadUserData();
     }
 
@@ -143,6 +178,7 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        mapHelper = new MapHelper(map);
 
         getLocationPermission();
         setMapsUI();
@@ -182,17 +218,16 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     private void loadUserData() {
         if (user != null && userAvatar != null) return;
 
-        Thread thread = new Thread(() -> {
+        new Thread(() -> {
             try {
                 user = AuthManager.getInstance().getAuthUser();
                 userAvatar = Bitmap.createScaledBitmap(
                         BitmapFactory.decodeStream(Objects.requireNonNull(user).avatar.openConnection().getInputStream()),
-                        128, 128, false);
+                        USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to load User avatar image due to " + e.getMessage(), e);
             }
-        });
-        thread.start();
+        }).start();
     }
 
     /**
