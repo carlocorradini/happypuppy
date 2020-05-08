@@ -86,6 +86,9 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         imgPuppy = findViewById(R.id.register_puppy_button_image);
 
         imgPuppy.setOnClickListener(this::showFileChooser);
+        buttonBack.setOnClickListener(v -> {
+            finish();
+        });
 
         /* Reset hint for optional fields */
         raceAnimal.setHint(raceAnimal.getHint()+" "+getString(R.string.optional_field));

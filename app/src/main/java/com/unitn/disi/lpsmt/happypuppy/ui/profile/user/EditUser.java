@@ -4,15 +4,25 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.unitn.disi.lpsmt.happypuppy.R;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.AdapterEditProfile;
 
 public class EditUser extends AppCompatActivity {
-    TabLayout tabLayout;
-    ViewPager viewPager;
+    DrawerLayout drawerLayout;
+    ViewPager pager;
+    TabLayout mTabLayout;
+    TabItem tabPersonalData,tabPassword;
+    PagerAdapter adapter;
 
+    Button confirmInfo;
+    Button confirmPassword;
     Button buttonBack;
 
     @Override
@@ -20,25 +30,25 @@ public class EditUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_user_edit_activity);
 
-        tabLayout = findViewById(R.id.profile_user_edit_tabLayout);
-        viewPager = findViewById(R.id.profile_user_edit_viewPager);
+
+        mTabLayout = findViewById(R.id.profile_user_edit_tabLayout);
+        pager = findViewById(R.id.profile_user_edit_viewPager);
         buttonBack = findViewById(R.id.profile_user_edit_button_back);
 
-        Button confirmInfo = findViewById(R.id.profile_user_edit_button_save_changes);
+        confirmInfo = findViewById(R.id.profile_user_edit_button_save_changes);
+        confirmPassword = findViewById(R.id.profile_user_edit_button_save_password);
 
-        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.info)));
-        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.password)));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabPersonalData = findViewById(R.id.firstItem);
+        tabPassword = findViewById(R.id.secondItem);
 
-        final MyAdapter adapter = new MyAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        drawerLayout = findViewById(R.id.profile_user_edit_drawer_view);
+        final AdapterEditProfile adapter = new AdapterEditProfile(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, mTabLayout.getTabCount());
+        pager.setAdapter(adapter);
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                pager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -48,8 +58,11 @@ public class EditUser extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+
 
         buttonBack.setOnClickListener(v -> finish());
     }

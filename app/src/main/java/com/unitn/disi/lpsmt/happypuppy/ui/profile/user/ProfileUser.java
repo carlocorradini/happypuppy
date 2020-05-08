@@ -3,6 +3,7 @@ package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +18,10 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 import com.unitn.disi.lpsmt.happypuppy.Launcher;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
@@ -26,11 +30,13 @@ import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.RegisterPuppy;
 import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
+import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,10 +49,16 @@ import java.util.UUID;
 public class ProfileUser extends AppCompatActivity {
     private static final int REQUEST_CODE = 6384;
 
+    /**
+     * {@link User} {@link Marker} size
+     */
+    private static final Pair<Integer, Integer> USER_MARKER_SIZE = Pair.of(128, 128);
+
     Button buttonBack;
     TextView usernameTop;
     ImageView buttonSignOut;
-    ImageView userAvatar;
+    ImageView userAvatarView;
+    Bitmap userAvatar;
     Button changeAvatar;
     TextView numberFriends;
     TextView numberPuppies;
@@ -55,7 +67,7 @@ public class ProfileUser extends AppCompatActivity {
     Button button1;
     Button button2;
 
-    User userLogged;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +78,7 @@ public class ProfileUser extends AppCompatActivity {
         buttonBack = findViewById(R.id.profile_user_button_back);
         usernameTop = findViewById(R.id.profile_user_username);
         buttonSignOut = findViewById(R.id.profile_user_sign_out);
-        userAvatar = findViewById(R.id.profile_user_profile_image);
+        userAvatarView = findViewById(R.id.profile_user_profile_image);
         changeAvatar = findViewById(R.id.profile_user_button_image);
         numberFriends = findViewById(R.id.profile_user_number_friends);
         numberPuppies = findViewById(R.id.profile_user_number_puppies);
@@ -88,7 +100,6 @@ public class ProfileUser extends AppCompatActivity {
 
             button1.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), EditUser.class);
-                intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
                 startActivity(intent);
             });
             button2.setOnClickListener(v -> {
@@ -112,42 +123,10 @@ public class ProfileUser extends AppCompatActivity {
             });
         }
 
-        Call<API.Response<User>> call = API.getInstance().getClient().create(UserService.class).findById(uuid);
-        call.enqueue(new Callback<API.Response<User>>() {
-            @Override
-            public void onResponse(@NotNull Call<API.Response<User>> call, @NotNull Response<API.Response<User>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    userLogged = response.body().data;
-                    new ImageUtil.DownloadImage(avatar -> {
-                        if (avatar == null) return;
-                        userAvatar.setImageBitmap(avatar);
-                    }).execute(userLogged.avatar);
-                    usernameTop.setText(userLogged.username);
-
-                } else if (response.errorBody() != null) {
-                    switch (response.code()) {
-                        case HttpStatus.SC_NOT_FOUND: {
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(),
-                                    getWindow().getDecorView().findViewById(android.R.id.content),
-                                    getResources().getString(R.string.user_not_found));
-                            break;
-                        }
-                        default:
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(),
-                                    getWindow().getDecorView().findViewById(android.R.id.content),
-                                    getResources().getString(R.string.internal_server_error));
-                            break;
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<API.Response<User>> call, @NotNull Throwable t) {
-                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(),
-                        getWindow().getDecorView().findViewById(android.R.id.content),
-                        getResources().getString(R.string.no_internet));
-            }
-        });
+        /**
+         * LOAD DATA OF USER
+         */
+        loadData();
 
         buttonBack.setOnClickListener(v -> {
             finish();
@@ -174,6 +153,23 @@ public class ProfileUser extends AppCompatActivity {
                     });
             alertDialog.show();
         });
+    }
+
+    /**
+     * Load/Download useful data used in the current {@link ActivityCompat activity} and {@link GoogleMap map}.
+     * It can be called once.
+     */
+    private void loadData() {
+        if (user != null && userAvatar != null) return;
+
+        new UserUtil.DownloadAuthUser(user -> {
+            this.user = user;
+            new ImageUtil.DownloadImage(avatar -> {
+                if (avatar == null) return;
+                userAvatar = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
+                this.userAvatarView.setImageBitmap(avatar);
+            }).execute(user.avatar);
+        }).execute();
     }
 
     /* Open FileChooser Dialog */

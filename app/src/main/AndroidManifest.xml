@@ -39,9 +39,6 @@
         <activity android:name=".ui.profile.user.ProfileUser"/>
         <activity android:name=".ui.profile.puppy.ProfilePuppy"/>
         <activity android:name=".ui.profile.user.EditUser"/>
-        <activity android:name=".ui.profile.user.tab_info"/>
-        <activity android:name=".ui.profile.user.tab_password"/>
-        <activity android:name=".ui.profile.user.MyAdapter"/>
     </application>
 
 </manifest>

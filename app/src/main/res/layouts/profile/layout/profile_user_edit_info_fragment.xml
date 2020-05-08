@@ -2,13 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".profile.">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    tools:context=".ui.profile.user.Tab_info">
 
     <ScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/colorPrimary"
         android:padding="@dimen/padding">
 
         <LinearLayout
@@ -16,7 +17,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
             android:padding="10dip">
 
             <EditText
@@ -71,17 +71,6 @@
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions"
                 android:windowSoftInputMode="stateAlwaysHidden"/>
-
-            <EditText
-                android:id="@+id/profile_user_edit_input_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_lock"
-                android:drawableTint="@color/colorAccent"
-                android:hint="@string/password"
-                android:importantForAutofill="no"
-                android:inputType="textPassword" />
 
             <Button
                 android:id="@+id/profile_user_edit_button_save_changes"
