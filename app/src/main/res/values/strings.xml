@@ -54,10 +54,10 @@
     <string name="puppy_behaviour">Personality</string>
     <string name="upload_avatar">Upload a photo</string>
     <string name="puppy_owner">Owner</string>
-
     <string name="otp_sms">OTP SMS Code</string>
     <string name="otp_email">OTP EMail Code</string>
     <string name="optional_field"> (optional)</string>
+    <string name="avatar">Avatar</string>
     <!-- -->
 
     <!-- Strings for privacy settings.. -->

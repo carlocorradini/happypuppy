@@ -58,6 +58,7 @@
     <string name="otp_sms">Codice OTP SMS</string>
     <string name="otp_email">Codice OTP Email</string>
     <string name="upload_avatar">Carica una foto</string>
+    <string name="avatar">Avatar</string>
     <!-- -->
 
     <!-- String for privacy settings.. -->

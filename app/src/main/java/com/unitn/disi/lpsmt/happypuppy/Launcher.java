@@ -6,7 +6,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
-import com.unitn.disi.lpsmt.happypuppy.auth.SignIn;
+import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
+import com.unitn.disi.lpsmt.happypuppy.ui.auth.SignIn;
 
 public class Launcher extends AppCompatActivity {
     @Override

@@ -1,13 +1,19 @@
 package com.unitn.disi.lpsmt.happypuppy.util;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 
 import com.unitn.disi.lpsmt.happypuppy.App;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Image utility class
@@ -44,5 +50,83 @@ public final class ImageUtil {
     public static Bitmap fromDrawable(@DrawableRes int id, int width, int height) {
         Bitmap bitmap = fromDrawable(id);
         return bitmap != null ? Bitmap.createScaledBitmap(bitmap, width, height, false) : null;
+    }
+
+    /**
+     * Download an {@link Bitmap image} given the {@link URL url}.
+     * This class must be constructed with a {@link OnTaskCompleted<Bitmap> listener} function when
+     * the {@link Bitmap image} has been downloaded.
+     * The downloaded {@link Bitmap image} can be null if an error occurs.
+     *
+     * @author Carlo Corradini
+     */
+    public static final class DownloadImage extends AsyncTask<URL, Void, Bitmap> {
+        /**
+         * {@link Log} TAG of this class
+         */
+        private static final String TAG = DownloadImage.class.getName();
+
+        /**
+         * Callback listener called when the download operation has finished
+         */
+        private OnTaskCompleted<Bitmap> listener;
+
+        /**
+         * Image width if scaled
+         */
+        private Integer width;
+
+        /**
+         * Image height if scaled
+         */
+        private Integer height;
+
+        /**
+         * Construct a {@link DownloadImage} class with a finish callback {@link OnTaskCompleted<Bitmap> listener}
+         * and resize the image with the given width & height
+         *
+         * @param listener The callback listener called when the {@link Bitmap image} has been download
+         * @param width    Width of the downloaded {@link Bitmap image} resized
+         * @param height   Height of the downloaded {@link Bitmap image} resized
+         */
+        public DownloadImage(OnTaskCompleted<Bitmap> listener, Integer width, Integer height) {
+            this.listener = listener;
+            this.width = width;
+            this.height = height;
+        }
+
+        /**
+         * Construct a {@link DownloadImage} class with a finish callback {@link OnTaskCompleted<Bitmap> listener}
+         *
+         * @param listener The callback listener called when the {@link Bitmap image} has been download
+         */
+        public DownloadImage(OnTaskCompleted<Bitmap> listener) {
+            this(listener, null, null);
+        }
+
+        @Override
+        protected Bitmap doInBackground(URL... urls) {
+            if (urls == null || urls.length == 0 || urls[0] == null) return null;
+            Bitmap image = null;
+
+            try {
+                image = BitmapFactory.decodeStream(urls[0].openConnection().getInputStream());
+
+                if (width != null && height != null) {
+                    image = Bitmap.createScaledBitmap(image, width, height, false);
+                }
+
+                Log.i(TAG, "Successfully downloaded image at " + urls[0]);
+            } catch (IOException e) {
+                Log.e(TAG, "Unable to download image due to " + e.getMessage(), e);
+            }
+
+            return image;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap image) {
+            listener.onTaskCompleted(image);
+        }
     }
 }

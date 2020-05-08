@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.profile.user;
+package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
 import android.content.Context;
 

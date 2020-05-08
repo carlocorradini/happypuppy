@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.auth;
+package com.unitn.disi.lpsmt.happypuppy.ui.auth;
 
 import android.os.Bundle;
 import android.view.View;
@@ -99,8 +99,6 @@ public class ForgotPassword extends AppCompatActivity {
                 return !inputEmail.getText().toString().isEmpty();
             }
         });
-        buttonBack.setOnClickListener(v -> {
-            finish();
-        });
+        buttonBack.setOnClickListener(v -> finish());
     }
 }

@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.ui.fragment.helper;
+package com.unitn.disi.lpsmt.happypuppy.helper;
 
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -34,7 +34,7 @@ import retrofit2.Response;
  *
  * @author Carlo Corradini
  */
-public class MapHelper {
+public final class MapHelper {
     /**
      * {@link Log} TAG of this class
      */

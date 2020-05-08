@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.profile.user;
+package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -51,8 +51,6 @@ public class EditUser extends AppCompatActivity {
             }
         });
 
-        buttonBack.setOnClickListener(v -> {
-            finish();
-        });
+        buttonBack.setOnClickListener(v -> finish());
     }
 }

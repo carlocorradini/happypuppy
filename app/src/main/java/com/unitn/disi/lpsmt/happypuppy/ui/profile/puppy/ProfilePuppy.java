@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.profile.puppy;
+package com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.FileUtils;
 import android.provider.OpenableColumns;
-import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,21 +16,9 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.auth0.android.jwt.JWT;
-import com.squareup.picasso.Picasso;
-import com.unitn.disi.lpsmt.happypuppy.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
-import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
-import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import org.apache.http.HttpStatus;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,12 +60,7 @@ public class ProfilePuppy extends AppCompatActivity {
             buttonsVisit.setVisibility(View.GONE);
             changeAvatar.setVisibility(View.VISIBLE);
 
-            changeAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showFileChooser(v);
-                }
-            });
+            changeAvatar.setOnClickListener(this::showFileChooser);
         }else{
             buttonsUser.setVisibility(View.GONE);
             buttonsVisit.setVisibility(View.VISIBLE);

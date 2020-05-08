@@ -1,17 +1,18 @@
-package com.unitn.disi.lpsmt.happypuppy.ui.fragment;
+package com.unitn.disi.lpsmt.happypuppy.ui;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -26,26 +27,28 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
-import com.unitn.disi.lpsmt.happypuppy.ui.fragment.helper.MapHelper;
+import com.unitn.disi.lpsmt.happypuppy.ui.profile.user.ProfileUser;
+import com.unitn.disi.lpsmt.happypuppy.helper.MapHelper;
+import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
+import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.IOException;
-import java.util.Objects;
-
 /**
- * {@link GoogleMap} {@link FragmentActivity} map fragment
+ * Home page {@link AppCompatActivity activity} with {@link GoogleMap map} integration
  *
  * @author Carlo Corradini
  */
-public class MapsFragment extends FragmentActivity implements OnMapReadyCallback {
+public class HomePage extends AppCompatActivity implements OnMapReadyCallback {
+
     /**
      * {@link Log} TAG of this class
      */
-    private static final String TAG = MapsFragment.class.getName();
+    private static final String TAG = HomePage.class.getName();
 
     /**
      * Access Fine Location permission identifier
@@ -117,48 +120,34 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
      */
     private MapHelper mapHelper;
 
+    /**
+     * Bottom Navigation View
+     */
+    BottomNavigationView bottomNavigation;
+    /**
+     * Top right {@link User} avatar
+     */
+    ImageView imageUserAvatar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_maps);
+        setContentView(R.layout.home_page_activity);
 
-        // Maps layout
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        assert mapFragment != null;
-        mapFragment.getMapAsync(this);
+        bottomNavigation = findViewById(R.id.home_page_bottom_nav);
+        imageUserAvatar = findViewById(R.id.home_page_image_user_avatar);
 
-        // Maps
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        // Update Location callback
-        locationUpdateCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) return;
+        imageUserAvatar.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), ProfileUser.class);
+            intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
+            startActivity(intent);
+        });
 
-                for (Location location : locationResult.getLocations()) {
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        // Initialize map
+        initMap();
 
-                    if (locationMarker == null) {
-                        // First loading
-                        locationMarker = map.addMarker(new MarkerOptions().position(latLng));
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
-                        lastLocationPivot = location;
-                        mapHelper.loadAnimalPlaces(latLng);
-                    } else if (lastLocationPivot != null && lastLocationPivot.distanceTo(location) >= DISTANCE_THRESHOLD) {
-                        // Distance Threshold reached
-                        lastLocationPivot = location;
-                        mapHelper.loadAnimalPlaces(location);
-                    }
-
-                    locationMarker.setPosition(latLng);
-                    locationMarker.setTitle(user != null ? user.username : "YOU");
-                    locationMarker.setIcon(userAvatar != null ? BitmapDescriptorFactory.fromBitmap(userAvatar) : null);
-                }
-            }
-        };
-
-        // Load User data
-        loadUserData();
+        // Load data
+        loadData();
     }
 
     @Override
@@ -187,6 +176,46 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
+     * Initialize {@link GoogleMap map} layout and functionality
+     */
+    private void initMap() {
+        // Maps layout
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
+
+        // Maps provider client
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        // Update location callback
+        locationUpdateCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) return;
+
+                for (Location location : locationResult.getLocations()) {
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    if (locationMarker == null) {
+                        // First loading
+                        locationMarker = map.addMarker(new MarkerOptions().position(latLng));
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
+                        lastLocationPivot = location;
+                        mapHelper.loadAnimalPlaces(latLng);
+                    } else if (lastLocationPivot != null && lastLocationPivot.distanceTo(location) >= DISTANCE_THRESHOLD) {
+                        // Distance Threshold reached
+                        lastLocationPivot = location;
+                        mapHelper.loadAnimalPlaces(location);
+                    }
+
+                    locationMarker.setPosition(latLng);
+                    locationMarker.setTitle(user != null ? user.username : "YOU");
+                    locationMarker.setIcon(userAvatar != null ? BitmapDescriptorFactory.fromBitmap(userAvatar) : null);
+                }
+            }
+        };
+    }
+
+    /**
      * Set {@link GoogleMap} UI.
      * The options may differ base on location permission.
      */
@@ -210,24 +239,20 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * Load current authenticated {@link User} data.
+     * Load/Download useful data used in the current {@link ActivityCompat activity} and {@link GoogleMap map}.
      * It can be called once.
-     *
-     * @see AuthManager
      */
-    private void loadUserData() {
+    private void loadData() {
         if (user != null && userAvatar != null) return;
 
-        new Thread(() -> {
-            try {
-                user = AuthManager.getInstance().getAuthUser();
-                userAvatar = Bitmap.createScaledBitmap(
-                        BitmapFactory.decodeStream(Objects.requireNonNull(user).avatar.openConnection().getInputStream()),
-                        USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
-            } catch (IOException e) {
-                Log.e(TAG, "Unable to load User avatar image due to " + e.getMessage(), e);
-            }
-        }).start();
+        new UserUtil.DownloadAuthUser(user -> {
+            this.user = user;
+            new ImageUtil.DownloadImage(avatar -> {
+                if (avatar == null) return;
+                this.userAvatar = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
+                this.imageUserAvatar.setImageBitmap(avatar);
+            }).execute(user.avatar);
+        }).execute();
     }
 
     /**

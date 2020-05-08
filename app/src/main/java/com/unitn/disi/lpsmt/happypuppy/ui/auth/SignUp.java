@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.auth;
+package com.unitn.disi.lpsmt.happypuppy.ui.auth;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -130,9 +130,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
             datePicker.show(getSupportFragmentManager(), "date picker");
         });
 
-        buttonBack.setOnClickListener(v -> {
-            finish();
-        });
+        buttonBack.setOnClickListener(v -> finish());
     }
 
     @Override
@@ -197,12 +195,12 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                 } else if (response.errorBody() != null) {
                     switch (response.code()) {
                         case HttpStatus.SC_CONFLICT: {
-                            String conflicts = "";
+                            StringBuilder conflicts = new StringBuilder();
                             API.Response<List<ConflictError>> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_CONFLICT_LIST);
                             for (int i = 0; i < error.data.size(); i++) {
-                                conflicts += error.data.get(i).property;
+                                conflicts.append(error.data.get(i).property);
                                 if(i != error.data.size()-1)
-                                    conflicts += ", ";
+                                    conflicts.append(", ");
                             }
                             System.out.println("INFO: " + conflicts);
                             String message = getResources().getString(R.string.conflicts_on)+conflicts;

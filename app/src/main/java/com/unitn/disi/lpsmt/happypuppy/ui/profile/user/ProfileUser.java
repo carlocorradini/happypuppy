@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.profile.user;
+package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,14 +18,14 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.Launcher;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
-import com.unitn.disi.lpsmt.happypuppy.profile.puppy.RegisterPuppy;
+import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.RegisterPuppy;
+import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,7 +76,7 @@ public class ProfileUser extends AppCompatActivity {
 
         UUID uuid = UUID.fromString(getIntent().getStringExtra("uuid_user"));
 
-        if(AuthManager.getInstance().isCurrentAuthUser(uuid)){
+        if (AuthManager.getInstance().isCurrentAuthUser(uuid)) {
             buttonsUser.setVisibility(View.VISIBLE);
             buttonsVisit.setVisibility(View.GONE);
             changeAvatar.setVisibility(View.VISIBLE);
@@ -84,30 +84,19 @@ public class ProfileUser extends AppCompatActivity {
             button1 = findViewById(R.id.profile_user_button_edit_profile);
             button2 = findViewById(R.id.profile_user_button_add_puppy);
 
-            changeAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showFileChooser(v);
-                }
-            });
+            changeAvatar.setOnClickListener(this::showFileChooser);
 
-            button1.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), EditUser.class);
-                    intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
-                    startActivity(intent);
-                }
+            button1.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), EditUser.class);
+                intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
+                startActivity(intent);
             });
-            button2.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), RegisterPuppy.class);
-                    intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
-                    startActivity(intent);
-                }
+            button2.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), RegisterPuppy.class);
+                intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
+                startActivity(intent);
             });
-        }else{
+        } else {
             buttonsUser.setVisibility(View.GONE);
             buttonsVisit.setVisibility(View.VISIBLE);
             changeAvatar.setVisibility(View.GONE);
@@ -115,17 +104,11 @@ public class ProfileUser extends AppCompatActivity {
             button1 = findViewById(R.id.profile_user_button_friendship);
             button2 = findViewById(R.id.profile_user_button_view_puppies);
 
-            button1.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
+            button1.setOnClickListener(v -> {
 
-                }
             });
-            button2.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
+            button2.setOnClickListener(v -> {
 
-                }
             });
         }
 
@@ -135,7 +118,10 @@ public class ProfileUser extends AppCompatActivity {
             public void onResponse(@NotNull Call<API.Response<User>> call, @NotNull Response<API.Response<User>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     userLogged = response.body().data;
-                    Picasso.get().load(userLogged.avatar.toString()).into(userAvatar);
+                    new ImageUtil.DownloadImage(avatar -> {
+                        if (avatar == null) return;
+                        userAvatar.setImageBitmap(avatar);
+                    }).execute(userLogged.avatar);
                     usernameTop.setText(userLogged.username);
 
                 } else if (response.errorBody() != null) {
@@ -189,6 +175,7 @@ public class ProfileUser extends AppCompatActivity {
             alertDialog.show();
         });
     }
+
     /* Open FileChooser Dialog */
     public void showFileChooser(View arg0) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -207,7 +194,7 @@ public class ProfileUser extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         // Ritorna se l'utente non ha selezionato nulla
         if (requestCode != REQUEST_CODE || resultCode != RESULT_OK) {
@@ -252,6 +239,7 @@ public class ProfileUser extends AppCompatActivity {
 
         return tempFile;
     }
+
     /**
      * Ottiene il nome del file. Maggiori informazioni qui
      * https://developer.android.com/training/secure-file-sharing/retrieve-info.html#RetrieveFileInfo

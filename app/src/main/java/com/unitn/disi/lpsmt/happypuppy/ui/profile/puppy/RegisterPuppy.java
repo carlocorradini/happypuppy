@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.profile.puppy;
+package com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -25,7 +25,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.unitn.disi.lpsmt.happypuppy.HomePage;
+import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
 
@@ -85,12 +85,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         /* Image input for puppy */
         imgPuppy = findViewById(R.id.register_puppy_button_image);
 
-        imgPuppy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFileChooser(v);
-            }
-        });
+        imgPuppy.setOnClickListener(this::showFileChooser);
 
         /* Reset hint for optional fields */
         raceAnimal.setHint(raceAnimal.getHint()+" "+getString(R.string.optional_field));
@@ -111,67 +106,50 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         unitWeightPuppy.setAdapter(adapterUnit);
 
         /* Button listeners */
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), HomePage.class); /* TODO: layout confirm created puppy */
-                startActivity(intent);
-            }
+        confirm.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), HomePage.class); /* TODO: layout confirm created puppy */
+            startActivity(intent);
         });
 
-        personality.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder pBuilder = new AlertDialog.Builder(RegisterPuppy.this);
-                LayoutInflater inflater = getLayoutInflater();
-                pBuilder.setTitle(getResources().getString(R.string.puppy_behaviour));
-                // Set an EditText view to get user input
+        personality.setOnClickListener(v -> {
+            final AlertDialog.Builder pBuilder = new AlertDialog.Builder(RegisterPuppy.this);
+            LayoutInflater inflater = getLayoutInflater();
+            pBuilder.setTitle(getResources().getString(R.string.puppy_behaviour));
+            // Set an EditText view to get user input
 
-                pBuilder.setMultiChoiceItems(listItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        /* Which item, isChecked */
-                        if(isChecked) {
-                            if(!puppyPersonality.contains(which)){
-                                puppyPersonality.add(which);
-                            } else{
-                                puppyPersonality.remove(which);
-                            }
-                        }
+            pBuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
+                /* Which item, isChecked */
+                if(isChecked) {
+                    if(!puppyPersonality.contains(which)){
+                        puppyPersonality.add(which);
+                    } else{
+                        puppyPersonality.remove(which);
                     }
-                });
-                pBuilder.setView(inflater.inflate(R.layout.custom_multiple_choice_fragment, null));
-                pBuilder.setCancelable(false);
-                pBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String item = "";
-                        for (int i = 0; i < puppyPersonality.size(); i++){
-                            item = item + listItems[puppyPersonality.get(i)];
-                            if(i!= puppyPersonality.size() -1)
-                                item = item + ", ";
-                        }
+                }
+            });
+            pBuilder.setView(inflater.inflate(R.layout.custom_multiple_choice_fragment, null));
+            pBuilder.setCancelable(false);
+            pBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String item = "";
+                    for (int i = 0; i < puppyPersonality.size(); i++){
+                        item = item + listItems[puppyPersonality.get(i)];
+                        if(i!= puppyPersonality.size() -1)
+                            item = item + ", ";
                     }
-                });
-                pBuilder.setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                }
+            });
+            pBuilder.setNegativeButton(R.string.dismiss, (dialog, which) -> dialog.dismiss());
 
-                pBuilder.setNeutralButton(R.string.clear_all, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        for (int j = 0; j < checkedItems.length; j++){
-                            checkedItems[j] = false;
-                            puppyPersonality.clear();
-                        }
-                    }
-                });
-                AlertDialog pDialog = pBuilder.create();
-                pDialog.show();
-            }
+            pBuilder.setNeutralButton(R.string.clear_all, (dialog, which) -> {
+                for (int j = 0; j < checkedItems.length; j++){
+                    checkedItems[j] = false;
+                    puppyPersonality.clear();
+                }
+            });
+            AlertDialog pDialog = pBuilder.create();
+            pDialog.show();
         });
 
         /* Get checklist for dialog */
@@ -181,12 +159,9 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
 
 
         /* Birth date of puppy */
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment datePicker = new DatePicker();
-                datePicker.show(getSupportFragmentManager(), "date picker");
-            }
+        date.setOnClickListener(v -> {
+            DialogFragment datePicker = new DatePicker();
+            datePicker.show(getSupportFragmentManager(), "date picker");
         });
         date.setInputType(InputType.TYPE_NULL);
     }

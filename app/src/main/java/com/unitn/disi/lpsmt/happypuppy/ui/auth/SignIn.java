@@ -1,4 +1,4 @@
-package com.unitn.disi.lpsmt.happypuppy.auth;
+package com.unitn.disi.lpsmt.happypuppy.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.auth0.android.jwt.JWT;
-import com.unitn.disi.lpsmt.happypuppy.HomePage;
+import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
