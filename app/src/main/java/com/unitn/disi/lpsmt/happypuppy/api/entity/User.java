@@ -192,6 +192,15 @@ public class User {
     public List<Long> puppies;
 
     /**
+     * The number of {@link UserFriend friends} of the User
+     *
+     * @see UserFriend
+     */
+    @SerializedName("friends")
+    @Expose
+    public Long friends;
+
+    /**
      * Creation {@link LocalDateTime} of the User
      */
     @SerializedName("created_at")
@@ -220,10 +229,11 @@ public class User {
      * @param phone       Phone number of the User
      * @param avatar      Avatar image url of the User
      * @param puppies     List of Puppies ids of the User
+     * @param friends     The number of {@link UserFriend friends} of the User
      * @param createdAt   Creation {@link LocalDateTime} of the User
      * @param updatedAt   Update {@link LocalDateTime} of the User
      */
-    public User(UUID id, String username, String password, Role role, String name, String surname, Gender gender, LocalDate dateOfBirth, String email, String phone, URL avatar, List<Long> puppies, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(UUID id, String username, String password, Role role, String name, String surname, Gender gender, LocalDate dateOfBirth, String email, String phone, URL avatar, List<Long> puppies, Long friends, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -236,6 +246,7 @@ public class User {
         this.phone = phone;
         this.avatar = avatar;
         this.puppies = puppies;
+        this.friends = friends;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
