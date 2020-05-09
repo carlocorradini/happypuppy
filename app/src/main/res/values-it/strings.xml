@@ -23,6 +23,7 @@
     <string name="sign_in">Accedi</string>
     <string name="sign_up">Registrati</string>
     <string name="save_changes">Salva modifiche</string>
+    <string name="changes_applied">Modifica conclusa</string>
     <string name="sign_out">Esci</string>
     <string name="sign_out_confirm">Sei sicuro di voler uscire?</string>
     <string name="edit_profile">Modifica Profilo</string>

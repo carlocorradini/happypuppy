@@ -21,6 +21,7 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="save_changes">Save Changes</string>
+    <string name="changes_applied">Update completed</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_out_confirm">Are you sure to sign out?</string>
     <string name="edit_profile">Edit Profile</string>

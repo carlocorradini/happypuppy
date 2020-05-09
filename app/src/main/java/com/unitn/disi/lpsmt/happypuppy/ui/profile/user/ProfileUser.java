@@ -27,6 +27,8 @@ import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.UserFriend;
+import com.unitn.disi.lpsmt.happypuppy.api.service.UserFriendService;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.RegisterPuppy;
 import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
@@ -44,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.UUID;
 
 public class ProfileUser extends AppCompatActivity {
@@ -169,7 +172,14 @@ public class ProfileUser extends AppCompatActivity {
                 userAvatar = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
                 this.userAvatarView.setImageBitmap(avatar);
             }).execute(user.avatar);
+            this.numberPuppies.setText(String.valueOf(this.user.puppies.size()));
+
+            int numberFriends = countFriends(this.user.id);
         }).execute();
+    }
+
+    private int countFriends(UUID idAuthUser){
+        //Call<API.Response<List<UserFriend>>> call = API.getInstance().getClient().create(UserFriendService.class).findById(idAuthUser);
     }
 
     /* Open FileChooser Dialog */

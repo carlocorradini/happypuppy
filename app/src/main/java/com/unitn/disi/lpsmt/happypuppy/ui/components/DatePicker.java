@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class DatePicker extends DialogFragment {
     @Override
@@ -16,7 +17,7 @@ public class DatePicker extends DialogFragment {
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), (DatePickerDialog.OnDateSetListener) getActivity(), year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireActivity(), (DatePickerDialog.OnDateSetListener) getActivity(), year, month, day);
         datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
 
         return datePickerDialog;
