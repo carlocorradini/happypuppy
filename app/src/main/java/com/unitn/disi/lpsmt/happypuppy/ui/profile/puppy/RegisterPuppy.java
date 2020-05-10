@@ -25,6 +25,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
 import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -60,6 +63,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
     String[] listItems;
     boolean[] checkedItems;
     ArrayList<Integer> puppyPersonality = new ArrayList<>();
+    Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +114,24 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
 
         /* Button listeners */
         confirm.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), HomePage.class); /* TODO: layout confirm created puppy */
-            startActivity(intent);
+            Puppy puppy = new Puppy();
+            puppy.name = puppyName.getText().toString();
+            //puppy.specie = kindAnimal.getText().toString();
+            //puppy.breeds
+            //puppy.personalities
+            puppy.user = AuthManager.getInstance().getAuthUserId();
+            if (calendar != null) {
+                puppy.dateOfBirth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            }
+            if (genderFemale.isSelected())
+                puppy.gender = Puppy.Gender.FEMALE;
+            else if (genderMale.isSelected())
+                puppy.gender = Puppy.Gender.MALE;
+
+            // Validation
+            if (validatePuppy(v, puppy)) {
+                registerPuppy(v, puppy);
+            }
         });
 
         personality.setOnClickListener(v -> {
@@ -167,6 +187,13 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
             datePicker.show(getSupportFragmentManager(), "date picker");
         });
         date.setInputType(InputType.TYPE_NULL);
+    }
+
+    public boolean validatePuppy(final View v, final Puppy puppy){
+        return true;
+    }
+    public void registerPuppy(final View v, final Puppy puppy){
+
     }
 
     /* Date selected */

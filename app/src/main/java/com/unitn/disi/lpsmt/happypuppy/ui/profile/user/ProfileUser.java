@@ -1,6 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.FileUtils;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,7 +46,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.UUID;
 
 public class ProfileUser extends AppCompatActivity {
@@ -56,6 +55,10 @@ public class ProfileUser extends AppCompatActivity {
      * {@link User} {@link Marker} size
      */
     private static final Pair<Integer, Integer> USER_MARKER_SIZE = Pair.of(128, 128);
+    /**
+     * {@link Log} TAG of this class
+     */
+    private static final String TAG = ProfileUser.class.getName();
 
     Button buttonBack;
     TextView usernameTop;
@@ -71,6 +74,8 @@ public class ProfileUser extends AppCompatActivity {
     Button button2;
 
     User user;
+    UUID uuid;
+    UserFriend friendship;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +94,13 @@ public class ProfileUser extends AppCompatActivity {
         buttonsUser = findViewById(R.id.profile_user_buttons_profile);
         buttonsVisit = findViewById(R.id.profile_user_buttons_visit);
 
-        UUID uuid = UUID.fromString(getIntent().getStringExtra("uuid_user"));
+        uuid = UUID.fromString(getIntent().getStringExtra("uuid_user"));
+        friendship = new UserFriend();
 
         if (AuthManager.getInstance().isCurrentAuthUser(uuid)) {
+
+            loadData();
+
             buttonsUser.setVisibility(View.VISIBLE);
             buttonsVisit.setVisibility(View.GONE);
             changeAvatar.setVisibility(View.VISIBLE);
@@ -111,25 +120,46 @@ public class ProfileUser extends AppCompatActivity {
                 startActivity(intent);
             });
         } else {
+            //Load data of visited user
+            Call<API.Response<User>> call = API.getInstance().getClient().create(UserService.class).findById(uuid);
+            call.enqueue(new Callback<API.Response<User>>() {
+                @Override
+                public void onResponse(@NotNull Call<API.Response<User>> call, @NotNull Response<API.Response<User>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        user = response.body().data;
+                        new ImageUtil.DownloadImage(avatar -> {
+                            if (avatar == null) return;
+                            userAvatar = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
+                            userAvatarView.setImageBitmap(avatar);
+                        }).execute(user.avatar);
+                        numberPuppies.setText(String.valueOf(user.puppies.size()));
+                        if(user.friends != null)
+                            numberFriends.setText(String.valueOf(user.friends));
+                        else
+                            numberFriends.setText("0");
+                        usernameTop.setText(user.username);
+                        Log.e(TAG, "Successfully downloaded current visited User");
+                    } else {
+                        Log.e(TAG, "Unable to download current visited User due to failure response " + response.code() + "received");
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<API.Response<User>> call, @NotNull Throwable t) {
+                    Log.e(TAG, "Unable to download current visited User due to " + t.getMessage(), t);
+                }
+            });
+
             buttonsUser.setVisibility(View.GONE);
             buttonsVisit.setVisibility(View.VISIBLE);
             changeAvatar.setVisibility(View.GONE);
+            buttonSignOut.setVisibility(View.GONE);
 
             button1 = findViewById(R.id.profile_user_button_friendship);
             button2 = findViewById(R.id.profile_user_button_view_puppies);
 
-            button1.setOnClickListener(v -> {
-
-            });
-            button2.setOnClickListener(v -> {
-
-            });
+            viewFriendship();
         }
-
-        /**
-         * LOAD DATA OF USER
-         */
-        loadData();
 
         buttonBack.setOnClickListener(v -> {
             finish();
@@ -140,20 +170,14 @@ public class ProfileUser extends AppCompatActivity {
             alertDialog.setMessage(getResources().getString(R.string.sign_out_confirm));
             alertDialog.setIcon(R.drawable.ic_sign_out);
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.confirm),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            AuthManager.getInstance().clearToken();
-                            Intent intent = new Intent(v.getContext(), Launcher.class);
-                            startActivity(intent);
-                            finish();
-                        }
+                    (dialog, which) -> {
+                        AuthManager.getInstance().clearToken();
+                        Intent intent = new Intent(v.getContext(), Launcher.class);
+                        startActivity(intent);
+                        finish();
                     });
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.dismiss),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            alertDialog.dismiss();
-                        }
-                    });
+                    (dialog, which) -> alertDialog.dismiss());
             alertDialog.show();
         });
     }
@@ -173,13 +197,152 @@ public class ProfileUser extends AppCompatActivity {
                 this.userAvatarView.setImageBitmap(avatar);
             }).execute(user.avatar);
             this.numberPuppies.setText(String.valueOf(this.user.puppies.size()));
-
-            int numberFriends = countFriends(this.user.id);
+            if(this.user.friends != null)
+                this.numberFriends.setText(String.valueOf(this.user.friends));
+            else
+                this.numberFriends.setText("0");
+            this.usernameTop.setText(this.user.username);
         }).execute();
     }
 
-    private int countFriends(UUID idAuthUser){
-        //Call<API.Response<List<UserFriend>>> call = API.getInstance().getClient().create(UserFriendService.class).findById(idAuthUser);
+    public void viewFriendship(){
+        Call<API.Response<UserFriend>> call = API.getInstance().getClient().create(UserFriendService.class).findById(uuid);
+        call.enqueue(new Callback<API.Response<UserFriend>>() {
+            @Override
+            public void onResponse(@NotNull Call<API.Response<UserFriend>> call, @NotNull Response<API.Response<UserFriend>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                     friendship = response.body().data;
+                }else if(response.code() == HttpStatus.SC_NOT_FOUND){
+                    Log.i(TAG,"Didn't found a friendship");
+                    friendship.type = null;
+                }
+                setButtons(friendship);
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<API.Response<UserFriend>> call, @NotNull Throwable t) {
+                Log.e(TAG, "Unable to get the friendship " + t.getMessage(), t);
+            }
+        });
+    }
+    public void addFriend(){
+        friendship.friend = uuid;
+        Call<API.Response<UUID>> call = API.getInstance().getClient().create(UserFriendService.class).create(friendship);
+        call.enqueue(new Callback<API.Response<UUID>>() {
+            @Override
+            public void onResponse(@NotNull Call<API.Response<UUID>> call, @NotNull Response<API.Response<UUID>> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    viewFriendship();
+                    reload();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<API.Response<UUID>> call, @NotNull Throwable t) {
+                Log.e(TAG, "Unable to add friend due to " + t.getMessage(), t);
+            }
+        });
+    }
+
+    public void removeFriend(){
+        AlertDialog alertDialog = new AlertDialog.Builder(ProfileUser.this).create();
+        alertDialog.setTitle(getResources().getString(R.string.remove_friend));
+        alertDialog.setMessage(getResources().getString(R.string.remove_friend)+"?");
+        alertDialog.setIcon(R.drawable.ic_add_friend);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.confirm),
+                (dialog, which) -> {
+                    Call<API.Response> delete = API.getInstance().getClient().create(UserFriendService.class).delete(uuid);
+                    delete.enqueue(new Callback<API.Response>() {
+                        @Override
+                        public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
+                            if(response.isSuccessful()){
+                                viewFriendship();
+                                reload();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
+                            Log.e(TAG, "Unable to remove friend due to failure response " + t.getMessage() + "received");
+                        }
+                    });
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.dismiss),
+                (dialog, which) -> alertDialog.dismiss());
+        alertDialog.show();
+    }
+    public void cancelFriendRequest(){
+        AlertDialog alertDialog = new AlertDialog.Builder(ProfileUser.this).create();
+        alertDialog.setTitle(getResources().getString(R.string.remove_request_friend));
+        alertDialog.setMessage(getResources().getString(R.string.remove_request_friend)+"?");
+        alertDialog.setIcon(R.drawable.ic_add_friend);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.confirm),
+                (dialog, which) -> {
+                    Call<API.Response> delete = API.getInstance().getClient().create(UserFriendService.class).delete(uuid);
+                    delete.enqueue(new Callback<API.Response>() {
+                        @Override
+                        public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
+                            if(response.isSuccessful()){
+                                viewFriendship();
+                                reload();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
+                            Log.e(TAG, "Unable to cancel friend request due to failure response " + t.getMessage() + "received");
+                        }
+                    });
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.dismiss),
+                (dialog, which) -> alertDialog.dismiss());
+        alertDialog.show();
+    }
+
+    public void setButtons(UserFriend friendship){
+        if(friendship != null && friendship.type != null) {
+            switch (friendship.type) {
+                case FRIEND:
+                    Log.i(TAG, "We are friends");
+                    button1.setText(getResources().getString(R.string.remove_friend));
+                    button1.setVisibility(View.VISIBLE);
+                    button2.setVisibility(View.VISIBLE);
+                    button1.setOnClickListener(v -> {
+                        removeFriend();
+                    });
+                    button2.setOnClickListener(v -> {
+                        /* View friend's puppies */
+                    });
+                    break;
+                case BLOCKED:
+                    finish();
+                    Log.i(TAG, "You want to avoid me");
+                    break;
+                case WAITING_ACCEPTANCE:
+                    Log.i(TAG, "I'm waiting for you");
+                    button2.setVisibility(View.GONE);
+                    button1.setText(getResources().getString(R.string.remove_request_friend));
+                    button1.setTextAppearance(R.style.Button_Colored_Tertiary);
+                    button1.setVisibility(View.VISIBLE);
+                    button1.setOnClickListener(v -> {
+                        cancelFriendRequest();
+                    });
+                    break;
+                default:
+                    button1.setVisibility(View.VISIBLE);
+                    button2.setVisibility(View.GONE);
+                    button1.setOnClickListener(v -> {
+                        addFriend();
+                    });
+                    break;
+            }
+        }else{
+            button1.setVisibility(View.VISIBLE);
+            button2.setVisibility(View.GONE);
+            button1.setOnClickListener(v -> {
+                addFriend();
+            });
+        }
     }
 
     /* Open FileChooser Dialog */
@@ -267,5 +430,12 @@ public class ProfileUser extends AppCompatActivity {
         String fileName = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
         cursor.close();
         return fileName;
+    }
+
+    public void reload(){
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 }

@@ -1,7 +1,6 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.InputType;
@@ -18,15 +17,9 @@ import androidx.fragment.app.Fragment;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
-import com.unitn.disi.lpsmt.happypuppy.ui.auth.ActivateProfile;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
-import com.unitn.disi.lpsmt.happypuppy.ui.components.Toast;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
-
-import org.apache.http.HttpStatus;
-import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -77,13 +70,13 @@ public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetList
         inputMale = view.findViewById(R.id.profile_user_edit_input_gender_male);
         birthDate = view.findViewById(R.id.profile_user_edit_input_age);
         confirmInfo = view.findViewById(R.id.profile_user_edit_button_save_changes);
-        /* Listeners for edit text birth date: date picker */
-        birthDate.setInputType(InputType.TYPE_CLASS_DATETIME);
 
+        /* Listeners for edit text birth date: date picker */
+        birthDate.setInputType(InputType.TYPE_NULL);
         birthDate.setOnClickListener(v -> {
             DialogFragment datePicker = new DatePicker();
-            datePicker.show(getParentFragmentManager() , "date picker");
-        }); /* TODO: CHANGE FRAGMENT MANAGER FOR DATEPICKER */
+            datePicker.show(requireFragmentManager() , "date picker");
+        });
 
         confirmInfo.setOnClickListener(v -> {
             User user = new User();

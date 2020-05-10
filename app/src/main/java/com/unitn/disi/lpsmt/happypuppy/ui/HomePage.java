@@ -139,6 +139,7 @@ public class HomePage extends AppCompatActivity implements OnMapReadyCallback {
 
         imageUserAvatar.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), ProfileUser.class);
+            /* PASS AuthManager.getInstance().getAuthUserId().toString() or UUID USER FOR TESTING: ddcf9b0d-0abc-4953-9a5e-ed125fde5495 */
             intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
             startActivity(intent);
         });

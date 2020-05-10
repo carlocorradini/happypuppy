@@ -29,6 +29,7 @@
     <string name="add_puppy">Add Puppy</string>
     <string name="add_friend">Add Friend</string>
     <string name="remove_friend">Remove Friend</string>
+    <string name="remove_request_friend">Cancel Friend Request</string>
     <string name="remove_puppy">Remove Puppy</string>
     <string name="view_puppies">View Puppies</string>
     <string name="view_owner">View Owner</string>
