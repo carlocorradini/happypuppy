@@ -95,7 +95,8 @@
                 android:hint="@string/age"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions"
-                android:windowSoftInputMode="stateAlwaysHidden"/>
+                android:windowSoftInputMode="stateAlwaysHidden"
+                android:focusable="false" />
 
             <EditText
                 android:id="@+id/sign_up_input_username"

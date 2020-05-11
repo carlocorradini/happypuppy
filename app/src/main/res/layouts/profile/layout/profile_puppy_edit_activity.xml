@@ -109,7 +109,8 @@
                 android:hint="@string/age"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions"
-                android:windowSoftInputMode="stateAlwaysHidden"/>
+                android:windowSoftInputMode="stateAlwaysHidden"
+                android:focusable="false" />
 
             <Spinner
                 android:id="@+id/profile_puppy_edit_input_size"

@@ -69,7 +69,8 @@
                 android:hint="@string/age"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions"
-                android:windowSoftInputMode="stateAlwaysHidden"/>
+                android:windowSoftInputMode="stateAlwaysHidden"
+                android:focusable="false"/>
 
             <Button
                 android:id="@+id/profile_user_edit_button_save_changes"

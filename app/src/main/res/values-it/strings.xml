@@ -93,6 +93,8 @@
     <!-- -->
 
     <!-- Strings "insert" -->
+    <string name="insert_name">Inserisci il nome</string>
+    <string name="insert_specie">Inserisci la specie</string>
     <string name="insert_email">Inserisci indirizzo e-mail</string>
     <string name="insert_username">Inserisci nome utente.</string>
     <string name="insert_phone">Numero di telefono non inserito\n o non corretto.</string>
@@ -116,22 +118,21 @@
         <item>Mini Small</item>
         <item>Small</item>
         <item>Medium</item>
-        <item>Medium-Large</item>
         <item>Large</item>
-        <item>Extra Large</item>
-        <item>Medium</item>
-        <item>Medium-Large</item>
-        <item>Large</item>
-        <item>Extra Large</item>
-        <item>Medium</item>
-        <item>Medium-Large</item>
-        <item>Large</item>
-        <item>Extra Large</item>
     </string-array>
 
     <string-array name="puppy_unit_weight">
         <item>Kg</item>
         <item>Gr</item>
+    </string-array>
+
+    <string-array name="animal_kinds">
+        <item>Cane</item>
+        <item>Gatto</item>
+        <item>Maiale</item>
+        <item>Mucca</item>
+        <item>Cavallo</item>
+        <item>Coniglio</item>
     </string-array>
     <!-- -->
 

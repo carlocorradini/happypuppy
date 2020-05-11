@@ -115,9 +115,9 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
             if (calendar != null) {
                 user.dateOfBirth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             }
-            if (inputFemale.isSelected())
+            if (inputFemale.isChecked())
                 user.gender = User.Gender.FEMALE;
-            else if (inputMale.isSelected())
+            else if (inputMale.isChecked())
                 user.gender = User.Gender.MALE;
 
             // Validation

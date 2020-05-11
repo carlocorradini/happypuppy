@@ -93,6 +93,8 @@
     <!-- -->
 
     <!-- Strings "insert" -->
+    <string name="insert_name">Name field is empty</string>
+    <string name="insert_specie">Specie field is empty</string>
     <string name="insert_email">E-mail field is empty.</string>
     <string name="insert_username">Username field is empty.</string>
     <string name="insert_phone">Phone number field is empty or invalid.</string>
@@ -116,17 +118,7 @@
         <item>Mini Small</item>
         <item>Small</item>
         <item>Medium</item>
-        <item>Medium-Large</item>
         <item>Large</item>
-        <item>Extra Large</item>
-        <item>Medium</item>
-        <item>Medium-Large</item>
-        <item>Large</item>
-        <item>Extra Large</item>
-        <item>Medium</item>
-        <item>Medium-Large</item>
-        <item>Large</item>
-        <item>Extra Large</item>
     </string-array>
 
     <string-array name="puppy_unit_weight">
@@ -134,5 +126,12 @@
         <item>Gr</item>
     </string-array>
     <!-- -->
-
+    <string-array name="animal_kinds">
+        <item>Dog</item>
+        <item>Cat</item>
+        <item>Pig</item>
+        <item>Cow</item>
+        <item>Horse</item>
+        <item>Rabbit</item>
+    </string-array>
 </resources>

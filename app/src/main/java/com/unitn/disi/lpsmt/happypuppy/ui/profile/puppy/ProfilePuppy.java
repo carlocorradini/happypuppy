@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.FileUtils;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,16 +18,30 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.unitn.disi.lpsmt.happypuppy.R;
+import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
+import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
+
+import org.apache.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 import java.util.UUID;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ProfilePuppy extends AppCompatActivity {
+    /**
+     * {@link Log} TAG of this class
+     */
+    private static final String TAG = ProfilePuppy.class.getName();
     private static final int REQUEST_CODE = 6384;
 
     Button buttonBack;
@@ -38,7 +53,8 @@ public class ProfilePuppy extends AppCompatActivity {
     LinearLayout buttonsUser;
     LinearLayout buttonsVisit;
 
-    User userLogged;
+    UUID thisPuppyOwner;
+    Puppy thisPuppy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +71,29 @@ public class ProfilePuppy extends AppCompatActivity {
         buttonsUser = findViewById(R.id.profile_puppy_buttons_profile);
         buttonsVisit = findViewById(R.id.profile_puppy_buttons_visit);
 
-        if(AuthManager.getInstance().isCurrentAuthUser(UUID.randomUUID()/* puppy's owner*/)){
+        Long id_puppy = Long.parseLong(Objects.requireNonNull(getIntent().getStringExtra("id_puppy")));
+
+        Call<API.Response<Puppy>> call = API.getInstance().getClient().create(PuppyService.class).findById(id_puppy);
+        call.enqueue(new Callback<API.Response<Puppy>>() {
+            @Override
+            public void onResponse(@NotNull Call<API.Response<Puppy>> call, @NotNull Response<API.Response<Puppy>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    thisPuppy = response.body().data;
+                    thisPuppyOwner = response.body().data.user;
+                } else if(response.code() == HttpStatus.SC_NOT_FOUND){
+                    Log.i(TAG,"Didn't found this puppy ");
+                }
+                else{
+                    Log.i(TAG,"Unknown error due to "+ response.code());
+                }
+            }
+            @Override
+            public void onFailure(@NotNull Call<API.Response<Puppy>> call, @NotNull Throwable t) {
+                Log.e(TAG, "Unable to get this puppy " + t.getMessage(), t);
+            }
+        });
+
+        if(AuthManager.getInstance().getAuthUserId() == thisPuppyOwner){
             buttonsUser.setVisibility(View.VISIBLE);
             buttonsVisit.setVisibility(View.GONE);
             changeAvatar.setVisibility(View.VISIBLE);
