@@ -1,6 +1,7 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.auth;
 
 import android.app.DatePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.InputType;
@@ -57,6 +58,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
     public Calendar calendar;
     private LinearLayout loader;
     private Button buttonBack;
+    private TextView visitEula;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
         /* Layouts */
         root = findViewById(R.id.sign_up_root_view);
         loader = findViewById(R.id.sign_up_view_loader);
+        visitEula = findViewById(R.id.sign_up_eula_text);
         /* Input fields */
         inputName = findViewById(R.id.sign_up_input_first_name);
         inputSurname = findViewById(R.id.sign_up_input_last_name);
@@ -130,6 +133,10 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
             datePicker.show(getSupportFragmentManager(), "date picker");
         });
 
+        visitEula.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://happypuppy-2020.herokuapp.com/site/legal/eula"));
+            startActivity(browserIntent);
+        });
         buttonBack.setOnClickListener(v -> finish());
     }
 

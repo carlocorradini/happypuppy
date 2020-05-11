@@ -64,9 +64,6 @@
 
     <!-- Strings for privacy settings.. -->
     <string name="information_privacy">By selecting this option you have read and you\'re agreeing to our EULA.</string>
-    <string name="see_eula">To see our <a href="http://happypuppy-2020.herokuapp.com/site/legal/eula">
-        EULA
-    </a></string>
     <string name="security_code">Security Code</string>
 
     <string name="otp_codes">To complete registration, please insert below the OTP codes sent to your phone number and your email.</string>

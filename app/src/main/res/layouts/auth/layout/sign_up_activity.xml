@@ -163,13 +163,28 @@
                 android:importantForAutofill="no"
                 android:inputType="textPassword" />
 
-            <Switch
-                android:id="@+id/sign_up_accord_privacy"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:textSize="14sp"
-                android:text="@string/information_privacy" />
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_marginTop="@dimen/margin" >
+
+                <TextView
+                    android:id="@+id/sign_up_eula_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.15"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorSecondary"
+                    android:text="@string/information_privacy" />
+                <Switch
+                    android:id="@+id/sign_up_accord_privacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.85" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/sign_up_button_sign_up"
