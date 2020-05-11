@@ -31,7 +31,7 @@ import retrofit2.http.QueryMap;
  */
 public interface UserService {
     /**
-     * Find all {@link User available that correspond to the given options
+     * Find all {@link User} available that correspond to the given options
      *
      * @param options Find options
      * @return An {@link API.Response} with the {@link List} of {@link User} founds
@@ -77,26 +77,6 @@ public interface UserService {
     Call<API.Response<UUID>> create(@Body User user);
 
     /**
-     * Perform a sign in authentication operation for the given user and
-     * if the operation succeeded return the {@link JWT} for authentication
-     *
-     * @param user The {@link User} to authenticate
-     * @return An {@link API.Response} with the {@link JWT} authentication token
-     * @see AuthManager
-     */
-    @POST("auth/user/sign_in")
-    Call<API.Response<JWT>> signIn(@Body User user);
-
-    /**
-     * Generate a new password request for the {@link User} that has the given {@link String email}
-     *
-     * @param email The {@link User} email
-     * @return An {@link API.Response} if the password request operation succeeded
-     */
-    @POST("auth/user/password_reset/{email}")
-    Call<API.Response> passwordReset(@Path("email") String email);
-
-    /**
      * Update the current authenticated {@link User} with the given user
      *
      * @param user The {@link User} to update with
@@ -124,4 +104,24 @@ public interface UserService {
      */
     @DELETE("auth/user")
     Call<API.Response> delete();
+
+    /**
+     * Perform a sign in authentication operation for the given user and
+     * if the operation succeeded return the {@link JWT} for authentication
+     *
+     * @param user The {@link User} to authenticate
+     * @return An {@link API.Response} with the {@link JWT} authentication token
+     * @see AuthManager
+     */
+    @POST("auth/user/sign_in")
+    Call<API.Response<JWT>> signIn(@Body User user);
+
+    /**
+     * Generate a new password request for the {@link User} that has the given {@link String email}
+     *
+     * @param email The {@link User} email
+     * @return An {@link API.Response} if the password request operation succeeded
+     */
+    @POST("auth/user/password_reset/{email}")
+    Call<API.Response> passwordReset(@Path("email") String email);
 }
