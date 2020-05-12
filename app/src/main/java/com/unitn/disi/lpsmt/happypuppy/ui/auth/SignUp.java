@@ -136,7 +136,8 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
         });
 
         visitEula.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://happypuppy-2020.herokuapp.com/site/legal/eula"));
+            Intent browserIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
+            browserIntent.setData(Uri.parse("http://happypuppy-2020.herokuapp.com/site/legal/eula"));
             startActivity(browserIntent);
         });
         buttonBack.setOnClickListener(v -> finish());
