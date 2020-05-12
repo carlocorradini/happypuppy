@@ -13,7 +13,7 @@
         android:title="@string/explore"
         android:background="@drawable/button_border"/>
     <item
-        android:id="@+id/nav_account"
+        android:id="@+id/nav_puppies"
         android:background="@drawable/button_border"
         android:icon="@drawable/ic_puppy_love"
         android:title="@string/user_puppies"

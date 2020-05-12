@@ -95,8 +95,9 @@ public class ProfilePuppy extends AppCompatActivity {
                 ErrorHelper.showFailureError(getBaseContext(), ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), t);
             }
         });
+        nameTop.setText(thisPuppy.name);
 
-        if (AuthManager.getInstance().getAuthUserId() == thisPuppyOwner) {
+        if (AuthManager.getInstance().getAuthUserId().equals(thisPuppyOwner)) {
             buttonsUser.setVisibility(View.VISIBLE);
             buttonsVisit.setVisibility(View.GONE);
             changeAvatar.setVisibility(View.VISIBLE);

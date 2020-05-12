@@ -22,24 +22,13 @@ import com.google.android.material.tabs.TabLayout;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.AdapterEditProfile;
-import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
-import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
-
-import java.sql.SQLOutput;
-import java.text.DateFormat;
-import java.util.Calendar;
 
 public class EditUser extends AppCompatActivity {
-    LinearLayout root;
     DrawerLayout drawerLayout;
     ViewPager pager;
     TabLayout mTabLayout;
-    TabItem tabPersonalData,tabPassword;
     PagerAdapter adapter;
-
-    LinearLayout loader;
     Button buttonBack;
-
     User user;
 
     @Override

@@ -39,6 +39,7 @@
         <activity android:name=".ui.profile.user.ProfileUser"/>
         <activity android:name=".ui.profile.puppy.ProfilePuppy"/>
         <activity android:name=".ui.profile.user.EditUser"/>
+        <activity android:name=".ui.profile.puppy.ListPuppy"/>
     </application>
 
 </manifest>

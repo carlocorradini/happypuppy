@@ -60,6 +60,9 @@
     <string name="otp_email">OTP EMail Code</string>
     <string name="optional_field"> (optional)</string>
     <string name="avatar">Avatar</string>
+
+    <string name="month">Months</string>
+    <string name="year">Years</string>
     <!-- -->
 
     <!-- Strings for privacy settings.. -->
