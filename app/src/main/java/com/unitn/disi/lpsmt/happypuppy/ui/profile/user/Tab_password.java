@@ -16,6 +16,7 @@ import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.ToastyConfirm;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -88,7 +89,7 @@ public class Tab_password extends Fragment {
             @Override
             public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    new com.unitn.disi.lpsmt.happypuppy.ui.components.ToastConfirm(getContext(), v, getResources().getString(R.string.changes_applied));
+                    new ToastyConfirm(getContext(), v, getResources().getString(R.string.changes_applied));
                 } else {
                     new Toasty(getContext(), v, R.string.error_unknown);
                 }

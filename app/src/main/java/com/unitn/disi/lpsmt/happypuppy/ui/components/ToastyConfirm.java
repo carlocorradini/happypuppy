@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import com.unitn.disi.lpsmt.happypuppy.R;
 
-public class ToastConfirm extends android.widget.Toast {
+public class ToastyConfirm extends android.widget.Toast {
 
-    public ToastConfirm(Context c, View v, String message){
+    public ToastyConfirm(Context c, View v, String message){
         super(c);
         LayoutInflater inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
