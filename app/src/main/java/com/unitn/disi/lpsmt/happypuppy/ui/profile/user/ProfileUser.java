@@ -192,6 +192,7 @@ public class ProfileUser extends AppCompatActivity {
         if (user != null && userAvatar != null) return;
 
         new UserUtil.DownloadAuthUser(user -> {
+            if(user == null) return;
             this.user = user;
             new ImageUtil.DownloadImage(avatar -> {
                 if (avatar == null) return;
