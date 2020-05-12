@@ -10,6 +10,7 @@ import android.os.FileUtils;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,7 @@ import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.UserFriend;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserFriendService;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.RegisterPuppy;
 import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
@@ -133,7 +135,7 @@ public class ProfileUser extends AppCompatActivity {
                             userAvatarView.setImageBitmap(avatar);
                         }).execute(user.avatar);
                         numberPuppies.setText(String.valueOf(user.puppies.size()));
-                        if(user.friends != null)
+                        if (user.friends != null)
                             numberFriends.setText(String.valueOf(user.friends));
                         else
                             numberFriends.setText("0");
@@ -146,7 +148,7 @@ public class ProfileUser extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NotNull Call<API.Response<User>> call, @NotNull Throwable t) {
-                    Log.e(TAG, "Unable to download current visited User due to " + t.getMessage(), t);
+                    ErrorHelper.showFailureError(getBaseContext(), ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), t);
                 }
             });
 
@@ -197,7 +199,7 @@ public class ProfileUser extends AppCompatActivity {
                 this.userAvatarView.setImageBitmap(avatar);
             }).execute(user.avatar);
             this.numberPuppies.setText(String.valueOf(this.user.puppies.size()));
-            if(this.user.friends != null)
+            if (this.user.friends != null)
                 this.numberFriends.setText(String.valueOf(this.user.friends));
             else
                 this.numberFriends.setText("0");
@@ -205,15 +207,15 @@ public class ProfileUser extends AppCompatActivity {
         }).execute();
     }
 
-    public void viewFriendship(){
+    public void viewFriendship() {
         Call<API.Response<UserFriend>> call = API.getInstance().getClient().create(UserFriendService.class).findById(uuid);
         call.enqueue(new Callback<API.Response<UserFriend>>() {
             @Override
             public void onResponse(@NotNull Call<API.Response<UserFriend>> call, @NotNull Response<API.Response<UserFriend>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                     friendship = response.body().data;
-                }else if(response.code() == HttpStatus.SC_NOT_FOUND){
-                    Log.i(TAG,"Didn't found a friendship");
+                    friendship = response.body().data;
+                } else if (response.code() == HttpStatus.SC_NOT_FOUND) {
+                    Log.i(TAG, "Didn't found a friendship");
                     friendship.type = null;
                 }
                 setButtons(friendship);
@@ -221,17 +223,18 @@ public class ProfileUser extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<API.Response<UserFriend>> call, @NotNull Throwable t) {
-                Log.e(TAG, "Unable to get the friendship " + t.getMessage(), t);
+                ErrorHelper.showFailureError(getBaseContext(), ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), t);
             }
         });
     }
-    public void addFriend(){
+
+    public void addFriend() {
         friendship.friend = uuid;
         Call<API.Response<UUID>> call = API.getInstance().getClient().create(UserFriendService.class).create(friendship);
         call.enqueue(new Callback<API.Response<UUID>>() {
             @Override
             public void onResponse(@NotNull Call<API.Response<UUID>> call, @NotNull Response<API.Response<UUID>> response) {
-                if(response.isSuccessful() && response.body() != null){
+                if (response.isSuccessful() && response.body() != null) {
                     viewFriendship();
                     reload();
                 }
@@ -244,10 +247,10 @@ public class ProfileUser extends AppCompatActivity {
         });
     }
 
-    public void removeFriend(){
+    public void removeFriend() {
         AlertDialog alertDialog = new AlertDialog.Builder(ProfileUser.this).create();
         alertDialog.setTitle(getResources().getString(R.string.remove_friend));
-        alertDialog.setMessage(getResources().getString(R.string.remove_friend)+"?");
+        alertDialog.setMessage(getResources().getString(R.string.remove_friend) + "?");
         alertDialog.setIcon(R.drawable.ic_add_friend);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.confirm),
                 (dialog, which) -> {
@@ -255,7 +258,7 @@ public class ProfileUser extends AppCompatActivity {
                     delete.enqueue(new Callback<API.Response>() {
                         @Override
                         public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
-                            if(response.isSuccessful()){
+                            if (response.isSuccessful()) {
                                 viewFriendship();
                                 reload();
                             }
@@ -263,7 +266,7 @@ public class ProfileUser extends AppCompatActivity {
 
                         @Override
                         public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
-                            Log.e(TAG, "Unable to remove friend due to failure response " + t.getMessage() + "received");
+                            ErrorHelper.showFailureError(getBaseContext(), ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), t);
                         }
                     });
                 });
@@ -271,10 +274,11 @@ public class ProfileUser extends AppCompatActivity {
                 (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }
-    public void cancelFriendRequest(){
+
+    public void cancelFriendRequest() {
         AlertDialog alertDialog = new AlertDialog.Builder(ProfileUser.this).create();
         alertDialog.setTitle(getResources().getString(R.string.remove_request_friend));
-        alertDialog.setMessage(getResources().getString(R.string.remove_request_friend)+"?");
+        alertDialog.setMessage(getResources().getString(R.string.remove_request_friend) + "?");
         alertDialog.setIcon(R.drawable.ic_add_friend);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.confirm),
                 (dialog, which) -> {
@@ -282,7 +286,7 @@ public class ProfileUser extends AppCompatActivity {
                     delete.enqueue(new Callback<API.Response>() {
                         @Override
                         public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
-                            if(response.isSuccessful()){
+                            if (response.isSuccessful()) {
                                 viewFriendship();
                                 reload();
                             }
@@ -290,7 +294,7 @@ public class ProfileUser extends AppCompatActivity {
 
                         @Override
                         public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
-                            Log.e(TAG, "Unable to cancel friend request due to failure response " + t.getMessage() + "received");
+                            ErrorHelper.showFailureError(getBaseContext(), ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), t);
                         }
                     });
                 });
@@ -299,8 +303,8 @@ public class ProfileUser extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void setButtons(UserFriend friendship){
-        if(friendship != null && friendship.type != null) {
+    public void setButtons(UserFriend friendship) {
+        if (friendship != null && friendship.type != null) {
             switch (friendship.type) {
                 case FRIEND:
                     Log.i(TAG, "We are friends");
@@ -336,7 +340,7 @@ public class ProfileUser extends AppCompatActivity {
                     });
                     break;
             }
-        }else{
+        } else {
             button1.setVisibility(View.VISIBLE);
             button2.setVisibility(View.GONE);
             button1.setOnClickListener(v -> {
@@ -432,7 +436,7 @@ public class ProfileUser extends AppCompatActivity {
         return fileName;
     }
 
-    public void reload(){
+    public void reload() {
         finish();
         overridePendingTransition(0, 0);
         startActivity(getIntent());

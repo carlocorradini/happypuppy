@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +46,7 @@ public class ForgotPassword extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!validateMail()) {
-                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_email));
+                    new Toasty(getBaseContext(), v, R.string.insert_email);
                     return;
                 }
 
@@ -63,16 +65,16 @@ public class ForgotPassword extends AppCompatActivity {
                         } else if (response.errorBody() != null) {
                             switch (response.code()) {
                                 case HttpStatus.SC_NOT_FOUND: {
-                                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.user_mail_not_found));
+                                    new Toasty(getBaseContext(), v, R.string.user_mail_not_found);
                                     break;
                                 }
                                 default: {
-                                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
+                                    new Toasty(getBaseContext(), v, R.string.internal_server_error);
                                     break;
                                 }
                             }
                         } else {
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
+                            new Toasty(getBaseContext(), v, R.string.error_unknown);
                         }
 
                         for (int i = 0; i < root.getChildCount(); i++) {
@@ -85,7 +87,7 @@ public class ForgotPassword extends AppCompatActivity {
 
                     @Override
                     public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
-                        new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
+                        ErrorHelper.showFailureError(getBaseContext(), v, t);
                         for (int i = 0; i < root.getChildCount(); i++) {
                             View child = root.getChildAt(i);
                             child.setEnabled(true);

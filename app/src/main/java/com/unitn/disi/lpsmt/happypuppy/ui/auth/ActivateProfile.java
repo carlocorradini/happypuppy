@@ -10,12 +10,14 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.auth0.android.jwt.JWT;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.UserVerification;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserVerificationService;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +62,7 @@ public class ActivateProfile extends AppCompatActivity {
 
         buttonSendCodes.setOnClickListener(v -> {
             if (!validate()) {
-                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.otp_codes_empty));
+                new Toasty(getBaseContext(), v, R.string.otp_codes_empty);
                 return;
             }
 
@@ -88,24 +90,24 @@ public class ActivateProfile extends AppCompatActivity {
                     } else if (response.errorBody() != null) {
                         switch (response.code()) {
                             case HttpStatus.SC_FORBIDDEN: {
-                                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.user_already_verified));
+                                new Toasty(getBaseContext(), v, R.string.user_already_verified);
                                 break;
                             }
                             case HttpStatus.SC_NOT_FOUND: {
-                                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.user_not_found));
+                                new Toasty(getBaseContext(), v, R.string.user_not_found);
                                 break;
                             }
                             case HttpStatus.SC_UNAUTHORIZED: {
-                                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.otp_codes_invalid));
+                                new Toasty(getBaseContext(), v, R.string.otp_codes_invalid);
                                 break;
                             }
                             default: {
-                                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
+                                new Toasty(getBaseContext(), v, R.string.internal_server_error);
                                 break;
                             }
                         }
                     } else {
-                        new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
+                        new Toasty(getApplicationContext(), v, R.string.error_unknown);
                     }
 
                     for (int i = 0; i < root.getChildCount(); i++) {
@@ -118,14 +120,13 @@ public class ActivateProfile extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NotNull Call<API.Response<JWT>> call, @NotNull Throwable t) {
+                    ErrorHelper.showFailureError(getBaseContext(), v, t);
                     loader.setVisibility(View.GONE);
                     for (int i = 0; i < root.getChildCount(); i++) {
                         View child = root.getChildAt(i);
                         child.setEnabled(true);
                         child.setClickable(true);
                     }
-
-                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
                 }
             });
         });
@@ -144,24 +145,24 @@ public class ActivateProfile extends AppCompatActivity {
                 @Override
                 public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.otp_codes_sent));
+                        new Toasty(getBaseContext(), v, R.string.otp_codes_sent);
                     } else if (response.errorBody() != null) {
                         switch (response.code()) {
                             case HttpStatus.SC_FORBIDDEN: {
-                                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.user_already_verified));
+                                new Toasty(getBaseContext(), v, R.string.user_already_verified);
                                 break;
                             }
                             case HttpStatus.SC_NOT_FOUND: {
-                                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.user_not_found));
+                                new Toasty(getBaseContext(), v, R.string.user_not_found);
                                 break;
                             }
                             default: {
-                                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
+                                new Toasty(getBaseContext(), v, R.string.internal_server_error);
                                 break;
                             }
                         }
                     } else {
-                        new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
+                        new Toasty(getApplicationContext(), v, R.string.error_unknown);
                     }
 
                     for (int i = 0; i < root.getChildCount(); i++) {
@@ -174,14 +175,13 @@ public class ActivateProfile extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
+                    ErrorHelper.showFailureError(getBaseContext(), v, t);
                     loader.setVisibility(View.GONE);
                     for (int i = 0; i < root.getChildCount(); i++) {
                         View child = root.getChildAt(i);
                         child.setEnabled(true);
                         child.setClickable(true);
                     }
-
-                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
                 }
             });
         });

@@ -10,12 +10,14 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.auth0.android.jwt.JWT;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,9 +77,9 @@ public class SignIn extends AppCompatActivity {
             user.password = inputPassword.getText().toString();
 
             // Validation
-            if (validateLogin(v,user)) {
+            if (validateLogin(v, user)) {
                 signIn(v, user);
-            }else{
+            } else {
                 for (int i = 0; i < root.getChildCount(); i++) {
                     View child = root.getChildAt(i);
                     child.setEnabled(true);
@@ -87,22 +89,24 @@ public class SignIn extends AppCompatActivity {
             }
         });
     }
-    private boolean validateLogin(final View v, final User user){
+
+    private boolean validateLogin(final View v, final User user) {
         if (user.username.isEmpty()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_username));
+            new Toasty(getBaseContext(), v, R.string.insert_username);
             return false;
         }
         if (user.password.isEmpty()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_password));
+            new Toasty(getBaseContext(), v, R.string.insert_password);
             return false;
         }
         if (user.password.length() < 8) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_password_length));
+            new Toasty(getBaseContext(), v, R.string.insert_password_length);
             return false;
         }
         return true;
     }
-    private void signIn(final View v, final User user){
+
+    private void signIn(final View v, final User user) {
         Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserService.class).signIn(user);
         call.enqueue(new Callback<API.Response<JWT>>() {
             @Override
@@ -115,7 +119,7 @@ public class SignIn extends AppCompatActivity {
                 } else if (response.errorBody() != null) {
                     switch (response.code()) {
                         case HttpStatus.SC_UNAUTHORIZED: {
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.wrong_login));
+                            new Toasty(getBaseContext(), v, R.string.wrong_login);
                             break;
                         }
                         case HttpStatus.SC_FORBIDDEN: {
@@ -127,16 +131,16 @@ public class SignIn extends AppCompatActivity {
                             break;
                         }
                         case HttpStatus.SC_NOT_FOUND: {
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.user_not_found));
+                            new Toasty(getBaseContext(), v, R.string.user_not_found);
                             break;
                         }
                         default: {
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
+                            new Toasty(getBaseContext(), v, R.string.internal_server_error);
                             break;
                         }
                     }
                 } else {
-                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
+                    new Toasty(getBaseContext(), v, R.string.error_unknown);
                 }
 
                 for (int i = 0; i < root.getChildCount(); i++) {
@@ -149,10 +153,7 @@ public class SignIn extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<API.Response<JWT>> call, @NotNull Throwable t) {
-                System.err.println("ERRORE: " + t.getMessage());
-                loader.setVisibility(View.GONE);
-
-                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
+                ErrorHelper.showFailureError(getBaseContext(), v, t);
 
                 for (int i = 0; i < root.getChildCount(); i++) {
                     View child = root.getChildAt(i);

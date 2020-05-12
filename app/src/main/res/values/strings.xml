@@ -78,15 +78,16 @@
     <string name="wrong_email">Invalid email address.</string>
     <!-- -->
 
-    <!-- Server LOG -->
-    <string name="unknown_error">Unknown Error</string>
+    <!-- Errors -->
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_connection_timeout">The server is unreachable</string>
+    <string name="error_conversion">Conversion error</string>
     <string name="unauthorized">Unauthorized</string>
     <string name="internal_server_error">Internal server error</string>
     <string name="user_already_exist">The user already exists</string>
     <string name="user_already_verified">User already verified</string>
     <string name="user_not_found">User not found</string>
     <string name="user_mail_not_found">User not found with this email</string>
-    <string name="no_internet">No internet</string>
     <string name="wrong_login">Invalid username or password</string>
     <string name="fill_data">Insert data in non optional fields</string>
     <string name="insert_data_login">Required data for login</string>

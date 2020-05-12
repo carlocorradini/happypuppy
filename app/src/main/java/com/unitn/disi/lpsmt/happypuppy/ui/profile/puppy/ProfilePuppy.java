@@ -9,6 +9,7 @@ import android.os.FileUtils;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
 import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
@@ -74,37 +76,39 @@ public class ProfilePuppy extends AppCompatActivity {
         Long id_puppy = Long.parseLong(Objects.requireNonNull(getIntent().getStringExtra("id_puppy")));
 
         Call<API.Response<Puppy>> call = API.getInstance().getClient().create(PuppyService.class).findById(id_puppy);
+
         call.enqueue(new Callback<API.Response<Puppy>>() {
             @Override
             public void onResponse(@NotNull Call<API.Response<Puppy>> call, @NotNull Response<API.Response<Puppy>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     thisPuppy = response.body().data;
                     thisPuppyOwner = response.body().data.user;
-                } else if(response.code() == HttpStatus.SC_NOT_FOUND){
-                    Log.i(TAG,"Didn't found this puppy ");
-                }
-                else{
-                    Log.i(TAG,"Unknown error due to "+ response.code());
+                } else if (response.code() == HttpStatus.SC_NOT_FOUND) {
+                    Log.i(TAG, "Didn't found this puppy ");
+                } else {
+                    Log.i(TAG, "Unknown error due to " + response.code());
                 }
             }
+
             @Override
             public void onFailure(@NotNull Call<API.Response<Puppy>> call, @NotNull Throwable t) {
-                Log.e(TAG, "Unable to get this puppy " + t.getMessage(), t);
+                ErrorHelper.showFailureError(getBaseContext(), ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), t);
             }
         });
 
-        if(AuthManager.getInstance().getAuthUserId() == thisPuppyOwner){
+        if (AuthManager.getInstance().getAuthUserId() == thisPuppyOwner) {
             buttonsUser.setVisibility(View.VISIBLE);
             buttonsVisit.setVisibility(View.GONE);
             changeAvatar.setVisibility(View.VISIBLE);
 
             changeAvatar.setOnClickListener(this::showFileChooser);
-        }else{
+        } else {
             buttonsUser.setVisibility(View.GONE);
             buttonsVisit.setVisibility(View.VISIBLE);
             changeAvatar.setVisibility(View.GONE);
         }
     }
+
     /* Open FileChooser Dialog */
     public void showFileChooser(View arg0) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -123,7 +127,7 @@ public class ProfilePuppy extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         // Ritorna se l'utente non ha selezionato nulla
         if (requestCode != REQUEST_CODE || resultCode != RESULT_OK) {
@@ -168,6 +172,7 @@ public class ProfilePuppy extends AppCompatActivity {
 
         return tempFile;
     }
+
     /**
      * Ottiene il nome del file. Maggiori informazioni qui
      * https://developer.android.com/training/secure-file-sharing/retrieve-info.html#RetrieveFileInfo

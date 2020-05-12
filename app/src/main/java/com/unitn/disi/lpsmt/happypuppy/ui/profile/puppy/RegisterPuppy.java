@@ -1,6 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.os.FileUtils;
 import android.provider.OpenableColumns;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,15 +24,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.unitn.disi.lpsmt.happypuppy.api.API;
-import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
-import com.unitn.disi.lpsmt.happypuppy.ui.auth.ActivateProfile;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DialogAnimalKind;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DialogPersonalitiesPuppy;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
@@ -117,9 +115,9 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         });
 
         /* Reset hint for optional fields */
-        raceAnimal.setHint(raceAnimal.getHint()+" "+getString(R.string.optional_field));
-        weightPuppy.setHint(weightPuppy.getHint()+" "+getString(R.string.optional_field));
-        date.setHint(date.getHint()+" "+getString(R.string.optional_field));
+        raceAnimal.setHint(raceAnimal.getHint() + " " + getString(R.string.optional_field));
+        weightPuppy.setHint(weightPuppy.getHint() + " " + getString(R.string.optional_field));
+        date.setHint(date.getHint() + " " + getString(R.string.optional_field));
 
         /* Create Dialog for KindAnimal */
         kindAnimal.setOnClickListener(v -> {
@@ -130,7 +128,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
 
         // Spinner for Puppy's size
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-        R.array.puppy_size, android.R.layout.simple_spinner_item);
+                R.array.puppy_size, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sizePuppy.setAdapter(adapter);
 
@@ -175,22 +173,23 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         date.setInputType(InputType.TYPE_NULL);
     }
 
-    public boolean validatePuppy(final View v, final Puppy puppy){
+    public boolean validatePuppy(final View v, final Puppy puppy) {
         if (puppy.name.isEmpty()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_name));
+            new Toasty(getBaseContext(), v, R.string.insert_name);
             return false;
         }
         if (kindAnimal.getText().toString().isEmpty()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_specie));
+            new Toasty(getBaseContext(), v, R.string.insert_specie);
             return false;
         }
         if (!genderFemale.isChecked() && !genderMale.isChecked()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.gender));
+            new Toasty(getBaseContext(), v, R.string.gender);
             return false;
         }
         return true;
     }
-    public void registerPuppy(final View v, final Puppy puppy){
+
+    public void registerPuppy(final View v, final Puppy puppy) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
             child.setEnabled(false);
@@ -207,41 +206,40 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
                     intent.putExtra("id_puppy", response.body().data.toString());
                     startActivity(intent);
                     finish();
-                }else if (response.errorBody() != null) {
+                } else if (response.errorBody() != null) {
                     switch (response.code()) {
                         case HttpStatus.SC_CONFLICT: {
                             StringBuilder conflicts = new StringBuilder();
                             API.Response<List<ConflictError>> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_CONFLICT_LIST);
                             for (int i = 0; i < error.data.size(); i++) {
                                 conflicts.append(error.data.get(i).property);
-                                if(i != error.data.size()-1)
+                                if (i != error.data.size() - 1)
                                     conflicts.append(", ");
                             }
                             System.out.println("INFO: " + conflicts);
-                            String message = getResources().getString(R.string.conflicts_on)+conflicts;
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, message);
+                            String message = getResources().getString(R.string.conflicts_on) + conflicts;
+                            new Toasty(getBaseContext(), v, message);
                             break;
                         }
                         default: {
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
+                            new Toasty(getBaseContext(), v, R.string.internal_server_error);
                             break;
                         }
                     }
                 } else {
-                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
+                    new Toasty(getApplicationContext(), v, R.string.error_unknown);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<API.Response<Long>> call, @NotNull Throwable t) {
+                ErrorHelper.showFailureError(getBaseContext(), v, t);
                 loader.setVisibility(View.GONE);
                 for (int i = 0; i < root.getChildCount(); i++) {
                     View child = root.getChildAt(i);
                     child.setEnabled(true);
                     child.setClickable(true);
                 }
-
-                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
             }
         });
     }
@@ -270,13 +268,13 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
 
         // Volendo si possono impostare dei filtri sulle tipologie dei file. Per essere generici mantieni pure lo 0
-         int REQUEST_CODE = 0;
+        int REQUEST_CODE = 0;
         startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         // Ritorna se l'utente non ha selezionato nulla
         if (requestCode != REQUEST_CODE || resultCode != RESULT_OK) {
@@ -294,7 +292,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         String fileName = getFileName(uri);
         // Gestione del file temporaneo
         File tmp_file = new File(fileName);
-       // File fileCopy = copyToTempFile(uri, tmp_file);
+        // File fileCopy = copyToTempFile(uri, tmp_file);
         // Done!
     }
 
@@ -320,6 +318,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
 
         return tempFile;
     }
+
     /**
      * Ottiene il nome del file. Maggiori informazioni qui
      * https://developer.android.com/training/secure-file-sharing/retrieve-info.html#RetrieveFileInfo

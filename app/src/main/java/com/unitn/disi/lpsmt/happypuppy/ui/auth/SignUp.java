@@ -16,12 +16,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 
 import net.rimoto.intlphoneinput.IntlPhoneInput;
 
@@ -121,7 +123,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                 user.gender = User.Gender.MALE;
 
             // Validation
-            if (validateUser(v,user)) {
+            if (validateUser(v, user)) {
                 signUp(v, user);
             }
         });
@@ -151,29 +153,29 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
         inputDateOfBirth.setText(userAge);
     }
 
-    private boolean validateUser(final View v,final User user) {
+    private boolean validateUser(final View v, final User user) {
         if (user.username.isEmpty()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_username));
+            new Toasty(getBaseContext(), v, R.string.insert_username);
             return false;
         }
         if (user.email.isEmpty()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_email));
+            new Toasty(getBaseContext(), v, R.string.insert_email);
             return false;
         }
         if (user.password.isEmpty() || inputPasswordRepeat.getText().toString().isEmpty()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_password));
+            new Toasty(getBaseContext(), v, R.string.insert_password);
             return false;
         }
         if (!inputPhone.isValid()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.insert_phone));
+            new Toasty(getBaseContext(), v, R.string.insert_phone);
             return false;
         }
         if (!user.password.equals(inputPasswordRepeat.getText().toString())) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.pw_not_equals));
+            new Toasty(getBaseContext(), v, R.string.pw_not_equals);
             return false;
         }
         if (!inputPrivacy.isChecked()) {
-            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.accept_eula));
+            new Toasty(getBaseContext(), v, R.string.accept_eula);
             return false;
         }
 
@@ -206,21 +208,21 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                             API.Response<List<ConflictError>> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_CONFLICT_LIST);
                             for (int i = 0; i < error.data.size(); i++) {
                                 conflicts.append(error.data.get(i).property);
-                                if(i != error.data.size()-1)
+                                if (i != error.data.size() - 1)
                                     conflicts.append(", ");
                             }
                             System.out.println("INFO: " + conflicts);
-                            String message = getResources().getString(R.string.conflicts_on)+conflicts;
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, message);
+                            String message = getResources().getString(R.string.conflicts_on) + conflicts;
+                            new Toasty(getBaseContext(), v, message);
                             break;
                         }
                         default: {
-                            new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.internal_server_error));
+                            new Toasty(getBaseContext(), v, R.string.internal_server_error);
                             break;
                         }
                     }
                 } else {
-                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.unknown_error));
+                    new Toasty(getApplicationContext(), v, R.string.error_unknown);
                 }
 
                 for (int i = 0; i < root.getChildCount(); i++) {
@@ -233,14 +235,13 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
 
             @Override
             public void onFailure(@NotNull Call<API.Response<UUID>> call, @NotNull Throwable t) {
+                ErrorHelper.showFailureError(getBaseContext(), v, t);
                 loader.setVisibility(View.GONE);
                 for (int i = 0; i < root.getChildCount(); i++) {
                     View child = root.getChildAt(i);
                     child.setEnabled(true);
                     child.setClickable(true);
                 }
-
-                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getApplicationContext(), v, getResources().getString(R.string.no_internet));
             }
         });
     }

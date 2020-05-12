@@ -18,15 +18,16 @@ import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DateFormat;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.List;
-import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -114,11 +115,11 @@ public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetList
         Call<API.Response> call = API.getInstance().getClient().create(UserService.class).update(user);
         call.enqueue(new Callback<API.Response>() {
             @Override
-            public void onResponse(Call<API.Response> call, Response<API.Response> response) {
+            public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     new com.unitn.disi.lpsmt.happypuppy.ui.components.ToastConfirm(getContext(), v, getResources().getString(R.string.changes_applied));
                 } else {
-                    new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getContext(), v, getResources().getString(R.string.unknown_error));
+                    new Toasty(getContext(), v, R.string.error_unknown);
                 }
                 for (int i = 0; i < root.getChildCount(); i++) {
                     View child = root.getChildAt(i);
@@ -129,15 +130,14 @@ public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetList
             }
 
             @Override
-            public void onFailure(Call<API.Response> call, Throwable t) {
+            public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
+                ErrorHelper.showFailureError(getContext(), v, t);
                 loader.setVisibility(View.GONE);
                 for (int i = 0; i < root.getChildCount(); i++) {
                     View child = root.getChildAt(i);
                     child.setEnabled(true);
                     child.setClickable(true);
                 }
-
-                new com.unitn.disi.lpsmt.happypuppy.ui.components.Toast(getContext(), v, getResources().getString(R.string.no_internet));
             }
         });
     }
