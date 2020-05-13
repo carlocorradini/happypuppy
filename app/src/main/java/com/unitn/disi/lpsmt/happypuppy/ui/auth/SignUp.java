@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
 import com.unitn.disi.lpsmt.happypuppy.R;
@@ -204,6 +205,18 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                     finish();
                 } else if (response.errorBody() != null) {
                     switch (response.code()) {
+                        case HttpStatus.SC_UNPROCESSABLE_ENTITY: {
+                            API.Response<List<UnprocessableEntityError>> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_UNPROCESSABLE_ENTITY_LIST);
+                            StringBuilder entities = new StringBuilder();
+                            for (int i = 0; i < error.data.size(); ++i) {
+                                entities.append(error.data.get(i).property);
+                                if (i != error.data.size() - 1) {
+                                    entities.append(", ");
+                                }
+                            }
+                            new Toasty(getBaseContext(), v, getResources().getString(R.string.unprocessable_entity_on) + entities);
+                            break;
+                        }
                         case HttpStatus.SC_CONFLICT: {
                             StringBuilder conflicts = new StringBuilder();
                             API.Response<List<ConflictError>> error = API.ErrorConverter.convert(response.errorBody(), API.ErrorConverter.TYPE_CONFLICT_LIST);
@@ -212,9 +225,7 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                                 if (i != error.data.size() - 1)
                                     conflicts.append(", ");
                             }
-                            System.out.println("INFO: " + conflicts);
-                            String message = getResources().getString(R.string.conflicts_on) + conflicts;
-                            new Toasty(getBaseContext(), v, message);
+                            new Toasty(getBaseContext(), v, getResources().getString(R.string.conflicts_on) + conflicts);
                             break;
                         }
                         default: {

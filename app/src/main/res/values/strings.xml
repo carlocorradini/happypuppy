@@ -106,7 +106,8 @@
     <string name="insert_password">Password field is empty, \n must to be 8 characters minimum. </string>
     <string name="insert_password_length">Password field  must to be \n 8 characters minimum. </string>
     <string name="pw_not_equals">Passwords are not equal.</string>
-    <string name="conflicts_on">User already exists on duplicates values: \n</string>
+    <string name="conflicts_on">Conflict on properties: </string>
+    <string name="unprocessable_entity_on">Unable to process entity due to properties: </string>
     <!-- -->
 
     <!-- Strings for dialogs -->

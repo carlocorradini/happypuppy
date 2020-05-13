@@ -106,7 +106,8 @@
     <string name="insert_password">Password non inserita.</string>
     <string name="insert_password_length">Password deve essere lunga \n almeno 8 caratteri. </string>
     <string name="pw_not_equals">La password non corrispondono.</string>
-    <string name="conflicts_on">Utente già esistente, duplicati: </string>
+    <string name="conflicts_on">Conflitto sulle proprietà: </string>
+    <string name="unprocessable_entity_on">Impossibile processa l\'entità a causa delle proprietà: </string>
     <!-- -->
 
     <!-- String for dialogs -->
