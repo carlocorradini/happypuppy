@@ -17,7 +17,7 @@ public class Launcher extends AppCompatActivity {
 
         //AuthManager.getInstance().clearToken(); /* TODO: remove this line: only for testing */
 
-        Thread welcomeThread = new Thread() {
+        new Thread() {
             @Override
             public void run() {
                 try {
@@ -32,7 +32,6 @@ public class Launcher extends AppCompatActivity {
                     finish();
                 }
             }
-        };
-        welcomeThread.start();
+        }.start();
     }
 }
