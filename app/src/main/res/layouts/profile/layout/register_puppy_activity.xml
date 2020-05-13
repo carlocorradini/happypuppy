@@ -132,8 +132,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
+                android:clickable="true"
                 android:drawableEnd="@drawable/ic_monkey_baby"
                 android:enabled="false"
+                android:focusable="false"
                 android:hint="@string/puppy_race"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions" />

@@ -113,7 +113,6 @@ public class RegisterPuppy extends AppCompatActivity {
         weightPuppy.setHint(weightPuppy.getHint() + " " + getString(R.string.optional_field));
         date.setHint(date.getHint() + " " + getString(R.string.optional_field));
 
-
         // Spinner for Puppy's size
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.puppy_size, android.R.layout.simple_spinner_item);
