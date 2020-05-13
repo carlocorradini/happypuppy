@@ -27,8 +27,10 @@ import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +39,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetListener{
+public class Tab_info extends Fragment {
     public EditText firstName;
     public EditText lastName;
     public RadioButton inputMale;
@@ -46,8 +48,9 @@ public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetList
     public Button confirmInfo;
     public LinearLayout root;
     public LinearLayout loader;
+    Calendar calendarDate;
     User user;
-    Calendar calendar;
+    View view;
 
     public Tab_info() {
         // Required empty public constructor
@@ -62,7 +65,7 @@ public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetList
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.profile_user_edit_info_fragment, container, false);
+        view = inflater.inflate(R.layout.profile_user_edit_info_fragment, container, false);
 
         root = view.findViewById(R.id.profile_user_edit_info_root_view);
         loader = view.findViewById(R.id.profile_user_edit_info_view_loader);
@@ -76,8 +79,18 @@ public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetList
         /* Listeners for edit text birth date: date picker */
         birthDate.setInputType(InputType.TYPE_NULL);
         birthDate.setOnClickListener(v -> {
-            DialogFragment datePicker = new DatePicker();
-            datePicker.show(requireFragmentManager() , "date picker");
+            final Calendar calendar = Calendar.getInstance();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), (view, year, month, dayOfMonth) -> {
+                Calendar dateOfBirth = Calendar.getInstance();
+                dateOfBirth.set(year, month, dayOfMonth);
+                System.out.println(dateOfBirth.toString());
+                user.dateOfBirth = LocalDate.of(year, month + 1, dayOfMonth);
+                System.out.println(user.dateOfBirth
+                );
+                birthDate.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(dateOfBirth.getTime()));
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+            datePickerDialog.show();
         });
 
         confirmInfo.setOnClickListener(v -> {
@@ -89,9 +102,7 @@ public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetList
             if (!lastName.getText().toString().isEmpty()) {
                 user.surname = lastName.getText().toString();
             }
-            if (calendar != null) {
-                user.dateOfBirth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            }
+            user.dateOfBirth = this.user.dateOfBirth;
             if (inputFemale.isChecked())
                 user.gender = User.Gender.FEMALE;
             else if (inputMale.isChecked())
@@ -160,15 +171,5 @@ public class Tab_info extends Fragment implements DatePickerDialog.OnDateSetList
             if(this.user.dateOfBirth != null)
                 birthDate.setText(this.user.dateOfBirth.toString());
         }).execute();
-    }
-    @Override
-    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-        calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-        String userAge = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
-        birthDate.setText(userAge);
     }
 }

@@ -2,6 +2,7 @@ package com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,15 +17,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
+import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
+import com.unitn.disi.lpsmt.happypuppy.ui.profile.user.ProfileUser;
+import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,6 +51,10 @@ public class ProfilePuppy extends AppCompatActivity {
      * {@link Log} TAG of this class
      */
     private static final String TAG = ProfilePuppy.class.getName();
+    /**
+     * {@link User} {@link Marker} size
+     */
+    private static final Pair<Integer, Integer> USER_MARKER_SIZE = Pair.of(128, 128);
     private static final int REQUEST_CODE = 6384;
 
     Button buttonBack;
@@ -54,6 +65,10 @@ public class ProfilePuppy extends AppCompatActivity {
     TextView usernameOwner;
     LinearLayout buttonsUser;
     LinearLayout buttonsVisit;
+    ImageView buttonDelete;
+
+    Button button1;
+    Button button2;
 
     UUID thisPuppyOwner;
     Puppy thisPuppy;
@@ -83,6 +98,21 @@ public class ProfilePuppy extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     thisPuppy = response.body().data;
                     thisPuppyOwner = response.body().data.user;
+                    loadDataPuppy();
+
+                    if (AuthManager.getInstance().getAuthUserId().equals(thisPuppyOwner)) {
+                        buttonsUser.setVisibility(View.VISIBLE);
+                        buttonsVisit.setVisibility(View.GONE);
+                        changeAvatar.setVisibility(View.VISIBLE);
+
+                        loadButtonsAuth();
+                    } else {
+                        buttonsUser.setVisibility(View.GONE);
+                        buttonsVisit.setVisibility(View.VISIBLE);
+                        changeAvatar.setVisibility(View.GONE);
+
+                        loadButtonsVisit();
+                    }
                 } else if (response.code() == HttpStatus.SC_NOT_FOUND) {
                     Log.i(TAG, "Didn't found this puppy ");
                 } else {
@@ -95,19 +125,73 @@ public class ProfilePuppy extends AppCompatActivity {
                 ErrorHelper.showFailureError(getBaseContext(), ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), t);
             }
         });
+
+        buttonBack.setOnClickListener(v -> {
+            finish();
+        });
+    }
+
+    public void loadDataPuppy(){
         nameTop.setText(thisPuppy.name);
+        new ImageUtil.DownloadImage(avatar -> {
+            if (avatar == null) return;
+            Bitmap avt = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
+            puppyAvatar.setImageBitmap(avt);
+        }).execute(thisPuppy.avatar);
+    }
 
-        if (AuthManager.getInstance().getAuthUserId().equals(thisPuppyOwner)) {
-            buttonsUser.setVisibility(View.VISIBLE);
-            buttonsVisit.setVisibility(View.GONE);
-            changeAvatar.setVisibility(View.VISIBLE);
+    public void loadButtonsVisit(){
+        button1 = findViewById(R.id.profile_puppy_button_friendship);
+        button2 = findViewById(R.id.profile_puppy_button_view_owner);
 
-            changeAvatar.setOnClickListener(this::showFileChooser);
-        } else {
-            buttonsUser.setVisibility(View.GONE);
-            buttonsVisit.setVisibility(View.VISIBLE);
-            changeAvatar.setVisibility(View.GONE);
-        }
+        button1.setOnClickListener(v -> {
+
+        });
+
+        button2.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), ProfileUser.class);
+            intent.putExtra("uuid_user", thisPuppyOwner.toString());
+            startActivity(intent);
+        });
+    }
+    public void loadButtonsAuth(){
+        button1 = findViewById(R.id.profile_puppy_button_edit_puppy);
+        button2 = findViewById(R.id.profile_puppy_button_remove_puppy);
+
+        button1.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EditPuppy.class);
+            intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
+            startActivity(intent);
+        });
+
+        button2.setOnClickListener(v -> {
+            AlertDialog alertDialog = new AlertDialog.Builder(ProfilePuppy.this).create();
+            alertDialog.setTitle(getResources().getString(R.string.remove_puppy));
+            alertDialog.setMessage(getResources().getString(R.string.remove_puppy_confirm));
+            alertDialog.setIcon(R.drawable.ic_sign_out);
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.confirm),
+                    (dialog, which) -> {
+                        Call<API.Response> call = API.getInstance().getClient().create(PuppyService.class).delete(thisPuppy.id);
+                        call.enqueue(new Callback<API.Response>() {
+                            @Override
+                            public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
+                                if(response.isSuccessful()){
+                                    Intent intent = new Intent(v.getContext(), HomePage.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
+                                Log.i(TAG, "Didn't found puppy");
+                            }
+                        });
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.dismiss),
+                    (dialog, which) -> alertDialog.dismiss());
+            alertDialog.show();
+        });
     }
 
     /* Open FileChooser Dialog */

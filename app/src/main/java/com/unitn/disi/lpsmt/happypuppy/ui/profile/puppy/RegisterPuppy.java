@@ -145,7 +145,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
             puppy.name = puppyName.getText().toString();
             puppy.specie = indexAnimalKind;
             puppy.personalities = indexesPersonality;
-            if (calendar != null) {
+            if (date.getText() != null && calendar!=null) {
                 puppy.dateOfBirth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             }
             if (genderFemale.isChecked())

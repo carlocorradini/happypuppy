@@ -47,7 +47,6 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         InfoCardView profile = profiles.get(position);
-        System.out.println("ON BIND VIEW");
         new ImageUtil.DownloadImage(avatar -> {
             if (avatar == null) return;
             Bitmap avt = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
@@ -55,7 +54,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         }).execute(profile.getImage());
         holder.username.setText(profile.getUsername());
         holder.name.setText(profile.getName());
-        if(profile.equals("")){
+        if(profile.getAge().equals("")){
             holder.age.setText("");
         }else{
             holder.age.setText(profile.getAge());

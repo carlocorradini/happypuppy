@@ -33,6 +33,7 @@
     <string name="remove_friend">Rimuovi amico</string>
     <string name="remove_request_friend">Cancella richiesta</string>
     <string name="remove_puppy">Rimuovi Puppy</string>
+    <string name="remove_puppy_confirm">Sei sicuro di volere eliminare questo puppy?</string>
     <string name="view_puppies">Vedi Puppies</string>
     <string name="view_owner">Vedi Proprietario</string>
     <!-- -->
@@ -97,10 +98,11 @@
     <!-- -->
 
     <!-- Strings "insert" -->
-    <string name="insert_name">Inserisci il nome</string>
-    <string name="insert_specie">Inserisci la specie</string>
-    <string name="insert_email">Inserisci indirizzo e-mail</string>
+    <string name="insert_name">Inserisci il nome.</string>
+    <string name="insert_specie">Inserisci la specie.</string>
+    <string name="insert_email">Inserisci indirizzo e-mail.</string>
     <string name="insert_username">Inserisci nome utente.</string>
+    <string name="select_gender">Seleziona un sesso</string>
     <string name="insert_phone">Numero di telefono non inserito\n o non corretto.</string>
     <string name="accept_eula">Accetta l\'EULA.</string>
     <string name="insert_password">Password non inserita.</string>
