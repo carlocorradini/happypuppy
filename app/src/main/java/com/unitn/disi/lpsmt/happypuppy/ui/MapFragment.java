@@ -23,8 +23,9 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -32,10 +33,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.helper.MapHelper;
+import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
+import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
 import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     /**
@@ -101,7 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     /**
      * Current authenticated {@link User}
      */
-    private User user = null;
+    private User user;
 
     /**
      * Current authenticated {@link User} {@link Bitmap avatar}
@@ -119,17 +120,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private View view;
 
     /**
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * {@link MapView} of map
      */
+    private MapView mapView;
+
+    /**
+     * Construct a {@link MapFragment} class
+     *
+     * @param user The current authenticated {@link User} to display on the {@link GoogleMap map}
+     */
+    public MapFragment(final User user) {
+        this.user = user;
+        loadData();
+    }
+
+    /**
+     * Construct a {@link MapFragment} class
+     */
+    public MapFragment() {
+        this(null);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Initialize map
-        view =  inflater.inflate(R.layout.explore_map_fragment, null);
+        view = inflater.inflate(R.layout.explore_map_fragment, container, false);
+
+        mapView = view.findViewById(R.id.map_view);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+
         initMap();
 
         return view;
@@ -138,6 +158,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onResume() {
         super.onResume();
+        mapView.onResume();
         if (locationPermissionGranted) {
             startLocationUpdates();
         }
@@ -146,7 +167,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onPause() {
         super.onPause();
+        mapView.onPause();
         stopLocationUpdates();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
     @Override
@@ -164,10 +198,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      * Initialize {@link GoogleMap map} layout and functionality
      */
     private void initMap() {
-        // Maps layout
-        SupportMapFragment mapFragment = (SupportMapFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.map);
-        assert mapFragment != null;
-        mapFragment.getMapAsync(this);
+        MapsInitializer.initialize(requireActivity().getApplicationContext());
+        mapView.getMapAsync(this);
 
         // Maps provider client
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
@@ -269,5 +301,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         setMapsUI();
+    }
+
+    /**
+     * Load/Download useful data used in the current {@link ActivityCompat activity} and {@link GoogleMap map}.
+     * It can be called once.
+     */
+    private void loadData() {
+        if(user != null && userAvatar != null) return;
+
+        new UserUtil.DownloadAuthUser(user -> {
+            if (user == null) return;
+            this.user = user;
+            new ImageUtil.DownloadImage(avatar -> {
+                if (avatar == null) return;
+                this.userAvatar = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
+            }).execute(user.avatar);
+        }).execute();
     }
 }

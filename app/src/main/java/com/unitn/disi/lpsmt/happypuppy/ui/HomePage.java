@@ -1,43 +1,20 @@
 package com.unitn.disi.lpsmt.happypuppy.ui;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.ListPuppy;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.user.ProfileUser;
-import com.unitn.disi.lpsmt.happypuppy.helper.MapHelper;
 import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
@@ -95,8 +72,8 @@ public class HomePage extends AppCompatActivity {
         loadData();
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            (BottomNavigationView.OnNavigationItemSelectedListener) item -> {
-                Fragment selectedFragment = new MapFragment();
+            item -> {
+                Fragment selectedFragment;
                 switch (item.getItemId()){
                     case R.id.nav_explore:
                         selectedFragment = new MapFragment();
@@ -116,7 +93,7 @@ public class HomePage extends AppCompatActivity {
             };
 
     /**
-     * Load/Download useful data used in the current {@link ActivityCompat activity} and {@link GoogleMap map}.
+     * Load/Download useful data used in the current {@link ActivityCompat activity}
      * It can be called once.
      */
     private void loadData() {
