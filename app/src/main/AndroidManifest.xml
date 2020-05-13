@@ -35,7 +35,6 @@
         <activity android:name=".ui.profile.puppy.RegisterPuppy" />
         <activity android:name=".ui.auth.ForgotPassword" />
         <activity android:name=".ui.auth.ActivateProfile" />
-        <activity android:name=".ui.components.DialogAnimalKind" />
         <activity android:name=".ui.profile.user.ProfileUser"/>
         <activity android:name=".ui.profile.puppy.ProfilePuppy"/>
         <activity android:name=".ui.profile.user.EditUser"/>
