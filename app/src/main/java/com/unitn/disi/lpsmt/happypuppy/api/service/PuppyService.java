@@ -2,10 +2,12 @@ package com.unitn.disi.lpsmt.happypuppy.api.service;
 
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -17,6 +19,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -51,6 +54,15 @@ public interface PuppyService {
      */
     @GET("auth/puppy/{id}")
     Call<API.Response<Puppy>> findById(@Path("id") Long id);
+
+    /**
+     * Find a {@link List} of {@link Puppy} that correspond to the given {@link User} {@link UUID id}
+     *
+     * @param user The {@link User} {@link UUID id}
+     * @return An {@link API.Response} with the {@link List} of {@link Puppy} founds for the corresponding {@link User} {@link UUID id}
+     */
+    @GET("auth/puppy")
+    Call<API.Response<List<Puppy>>> findByUser(@Query("user") UUID user);
 
     /**
      * Create a new {@link Puppy} with the given puppy
