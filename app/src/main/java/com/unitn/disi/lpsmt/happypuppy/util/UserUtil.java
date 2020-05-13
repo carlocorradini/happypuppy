@@ -58,7 +58,7 @@ public final class UserUtil {
                 Response<API.Response<User>> response = API.getInstance().getClient().create(UserService.class).me().execute();
                 if (response.isSuccessful() && response.body() != null) {
                     user = response.body().data;
-                    Log.e(TAG, "Successfully downloaded current authenticated User");
+                    Log.i(TAG, "Successfully downloaded current authenticated User");
                 } else {
                     Log.e(TAG, "Unable to download current authenticated User due to failure response " + response.code() + "received");
                 }
