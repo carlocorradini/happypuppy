@@ -47,11 +47,11 @@ public interface AnimalBreedService {
     Call<API.Response<AnimalBreed>> findById(@Path("id") Long id);
 
     /**
-     * Find all {@link AnimalBreed} that correspond to the given {@link AnimalSpecie} {@link Long id}
+     * Find all {@link AnimalBreed} that correspond to the given {@link AnimalSpecie specie} {@link Long id}
      *
      * @param specie The {@link AnimalSpecie} {@link Long id}
-     * @return An {@link API.Response} with the {@link List} of {@link AnimalBreed} founds for the corresponding {@link AnimalSpecie} {@link Long ID}
+     * @return An {@link API.Response} with the {@link List} of {@link AnimalBreed} founds for the corresponding {@link AnimalSpecie} {@link Long id}
      */
     @GET("auth/animal_breed")
-    Call<API.Response<List<AnimalBreed>>> findByAnimalSpecieId(@Query("specie") Long specie);
+    Call<API.Response<List<AnimalBreed>>> findByAnimalSpecie(@Query("specie") Long specie);
 }

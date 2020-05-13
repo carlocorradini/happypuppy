@@ -14,11 +14,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
-import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
@@ -31,8 +29,10 @@ import net.rimoto.intlphoneinput.IntlPhoneInput;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +42,7 @@ import retrofit2.Response;
 
 import org.apache.http.HttpStatus;
 
-public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class SignUp extends AppCompatActivity {
 
     private LinearLayout root;
     private EditText inputName;
@@ -67,6 +67,8 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_activity);
+
+        final User user = new User();
 
         /* Layouts */
         root = findViewById(R.id.sign_up_root_view);
@@ -102,8 +104,32 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
             finish();
         });
 
+        /* Listeners for edit text birth date: date picker */
+        inputDateOfBirth.setInputType(InputType.TYPE_NULL);
+        inputDateOfBirth.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), (view, year, month, dayOfMonth) -> {
+                Calendar dateOfBirth = Calendar.getInstance();
+                dateOfBirth.set(year, month, dayOfMonth);
+                System.out.println(dateOfBirth.toString());
+                user.dateOfBirth = LocalDate.of(year, month + 1, dayOfMonth);
+                System.out.println(user.dateOfBirth
+                );
+                inputDateOfBirth.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(dateOfBirth.getTime()));
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+            datePickerDialog.show();
+        });
+
+        visitEula.setOnClickListener(v -> {
+            Intent browserIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
+            browserIntent.setData(Uri.parse("http://happypuppy-2020.herokuapp.com/site/legal/eula"));
+            startActivity(browserIntent);
+        });
+
+        buttonBack.setOnClickListener(v -> finish());
+
         buttonSignUp.setOnClickListener(v -> {
-            User user = new User();
             user.username = inputUsername.getText().toString();
             user.password = inputPassword.getText().toString();
             user.email = inputEmail.getText().toString();
@@ -128,31 +154,6 @@ public class SignUp extends AppCompatActivity implements DatePickerDialog.OnDate
                 signUp(v, user);
             }
         });
-
-        /* Listeners for edit text birth date: date picker */
-        inputDateOfBirth.setInputType(InputType.TYPE_NULL);
-        inputDateOfBirth.setOnClickListener(v -> {
-            DialogFragment datePicker = new DatePicker();
-            datePicker.show(getSupportFragmentManager(), "date picker");
-        });
-
-        visitEula.setOnClickListener(v -> {
-            Intent browserIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
-            browserIntent.setData(Uri.parse("http://happypuppy-2020.herokuapp.com/site/legal/eula"));
-            startActivity(browserIntent);
-        });
-        buttonBack.setOnClickListener(v -> finish());
-    }
-
-    @Override
-    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-        calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-        String userAge = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
-        inputDateOfBirth.setText(userAge);
     }
 
     private boolean validateUser(final View v, final User user) {

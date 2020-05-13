@@ -1,9 +1,12 @@
 package com.unitn.disi.lpsmt.happypuppy.api.entity;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Animal Personality mapping
@@ -59,5 +62,17 @@ public class AnimalPersonality {
      * Construct an empty Animal Personality class
      */
     public AnimalPersonality() {
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AnimalPersonality animalPersonality = (AnimalPersonality) obj;
+        return Objects.equals(id, animalPersonality.id);
     }
 }

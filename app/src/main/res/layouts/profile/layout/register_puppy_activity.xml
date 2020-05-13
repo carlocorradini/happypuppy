@@ -124,7 +124,7 @@
                 android:hint="@string/animal_specie"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions"
-                android:focusable="false" />
+                android:focusable="false"/>
 
             <EditText
                 android:id="@+id/register_puppy_input_race"
@@ -134,7 +134,8 @@
                 android:drawableEnd="@drawable/ic_monkey_baby"
                 android:hint="@string/puppy_race"
                 android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textNoSuggestions"
+                android:enabled="false"/>
 
             <EditText
                 android:id="@+id/register_puppy_input_age"

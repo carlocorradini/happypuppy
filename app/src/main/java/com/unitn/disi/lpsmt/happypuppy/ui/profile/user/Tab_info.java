@@ -12,14 +12,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
-import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.ToastyConfirm;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
@@ -28,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 

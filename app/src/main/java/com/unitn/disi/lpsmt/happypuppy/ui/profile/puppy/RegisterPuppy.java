@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
@@ -29,10 +28,10 @@ import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
-import com.unitn.disi.lpsmt.happypuppy.ui.components.DatePicker;
-import com.unitn.disi.lpsmt.happypuppy.ui.components.DialogAnimalKind;
-import com.unitn.disi.lpsmt.happypuppy.ui.components.DialogPersonalitiesPuppy;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.dialog.AnimalBreedsDialog;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.dialog.AnimalPersonalitiesDialog;
+import com.unitn.disi.lpsmt.happypuppy.ui.components.dialog.AnimalSpecieDialog;
 
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
@@ -42,16 +41,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
-import java.time.ZoneId;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, DialogAnimalKind.DialogAnimalKindListener, DialogPersonalitiesPuppy.DialogAnimalPersonalitiesListener {
+public class RegisterPuppy extends AppCompatActivity {
     private static final int REQUEST_CODE = 6384; //onActivityResult request
 
     private LinearLayout loader;
@@ -65,26 +65,18 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
     private Spinner unitWeightPuppy;
     private EditText weightPuppy;
     private ImageView avatarPuppy;
-
     private TextView date;
     private Button personality;
     private Button confirm;
     private Button imgPuppy;
     private Button buttonBack;
 
-    /* Checklist objects for puppy Personality */
-
-    ArrayList<Integer> puppyPersonality = new ArrayList<>();
-    Calendar calendar;
-    Long indexAnimalKind;
-    List<Long> indexesPersonality;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_puppy_activity);
 
-        indexesPersonality = new ArrayList<>();
+        final Puppy puppy = new Puppy();
 
         root = findViewById(R.id.register_puppy_root_view);
         loader = findViewById(R.id.register_puppy_view_loader);
@@ -93,16 +85,20 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         genderMale = findViewById(R.id.register_puppy_input_gender_male);
         kindAnimal = findViewById(R.id.register_puppy_input_kind_animal);
         kindAnimal.setInputType(InputType.TYPE_NULL);
+        AnimalSpecieDialog animalSpecieDialog = new AnimalSpecieDialog();
         raceAnimal = findViewById(R.id.register_puppy_input_race);
         raceAnimal.setInputType(InputType.TYPE_NULL);
+        AnimalBreedsDialog animalBreedsDialog = new AnimalBreedsDialog();
         puppyName = findViewById(R.id.register_puppy_input_name_puppy);
         sizePuppy = findViewById(R.id.register_puppy_input_size);
         unitWeightPuppy = findViewById(R.id.register_puppy_input_spinner_weight);
         weightPuppy = findViewById(R.id.register_puppy_input_weight_puppy);
         date = findViewById(R.id.register_puppy_input_age);
+        date.setInputType(InputType.TYPE_NULL);
         avatarPuppy = findViewById(R.id.register_puppy_profile_image);
-
         personality = findViewById(R.id.register_puppy_button_input_personality);
+        personality.setInputType(InputType.TYPE_NULL);
+        AnimalPersonalitiesDialog animalPersonalitiesDialog = new AnimalPersonalitiesDialog();
         confirm = findViewById(R.id.register_puppy_button_confirm);
         buttonBack = findViewById(R.id.register_puppy_button_back);
 
@@ -110,20 +106,12 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         imgPuppy = findViewById(R.id.register_puppy_button_image);
 
         imgPuppy.setOnClickListener(this::showFileChooser);
-        buttonBack.setOnClickListener(v -> {
-            finish();
-        });
+        buttonBack.setOnClickListener(v -> finish());
 
         /* Reset hint for optional fields */
         raceAnimal.setHint(raceAnimal.getHint() + " " + getString(R.string.optional_field));
         weightPuppy.setHint(weightPuppy.getHint() + " " + getString(R.string.optional_field));
         date.setHint(date.getHint() + " " + getString(R.string.optional_field));
-
-        /* Create Dialog for KindAnimal */
-        kindAnimal.setOnClickListener(v -> {
-            DialogAnimalKind dialog = new DialogAnimalKind();
-            dialog.show(getSupportFragmentManager(), "dialog animal kind");
-        });
 
 
         // Spinner for Puppy's size
@@ -139,15 +127,59 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         unitWeightPuppy.setAdapter(adapterUnit);
 
 
-        // Button listeners
+        // Animal Specie
+        kindAnimal.setOnClickListener(v -> {
+            if (!animalSpecieDialog.isAdded())
+                animalSpecieDialog.show(getSupportFragmentManager(), AnimalSpecieDialog.class.getName());
+        });
+        animalSpecieDialog.setOnDialogSelectionListener(animalSpecie -> {
+            if (animalSpecie == null) return;
+            puppy.specie = animalSpecie.id;
+            animalBreedsDialog.setAnimalSpecie(animalSpecie.id);
+            raceAnimal.setEnabled(true);
+            kindAnimal.setText(animalSpecie.name);
+        });
+
+        // Animal Breeds
+        raceAnimal.setOnClickListener(v -> {
+            if (!animalBreedsDialog.isAdded())
+                animalBreedsDialog.show(getSupportFragmentManager(), AnimalBreedsDialog.class.getName());
+        });
+        animalBreedsDialog.setOnDialogSelectionListener(animalBreeds -> {
+            if (animalBreeds == null) return;
+            if (puppy.breeds == null) puppy.breeds = new ArrayList<>();
+            puppy.breeds.clear();
+            animalBreeds.forEach(animalBreed -> puppy.breeds.add(animalBreed.id));
+        });
+
+        // Animal Personalities
+        personality.setOnClickListener(v -> {
+            if (!animalPersonalitiesDialog.isAdded())
+                animalPersonalitiesDialog.show(getSupportFragmentManager(), AnimalPersonalitiesDialog.class.getName());
+        });
+        animalPersonalitiesDialog.setOnDialogSelectionListener(animalPersonalities -> {
+            if (animalPersonalities == null) return;
+            if (puppy.personalities == null) puppy.personalities = new ArrayList<>();
+            puppy.personalities.clear();
+            animalPersonalities.forEach(animalPersonality -> puppy.personalities.add(animalPersonality.id));
+        });
+
+        // Birth date of puppy
+        date.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), (view, year, month, dayOfMonth) -> {
+                Calendar dateOfBirth = Calendar.getInstance();
+                dateOfBirth.set(year, month, dayOfMonth);
+                System.out.println(dateOfBirth.toString());
+                puppy.dateOfBirth = LocalDate.of(year, month + 1, dayOfMonth);
+                date.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(dateOfBirth.getTime()));
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+            datePickerDialog.show();
+        });
+
         confirm.setOnClickListener(v -> {
-            Puppy puppy = new Puppy();
             puppy.name = puppyName.getText().toString();
-            puppy.specie = indexAnimalKind;
-            puppy.personalities = indexesPersonality;
-            if (date.getText() != null && calendar!=null) {
-                puppy.dateOfBirth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            }
             if (genderFemale.isChecked())
                 puppy.gender = Puppy.Gender.FEMALE;
             else if (genderMale.isChecked())
@@ -158,19 +190,6 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
                 registerPuppy(v, puppy);
             }
         });
-
-        personality.setOnClickListener(v -> {
-            DialogPersonalitiesPuppy dialogP = new DialogPersonalitiesPuppy();
-            dialogP.show(getSupportFragmentManager(), "dialog personalities puppy");
-        });
-
-
-        // Birth date of puppy
-        date.setOnClickListener(v -> {
-            DialogFragment datePicker = new DatePicker();
-            datePicker.show(getSupportFragmentManager(), "date picker");
-        });
-        date.setInputType(InputType.TYPE_NULL);
     }
 
     public boolean validatePuppy(final View v, final Puppy puppy) {
@@ -190,6 +209,7 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
     }
 
     public void registerPuppy(final View v, final Puppy puppy) {
+        System.out.println(puppy.personalities.size());
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
             child.setEnabled(false);
@@ -242,18 +262,6 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
                 }
             }
         });
-    }
-
-    /* Date selected */
-    @Override
-    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-        String puppyAge = DateFormat.getDateInstance(DateFormat.MEDIUM).format(c.getTime());
-        date.setText(puppyAge);
     }
 
     /* Open FileChooser Dialog */
@@ -339,16 +347,5 @@ public class RegisterPuppy extends AppCompatActivity implements DatePickerDialog
         String fileName = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
         cursor.close();
         return fileName;
-    }
-
-    @Override
-    public void saveAnimalKind(Long indexAnimal, String nameAnimal) {
-        this.kindAnimal.setText(nameAnimal);
-        this.indexAnimalKind = indexAnimal;
-    }
-
-    @Override
-    public void saveAnimalPersonalities(List<Long> indexesPersonality) {
-        this.indexesPersonality = indexesPersonality;
     }
 }
