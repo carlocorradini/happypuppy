@@ -3,7 +3,7 @@ package com.unitn.disi.lpsmt.happypuppy.api.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.net.URI;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -180,7 +180,7 @@ public class User {
      */
     @SerializedName("avatar")
     @Expose
-    public URI avatar;
+    public URL avatar;
 
     /**
      * List of Puppy ids of the User
@@ -233,7 +233,7 @@ public class User {
      * @param createdAt   Creation {@link LocalDateTime} of the User
      * @param updatedAt   Update {@link LocalDateTime} of the User
      */
-    public User(UUID id, String username, String password, Role role, String name, String surname, Gender gender, LocalDate dateOfBirth, String email, String phone, URI avatar, List<Long> puppies, Long friends, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(UUID id, String username, String password, Role role, String name, String surname, Gender gender, LocalDate dateOfBirth, String email, String phone, URL avatar, List<Long> puppies, Long friends, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.username = username;
         this.password = password;
