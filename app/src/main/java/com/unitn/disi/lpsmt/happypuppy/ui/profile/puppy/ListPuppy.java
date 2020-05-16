@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
@@ -35,22 +35,26 @@ import retrofit2.Response;
 public class ListPuppy extends Fragment {
     private RecyclerView recyclerView;
     private CardViewAdapter adapter;
-    private List<InfoCardView> cardList;
+    private SwipeRefreshLayout refresh;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.list_puppies_fragment, null);
-        cardList = new ArrayList<>();
 
-        cardList = loadPuppies(view);
-
+        loadPuppies(view);
         recyclerView = view.findViewById(R.id.list_puppies_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        refresh = view.findViewById(R.id.list_puppies_refresh);
+
+        refresh.setOnRefreshListener(() -> {
+            refresh.setRefreshing(false);
+            loadPuppies(view);
+        });
 
         return view;
     }
-    public List<InfoCardView> loadPuppies(View view){
+    public void loadPuppies(View view){
         List<InfoCardView> cardList = new ArrayList<>();
         try {
             Call<API.Response<List<Puppy>>> call = API.getInstance().getClient().create(PuppyService.class).find();
@@ -88,6 +92,5 @@ public class ListPuppy extends Fragment {
         }catch(Exception e){
             Log.e("ErrList","Cannot load puppies due to exception: "+e.getMessage());
         }
-        return cardList;
     }
 }

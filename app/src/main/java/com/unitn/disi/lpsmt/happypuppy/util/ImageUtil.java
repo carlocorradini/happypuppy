@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import com.unitn.disi.lpsmt.happypuppy.App;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
 /**
@@ -60,7 +61,7 @@ public final class ImageUtil {
      *
      * @author Carlo Corradini
      */
-    public static final class DownloadImage extends AsyncTask<URL, Void, Bitmap> {
+    public static final class DownloadImage extends AsyncTask<URI, Void, Bitmap> {
         /**
          * {@link Log} TAG of this class
          */
@@ -105,18 +106,18 @@ public final class ImageUtil {
         }
 
         @Override
-        protected Bitmap doInBackground(URL... urls) {
-            if (urls == null || urls.length == 0 || urls[0] == null) return null;
+        protected Bitmap doInBackground(URI... uris) {
+            if (uris == null || uris.length == 0 || uris[0] == null) return null;
             Bitmap image = null;
 
             try {
-                image = BitmapFactory.decodeStream(urls[0].openConnection().getInputStream());
+                image = BitmapFactory.decodeStream(uris[0].toURL().openConnection().getInputStream());
 
                 if (width != null && height != null) {
                     image = Bitmap.createScaledBitmap(image, width, height, false);
                 }
 
-                Log.i(TAG, "Successfully downloaded image at " + urls[0]);
+                Log.i(TAG, "Successfully downloaded image at " + uris[0]);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to download image due to " + e.getMessage(), e);
             }

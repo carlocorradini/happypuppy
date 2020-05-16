@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.ProfilePuppy;
@@ -47,11 +48,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         InfoCardView profile = profiles.get(position);
-        new ImageUtil.DownloadImage(avatar -> {
-            if (avatar == null) return;
-            Bitmap avt = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
-            holder.image.setImageBitmap(avt);
-        }).execute(profile.getImage());
+        Picasso.get().load(String.valueOf(profile.getImage())).into(holder.image);
         holder.username.setText(profile.getUsername());
         holder.name.setText(profile.getName());
         if(profile.getAge().equals("")){
@@ -59,11 +56,19 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         }else{
             holder.age.setText(profile.getAge());
         }
-        holder.itemView.setOnClickListener(v -> {
+        if(profile.getIdPuppy() != null) {
+            holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), ProfilePuppy.class);
                 intent.putExtra("id_puppy", profile.getIdPuppy().toString());
                 ctx.startActivity(intent);
-        });
+            });
+        }else{
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), ProfileUser.class);
+                intent.putExtra("uuid_user", profile.getUuid().toString());
+                ctx.startActivity(intent);
+            });
+        }
     }
 
     @Override

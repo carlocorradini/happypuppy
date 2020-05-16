@@ -39,11 +39,12 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_below="@id/top_navigation"
         android:background="@color/colorPrimaryDark">
 
         <LinearLayout
+            android:id="@+id/profile_puppy_edit_root_view"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -60,44 +61,18 @@
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions" />
 
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
-
-                <RadioButton
-                    android:id="@+id/profile_puppy_edit_input_gender_male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/male"/>
-                <RadioButton
-                    android:id="@+id/profile_puppy_edit_input_gender_female"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/female"/>
-            </RadioGroup>
-
-            <EditText
-                android:id="@+id/profile_puppy_edit_input_kind_animal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_monkey"
-                android:hint="@string/animal_specie"
-                android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
-
-            <EditText
+            <Button
                 android:id="@+id/profile_puppy_edit_input_race"
+                style="@style/Button.Colored"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:drawableEnd="@drawable/ic_monkey_baby"
-                android:hint="@string/puppy_race"
-                android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
+                android:textSize="@dimen/text_size_standard"
+                android:layout_margin="@dimen/margin"
+                android:drawableTint="@color/colorSecondary"
+                android:drawableEnd="@drawable/ic_drop_down_arrow"
+                android:text="@string/puppy_race"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/profile_puppy_edit_input_age"
@@ -112,13 +87,13 @@
                 android:windowSoftInputMode="stateAlwaysHidden"
                 android:focusable="false" />
 
-            <Spinner
+            <!--<Spinner
                 android:id="@+id/profile_puppy_edit_input_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
                 android:spinnerMode="dialog"
-                android:prompt="@string/size" />
+                android:prompt="@string/size" />-->
 
             <LinearLayout
                 android:id="@+id/profile_puppy_edit_section_weight"

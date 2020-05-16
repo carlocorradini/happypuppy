@@ -19,7 +19,9 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
@@ -61,11 +63,18 @@ public class ProfilePuppy extends AppCompatActivity {
     TextView nameTop;
     ImageView puppyAvatar;
     Button changeAvatar;
-    TextView numberFriends;
+    TextView numberPersonalities;
     TextView usernameOwner;
     LinearLayout buttonsUser;
     LinearLayout buttonsVisit;
-    ImageView buttonDelete;
+    SwipeRefreshLayout refreshPuppy;
+
+    TextView specie;
+    TextView races;
+    TextView dateOfBirth;
+    TextView gender;
+    TextView weight;
+    TextView personalities;
 
     Button button1;
     Button button2;
@@ -82,14 +91,34 @@ public class ProfilePuppy extends AppCompatActivity {
         nameTop = findViewById(R.id.profile_puppy_name);
         changeAvatar = findViewById(R.id.profile_puppy_button_image);
         puppyAvatar = findViewById(R.id.profile_puppy_profile_image);
-        numberFriends = findViewById(R.id.profile_puppy_number_friends);
+        numberPersonalities = findViewById(R.id.profile_puppy_number_personalities);
         usernameOwner = findViewById(R.id.profile_puppy_user_owner);
+
+        specie = findViewById(R.id.profile_puppy_info_specie);
+        races = findViewById(R.id.profile_puppy_info_races);
+        dateOfBirth = findViewById(R.id.profile_puppy_info_dateOfBirth);
+        gender = findViewById(R.id.profile_puppy_info_gender);
+        weight = findViewById(R.id.profile_puppy_info_weight);
+        personalities = findViewById(R.id.profile_puppy_info_personality);
 
         buttonsUser = findViewById(R.id.profile_puppy_buttons_profile);
         buttonsVisit = findViewById(R.id.profile_puppy_buttons_visit);
+        refreshPuppy = findViewById(R.id.profile_puppy_swipe_refresh);
 
         Long id_puppy = Long.parseLong(Objects.requireNonNull(getIntent().getStringExtra("id_puppy")));
 
+        downloadPuppy(id_puppy);
+
+        refreshPuppy.setOnRefreshListener(() -> {
+            refreshPuppy.setRefreshing(false);
+            downloadPuppy(id_puppy);
+        });
+
+        buttonBack.setOnClickListener(v -> {
+            finish();
+        });
+    }
+    private void downloadPuppy(Long id_puppy){
         Call<API.Response<Puppy>> call = API.getInstance().getClient().create(PuppyService.class).findById(id_puppy);
 
         call.enqueue(new Callback<API.Response<Puppy>>() {
@@ -125,25 +154,38 @@ public class ProfilePuppy extends AppCompatActivity {
                 ErrorHelper.showFailureError(getBaseContext(), ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), t);
             }
         });
-
-        buttonBack.setOnClickListener(v -> {
-            finish();
-        });
     }
 
     public void loadDataPuppy(){
         nameTop.setText(thisPuppy.name);
-        new ImageUtil.DownloadImage(avatar -> {
-            if (avatar == null) return;
-            Bitmap avt = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
-            puppyAvatar.setImageBitmap(avt);
-        }).execute(thisPuppy.avatar);
+
+        numberPersonalities.setText(String.valueOf(thisPuppy.personalities.size()));
+        Picasso.get().load(String.valueOf(thisPuppy.avatar)).into(puppyAvatar);
+
+        if(thisPuppy.gender == Puppy.Gender.MALE)
+            gender.setText(getString(R.string.male));
+        else
+            gender.setText(getString(R.string.female));
+        String specie = String.valueOf(thisPuppy.specie);
+        this.specie.setText(specie);
+
+        if(thisPuppy.weight != null) {
+            if(thisPuppy.weight > 1000) {
+                String weight = Long.toString(thisPuppy.weight/1000);
+                this.weight.setText(weight.concat(" Kg"));
+            }else{
+                String weight = Long.toString(thisPuppy.weight);
+                this.weight.setText(weight.concat(" G"));
+            }
+        }
+        if(thisPuppy.dateOfBirth != null){
+            dateOfBirth.setText(thisPuppy.dateOfBirth.toString());
+        }
     }
 
     public void loadButtonsVisit(){
         button1 = findViewById(R.id.profile_puppy_button_friendship);
         button2 = findViewById(R.id.profile_puppy_button_view_owner);
-
         button1.setOnClickListener(v -> {
 
         });
@@ -160,7 +202,7 @@ public class ProfilePuppy extends AppCompatActivity {
 
         button1.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EditPuppy.class);
-            intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
+            intent.putExtra("id_puppy", thisPuppy.id.toString());
             startActivity(intent);
         });
 

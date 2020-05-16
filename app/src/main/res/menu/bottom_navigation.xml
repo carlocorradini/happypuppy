@@ -7,6 +7,12 @@
         android:title="@string/notification"
         android:background="@drawable/button_border"/>
     <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/ic_search"
+        android:iconTint="@color/colorSecondary"
+        android:title="@string/notification"
+        android:background="@drawable/button_border"/>
+    <item
         android:id="@+id/nav_explore"
         android:icon="@drawable/ic_explore_filled"
         android:iconTint="@color/colorSecondary"

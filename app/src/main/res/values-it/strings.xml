@@ -16,6 +16,7 @@
     <string name="notification">Notifiche</string>
     <string name="explore">Esplora</string>
     <string name="profile">Profilo</string>
+    <string name="my_puppies">I miei Puppy</string>
     <string name="home">Home</string>
     <string name="yes_account">Ho un account</string>
     <string name="no_account">Non ho un account</string>
@@ -31,6 +32,8 @@
     <string name="add_puppy">Aggiungi Puppy</string>
     <string name="add_friend">Aggiungi amico</string>
     <string name="remove_friend">Rimuovi amico</string>
+    <string name="accept_request">Accetta richiesta</string>
+    <string name="remove_request">Rifiuta richiesta</string>
     <string name="remove_request_friend">Cancella richiesta</string>
     <string name="remove_puppy">Rimuovi Puppy</string>
     <string name="remove_puppy_confirm">Sei sicuro di volere eliminare questo puppy?</string>
@@ -80,6 +83,7 @@
 
     <!-- General Errors -->
     <string name="wrong_email">Indirizzo email non corretto.</string>
+    <string name="no_notifications">Nessuna notifica</string>
     <!-- -->
 
     <!-- Errors -->

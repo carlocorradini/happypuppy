@@ -143,6 +143,37 @@
         </LinearLayout>
         <include
             layout="@layout/profile_user_buttons" />
+
+    <TextView
+        android:id="@+id/profile_user_info_full_name"
+        android:drawableStart="@drawable/ic_account_box_filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/text_size_standard"
+        android:padding="15dp"
+        android:textAlignment="center"
+        android:text=""/>
+    <TextView
+        android:id="@+id/profile_user_info_dateOfBirth"
+        android:drawableStart="@drawable/ic_birthday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/text_size_standard"
+        android:padding="15dp"
+        android:textAlignment="center"
+        android:text=""/>
+    <TextView
+        android:id="@+id/profile_user_info_gender"
+        android:drawableStart="@drawable/ic_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/text_size_standard"
+        android:padding="15dp"
+        android:textAlignment="center"
+        android:text=""/>
     </LinearLayout>
 </ScrollView>
 </RelativeLayout>

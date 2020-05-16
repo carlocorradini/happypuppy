@@ -11,9 +11,10 @@
     <!-- -->
 
     <!-- Labels for Button -->
-    <string name="notification">Notification</string>
+    <string name="notification">Notifications</string>
     <string name="explore">Explore</string>
     <string name="profile">Profile</string>
+    <string name="my_puppies">My Puppies</string>
     <string name="home">Home</string>
     <string name="yes_account">I have an account</string>
     <string name="no_account">I don\'t have an account</string>
@@ -29,6 +30,8 @@
     <string name="add_puppy">Add Puppy</string>
     <string name="add_friend">Add Friend</string>
     <string name="remove_friend">Remove Friend</string>
+    <string name="accept_request">Accept Request</string>
+    <string name="remove_request">Remove Request</string>
     <string name="remove_request_friend">Cancel Friend Request</string>
     <string name="remove_puppy">Remove Puppy</string>
     <string name="remove_puppy_confirm">Are you sure to remove this puppy?</string>
@@ -54,7 +57,7 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="puppy_behaviour">Personality</string>
+    <string name="puppy_behaviour">Personalities</string>
     <string name="upload_avatar">Upload a photo</string>
     <string name="puppy_owner">Owner</string>
     <string name="otp_sms">OTP SMS Code</string>
@@ -80,6 +83,7 @@
 
     <!-- General Errors -->
     <string name="wrong_email">Invalid email address.</string>
+    <string name="no_notifications">No notifications</string>
     <!-- -->
 
     <!-- Errors -->

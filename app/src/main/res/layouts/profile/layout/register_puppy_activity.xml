@@ -127,18 +127,19 @@
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions" />
 
-            <EditText
+            <Button
                 android:id="@+id/register_puppy_input_race"
+                style="@style/Button.Colored"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:clickable="true"
-                android:drawableEnd="@drawable/ic_monkey_baby"
+                android:textSize="@dimen/text_size_standard"
+                android:layout_margin="@dimen/margin"
+                android:drawableTint="@color/colorSecondary"
+                android:drawableEnd="@drawable/ic_drop_down_arrow"
+                android:text="@string/puppy_race"
                 android:enabled="false"
-                android:focusable="false"
-                android:hint="@string/puppy_race"
-                android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/register_puppy_input_age"
@@ -153,13 +154,13 @@
                 android:inputType="textNoSuggestions"
                 android:windowSoftInputMode="stateAlwaysHidden" />
 
-            <Spinner
+           <!-- <Spinner
                 android:id="@+id/register_puppy_input_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
                 android:prompt="@string/size"
-                android:spinnerMode="dialog" />
+                android:spinnerMode="dialog" /> -->
 
             <LinearLayout
                 android:id="@+id/register_puppy_section_weight"

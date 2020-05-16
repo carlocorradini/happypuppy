@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
+import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.Launcher;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
@@ -48,6 +49,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.UUID;
 
 public class ProfileUser extends AppCompatActivity {
@@ -75,6 +77,10 @@ public class ProfileUser extends AppCompatActivity {
     Button button1;
     Button button2;
 
+    TextView fullName;
+    TextView gender;
+    TextView birthDate;
+
     User user;
     UUID uuid;
     UserFriend friendship;
@@ -92,6 +98,10 @@ public class ProfileUser extends AppCompatActivity {
         changeAvatar = findViewById(R.id.profile_user_button_image);
         numberFriends = findViewById(R.id.profile_user_number_friends);
         numberPuppies = findViewById(R.id.profile_user_number_puppies);
+
+        fullName = findViewById(R.id.profile_user_info_full_name);
+        gender = findViewById(R.id.profile_user_info_gender);
+        birthDate = findViewById(R.id.profile_user_info_dateOfBirth);
 
         buttonsUser = findViewById(R.id.profile_user_buttons_profile);
         buttonsVisit = findViewById(R.id.profile_user_buttons_visit);
@@ -129,16 +139,24 @@ public class ProfileUser extends AppCompatActivity {
                 public void onResponse(@NotNull Call<API.Response<User>> call, @NotNull Response<API.Response<User>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         user = response.body().data;
-                        new ImageUtil.DownloadImage(avatar -> {
-                            if (avatar == null) return;
-                            userAvatar = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
-                            userAvatarView.setImageBitmap(avatar);
-                        }).execute(user.avatar);
+                        Picasso.get().load(String.valueOf(user.avatar)).into(userAvatarView);
                         numberPuppies.setText(String.valueOf(user.puppies.size()));
                         if (user.friends != null)
                             numberFriends.setText(String.valueOf(user.friends));
                         else
                             numberFriends.setText("0");
+                        if(user.gender != null && user.gender == User.Gender.MALE) {
+                            gender.setText(getResources().getString(R.string.male));
+                            gender.setVisibility(View.VISIBLE);
+                        }
+                        else if( user.gender != null && user.gender == User.Gender.FEMALE) {
+                            gender.setText(getResources().getString(R.string.female));
+                            gender.setVisibility(View.VISIBLE);
+                        }
+                        if(user.name != null && user.surname != null)
+                            fullName.setText(user.name.concat(" ").concat(user.surname));
+                        if(user.dateOfBirth != null)
+                            birthDate.setText(user.dateOfBirth.toString());
                         usernameTop.setText(user.username);
                         Log.e(TAG, "Successfully downloaded current visited User");
                     } else {
@@ -194,16 +212,22 @@ public class ProfileUser extends AppCompatActivity {
         new UserUtil.DownloadAuthUser(user -> {
             if(user == null) return;
             this.user = user;
-            new ImageUtil.DownloadImage(avatar -> {
-                if (avatar == null) return;
-                userAvatar = Bitmap.createScaledBitmap(avatar, USER_MARKER_SIZE.getLeft(), USER_MARKER_SIZE.getRight(), false);
-                this.userAvatarView.setImageBitmap(avatar);
-            }).execute(user.avatar);
+            Picasso.get().load(String.valueOf(this.user.avatar)).into(this.userAvatarView);
             this.numberPuppies.setText(String.valueOf(this.user.puppies.size()));
-            if (this.user.friends != null)
-                this.numberFriends.setText(String.valueOf(this.user.friends));
-            else
-                this.numberFriends.setText("0");
+
+            this.numberFriends.setText(String.valueOf(this.user.friends));
+            if(user.gender == User.Gender.MALE) {
+                gender.setText(getResources().getString(R.string.male));
+            }
+            else if(user.gender == User.Gender.FEMALE) {
+                gender.setText(getResources().getString(R.string.female));
+            }
+            if(user.name != null && user.surname != null){
+                fullName.setText(user.name.concat(" ").concat(user.surname));
+            }
+            if(user.dateOfBirth != null) {
+                birthDate.setText(user.dateOfBirth.toString());
+            }
             this.usernameTop.setText(this.user.username);
         }).execute();
     }
@@ -243,6 +267,26 @@ public class ProfileUser extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<API.Response<UUID>> call, @NotNull Throwable t) {
+                Log.e(TAG, "Unable to add friend due to " + t.getMessage(), t);
+            }
+        });
+    }
+    public void acceptFriendRequest() {
+        friendship.friend = uuid;
+        UserFriend accepted = new UserFriend();
+        accepted.type = UserFriend.Type.FRIEND;
+        Call<API.Response> call = API.getInstance().getClient().create(UserFriendService.class).update(friendship.friend, accepted);
+        call.enqueue(new Callback<API.Response>() {
+            @Override
+            public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    viewFriendship();
+                    reload();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
                 Log.e(TAG, "Unable to add friend due to " + t.getMessage(), t);
             }
         });
@@ -322,6 +366,19 @@ public class ProfileUser extends AppCompatActivity {
                 case BLOCKED:
                     finish();
                     Log.i(TAG, "You want to avoid me");
+                    break;
+                case FRIEND_REQUEST:
+                    Log.i(TAG, "I'm thinking about");
+                    button2.setText(getResources().getString(R.string.remove_request));
+                    button2.setVisibility(View.VISIBLE);
+                    button1.setText(getResources().getString(R.string.accept_request));
+                    button1.setVisibility(View.VISIBLE);
+                    button1.setOnClickListener(v -> {
+                        acceptFriendRequest();
+                    });
+                    button2.setOnClickListener(v -> {
+                        removeFriend();
+                    });
                     break;
                 case WAITING_ACCEPTANCE:
                     Log.i(TAG, "I'm waiting for you");

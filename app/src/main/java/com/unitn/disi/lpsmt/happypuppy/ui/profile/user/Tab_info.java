@@ -95,10 +95,12 @@ public class Tab_info extends Fragment {
             user.gender = User.Gender.UNKNOWN;
             if (!firstName.getText().toString().isEmpty()) {
                 user.name = firstName.getText().toString();
-            }
+            }else
+                user.name = "";
             if (!lastName.getText().toString().isEmpty()) {
                 user.surname = lastName.getText().toString();
-            }
+            }else
+                user.surname = "";
             user.dateOfBirth = this.user.dateOfBirth;
             if (inputFemale.isChecked())
                 user.gender = User.Gender.FEMALE;

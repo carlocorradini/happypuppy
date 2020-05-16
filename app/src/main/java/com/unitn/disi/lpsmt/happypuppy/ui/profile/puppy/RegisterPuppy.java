@@ -59,9 +59,9 @@ public class RegisterPuppy extends AppCompatActivity {
     private RadioButton genderMale;
     private RadioButton genderFemale;
     private EditText kindAnimal;
-    private EditText raceAnimal;
+    private Button raceAnimal;
     private EditText puppyName;
-    private Spinner sizePuppy;
+    //private Spinner sizePuppy;
     private Spinner unitWeightPuppy;
     private EditText weightPuppy;
     private ImageView avatarPuppy;
@@ -90,7 +90,7 @@ public class RegisterPuppy extends AppCompatActivity {
         raceAnimal.setInputType(InputType.TYPE_NULL);
         AnimalBreedsDialog animalBreedsDialog = new AnimalBreedsDialog();
         puppyName = findViewById(R.id.register_puppy_input_name_puppy);
-        sizePuppy = findViewById(R.id.register_puppy_input_size);
+        //sizePuppy = findViewById(R.id.register_puppy_input_size);
         unitWeightPuppy = findViewById(R.id.register_puppy_input_spinner_weight);
         weightPuppy = findViewById(R.id.register_puppy_input_weight_puppy);
         date = findViewById(R.id.register_puppy_input_age);
@@ -114,10 +114,10 @@ public class RegisterPuppy extends AppCompatActivity {
         date.setHint(date.getHint() + " " + getString(R.string.optional_field));
 
         // Spinner for Puppy's size
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.puppy_size, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sizePuppy.setAdapter(adapter);
+        sizePuppy.setAdapter(adapter); */
 
         // Spinner for Puppy's weight unit
         ArrayAdapter<CharSequence> adapterUnit = ArrayAdapter.createFromResource(this,
@@ -184,6 +184,7 @@ public class RegisterPuppy extends AppCompatActivity {
             else if (genderMale.isChecked())
                 puppy.gender = Puppy.Gender.MALE;
 
+            puppy.weight = Long.parseLong(weightPuppy.getText().toString());
             // Validation
             if (validatePuppy(v, puppy)) {
                 registerPuppy(v, puppy);
@@ -201,14 +202,16 @@ public class RegisterPuppy extends AppCompatActivity {
             return false;
         }
         if (!genderFemale.isChecked() && !genderMale.isChecked()) {
-            new Toasty(getBaseContext(), v, R.string.gender);
+            new Toasty(getBaseContext(), v, R.string.select_gender);
             return false;
         }
+        if(unitWeightPuppy.getSelectedItemPosition() == 0)
+            if(puppy.weight != null)
+                puppy.weight = puppy.weight*1000;
         return true;
     }
 
     public void registerPuppy(final View v, final Puppy puppy) {
-        System.out.println(puppy.personalities.size());
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
             child.setEnabled(false);

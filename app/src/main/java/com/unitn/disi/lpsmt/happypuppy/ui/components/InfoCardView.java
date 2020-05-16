@@ -1,23 +1,24 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.components;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.UUID;
 
 public class InfoCardView {
-    private URL image;
+    private URI image;
     private String username, name;
     private String age;
     private UUID uuid;
     private Long idPuppy;
 
-    public InfoCardView(URL image, String username, String name, String age, UUID uuid) {
+    public InfoCardView(URI image, String username, String name, String age, UUID uuid) {
         this.image = image;
         this.username = username;
         this.name = name;
         this.age = age;
         this.uuid = uuid;
     }
-    public InfoCardView(URL image, String username, String name, String age, Long idPuppy) {
+    public InfoCardView(URI image, String username, String name, String age, Long idPuppy) {
         this.image = image;
         this.username = username;
         this.name = name;
@@ -41,11 +42,11 @@ public class InfoCardView {
         this.idPuppy = idPuppy;
     }
 
-    public URL getImage() {
+    public URI getImage() {
         return image;
     }
 
-    public void setImage(URL image) {
+    public void setImage(URI image) {
         this.image = image;
     }
 
