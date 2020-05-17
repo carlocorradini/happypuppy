@@ -63,10 +63,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profile_puppy_profile_image"
                         android:layout_width="128dp"
                         android:layout_height="128dp"
+                        android:padding="15dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="10dp"
                         android:contentDescription="@string/avatar" />
@@ -105,7 +106,6 @@
                                     android:id="@+id/profile_puppy_number_personalities"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/user_friends_number"
                                     android:textAlignment="center"
                                     android:textSize="@dimen/text_size_standard"
                                     android:textStyle="bold" />
@@ -129,7 +129,6 @@
                                     android:id="@+id/profile_puppy_user_owner"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/user_friends_number"
                                     android:textAlignment="center"
                                     android:textSize="@dimen/text_size_standard"
                                     android:textStyle="bold" />

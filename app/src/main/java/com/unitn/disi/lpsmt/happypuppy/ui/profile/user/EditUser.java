@@ -1,5 +1,7 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -11,7 +13,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.unitn.disi.lpsmt.happypuppy.R;
+import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.AdapterEditProfile;
 
 public class EditUser extends AppCompatActivity {
@@ -55,6 +59,8 @@ public class EditUser extends AppCompatActivity {
         });
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
-        buttonBack.setOnClickListener(v -> finish());
+        buttonBack.setOnClickListener(v -> {
+            finish();
+        });
     }
 }

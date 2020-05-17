@@ -6,8 +6,6 @@
 
     <string name="user_friends">Amici</string>
     <string name="user_puppies">Puppies</string>
-    <string name="user_friends_number"></string>
-    <string name="user_puppies_number"></string>
 
     <string name="optional_field"> (opzionale)</string>
     <!-- -->
@@ -68,6 +66,7 @@
 
     <string name="month">Mesi</string>
     <string name="year">Anni</string>
+    <string name="resultsSearch">Trovati: </string>
     <!-- -->
 
     <!-- String for privacy settings.. -->
@@ -84,6 +83,8 @@
     <!-- General Errors -->
     <string name="wrong_email">Indirizzo email non corretto.</string>
     <string name="no_notifications">Nessuna notifica</string>
+    <string name="no_puppies">Nessun puppy</string>
+    <string name="no_result">Nessun risultato</string>
     <!-- -->
 
     <!-- Errors -->

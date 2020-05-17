@@ -30,10 +30,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
                 android:drawableEnd="@drawable/ic_user"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:drawableTint="@color/colorAccent"
-                android:hint="@string/username"
-                android:importantForAutofill="no"
-                android:inputType="textNoSuggestions" />
+                android:hint="@string/username" />
 
             <EditText
                 android:id="@+id/sign_in_input_password"
@@ -42,6 +42,8 @@
                 android:layout_marginTop="@dimen/margin"
                 android:drawableEnd="@drawable/ic_lock"
                 android:drawableTint="@color/colorAccent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:hint="@string/password"
                 android:importantForAutofill="no"
                 android:inputType="textPassword" />

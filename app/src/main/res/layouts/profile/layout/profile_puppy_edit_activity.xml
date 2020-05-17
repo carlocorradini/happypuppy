@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_puppy_edit_avatar_image"
                     android:layout_width="128dp"
                     android:layout_height="128dp"
@@ -66,8 +66,8 @@
                     android:id="@+id/profile_puppy_edit_avatar_input"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="113dp"
+                    android:layout_alignEnd="@+id/profile_puppy_edit_avatar_image"
                     android:contentDescription="@string/edit_profile"
                     android:src="@drawable/ic_add_avatar" />
             </RelativeLayout>

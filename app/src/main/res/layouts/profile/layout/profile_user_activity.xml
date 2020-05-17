@@ -42,6 +42,11 @@
             android:tint="@color/colorError" />
 
     </com.google.android.material.navigation.NavigationView>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/profile_user_top_navigation"
+        android:id="@+id/profile_user_swipe_refresh">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -60,10 +65,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_user_profile_image"
-                    android:layout_width="130dp"
-                    android:layout_height="100dp"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:padding="15dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp" />
 
@@ -72,101 +78,96 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <LinearLayout android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:baselineAligned="false"
                         android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="5dp"
+                        android:weightSum="1"
+                        android:layout_centerHorizontal="true"
+                        android:baselineAligned="false">
 
                         <LinearLayout
                             android:id="@+id/profile_user_card_friends"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:orientation="vertical">
-
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content">
                             <TextView
                                 android:id="@+id/profile_user_friends"
-                                android:layout_width="match_parent"
+                                android:textSize="@dimen/text_size_standard"
                                 android:layout_height="wrap_content"
                                 android:text="@string/user_friends"
                                 android:textAlignment="center"
-                                android:textSize="@dimen/text_size_standard" />
-
+                                android:layout_width="match_parent" />
                             <TextView
                                 android:id="@+id/profile_user_number_friends"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/user_friends_number"
-                                android:textAlignment="center"
                                 android:textSize="@dimen/text_size_standard"
-                                android:textStyle="bold" />
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textAlignment="center"
+                                android:textStyle="bold"
+                                android:layout_width="match_parent" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:orientation="vertical">
-
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content">
                             <TextView
                                 android:id="@+id/profile_user_puppies"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/user_puppies"
                                 android:textAlignment="center"
-                                android:textSize="@dimen/text_size_standard" />
+                                android:textSize="@dimen/text_size_standard"
+                                android:layout_width="match_parent" />
 
                             <TextView
                                 android:id="@+id/profile_user_number_puppies"
-                                android:layout_width="match_parent"
+                                android:textSize="@dimen/text_size_standard"
                                 android:layout_height="wrap_content"
                                 android:textAlignment="center"
-                                android:textSize="@dimen/text_size_standard"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:layout_width="match_parent" />
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
+            <include
+                layout="@layout/profile_user_buttons" />
 
-            <include layout="@layout/profile_user_buttons" />
-
-            <TextView
-                android:id="@+id/profile_user_info_full_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:drawableStart="@drawable/ic_account_box_filled"
-                android:padding="15dp"
-                android:text=""
-                android:textAlignment="center"
-                android:textSize="@dimen/text_size_standard" />
-
-            <TextView
-                android:id="@+id/profile_user_info_dateOfBirth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:drawableStart="@drawable/ic_birthday"
-                android:padding="15dp"
-                android:text=""
-                android:textAlignment="center"
-                android:textSize="@dimen/text_size_standard" />
-
-            <TextView
-                android:id="@+id/profile_user_info_gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:drawableStart="@drawable/ic_gender"
-                android:padding="15dp"
-                android:text=""
-                android:textAlignment="center"
-                android:textSize="@dimen/text_size_standard" />
+        <TextView
+            android:id="@+id/profile_user_info_full_name"
+            android:drawableStart="@drawable/ic_account_box_filled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="@dimen/text_size_standard"
+            android:padding="15dp"
+            android:textAlignment="center"
+            android:text=""/>
+        <TextView
+            android:id="@+id/profile_user_info_dateOfBirth"
+            android:drawableStart="@drawable/ic_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="@dimen/text_size_standard"
+            android:padding="15dp"
+            android:textAlignment="center"
+            android:text=""/>
+        <TextView
+            android:id="@+id/profile_user_info_gender"
+            android:drawableStart="@drawable/ic_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="@dimen/text_size_standard"
+            android:padding="15dp"
+            android:textAlignment="center"
+            android:text=""/>
         </LinearLayout>
     </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

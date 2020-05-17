@@ -22,7 +22,7 @@ public class Launcher extends AppCompatActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(3000); //Delay of 3 seconds
+                    sleep(2000); //Delay of 3 seconds
                 } catch (Exception ignored) {
                 } finally {
                     Intent intent = AuthManager.getInstance().isAuth()

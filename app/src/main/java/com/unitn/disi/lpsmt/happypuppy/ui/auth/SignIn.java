@@ -90,6 +90,11 @@ public class SignIn extends AppCompatActivity {
         });
     }
 
+    public void onBackPressed() {
+        //do nothing
+        //prevent the back android button
+    }
+
     private boolean validateLogin(final View v, final User user) {
         if (user.username.isEmpty()) {
             new Toasty(getBaseContext(), v, R.string.insert_username);

@@ -85,18 +85,27 @@ public class HomePage extends AppCompatActivity {
                 Fragment selectedFragment;
                 switch (item.getItemId()){
                     case R.id.nav_explore:
+                        loadData();
                         titleFragment.setText(getString(R.string.app_name));
                         selectedFragment = new MapFragment();
                         break;
                     case R.id.nav_puppies:
+                        loadData();
                         titleFragment.setText(getString(R.string.my_puppies));
                         selectedFragment = new ListPuppy();
                         break;
+                    case R.id.nav_search:
+                        loadData();
+                        titleFragment.setText(getString(R.string.search));
+                        selectedFragment = new SearchFragment();
+                        break;
                     case R.id.nav_notification:
+                        loadData();
                         titleFragment.setText(getString(R.string.notification));
                         selectedFragment = new NotificationsFragment();
                         break;
                     default:
+                        loadData();
                         selectedFragment = new MapFragment();
                         break;
                 }

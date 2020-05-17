@@ -68,19 +68,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/register_puppy_avatar_image"
                     android:layout_width="128dp"
                     android:layout_height="128dp"
                     android:layout_gravity="center"
                     android:contentDescription="@string/avatar"
-                    android:src="@drawable/ic_dog_avatar" />
+                    android:src="@drawable/ic_logo" />
 
                 <ImageView
                     android:id="@+id/register_puppy_avatar_input"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignEnd="@+id/register_puppy_avatar_image"
                     android:layout_marginTop="113dp"
                     android:contentDescription="@string/upload_avatar"
                     android:src="@drawable/ic_add_avatar" />

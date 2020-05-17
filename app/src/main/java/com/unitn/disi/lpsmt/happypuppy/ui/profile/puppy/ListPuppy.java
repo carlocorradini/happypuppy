@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
+import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
 import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.CardViewAdapter;
@@ -36,16 +39,20 @@ public class ListPuppy extends Fragment {
     private RecyclerView recyclerView;
     private CardViewAdapter adapter;
     private SwipeRefreshLayout refresh;
+    private TextView noPuppies;
+    private LinearLayout loader;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.list_puppies_fragment, null);
+        loader = view.findViewById(R.id.list_puppies_fragment_view_loader);
 
         loadPuppies(view);
         recyclerView = view.findViewById(R.id.list_puppies_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         refresh = view.findViewById(R.id.list_puppies_refresh);
+        noPuppies = view.findViewById(R.id.no_puppies);
 
         refresh.setOnRefreshListener(() -> {
             refresh.setRefreshing(false);
@@ -54,10 +61,12 @@ public class ListPuppy extends Fragment {
 
         return view;
     }
+
     public void loadPuppies(View view){
+        loader.setVisibility(View.VISIBLE);
         List<InfoCardView> cardList = new ArrayList<>();
         try {
-            Call<API.Response<List<Puppy>>> call = API.getInstance().getClient().create(PuppyService.class).find();
+            Call<API.Response<List<Puppy>>> call = API.getInstance().getClient().create(PuppyService.class).findByUser(AuthManager.getInstance().getAuthUserId());
             call.enqueue(new Callback<API.Response<List<Puppy>>>() {
                 @Override
                 public void onResponse(@NotNull Call<API.Response<List<Puppy>>> call, @NotNull Response<API.Response<List<Puppy>>> response) {
@@ -81,7 +90,15 @@ public class ListPuppy extends Fragment {
                         }
                         adapter = new CardViewAdapter(view.getContext(), cardList);
                         recyclerView.setAdapter(adapter);
+                        if(cardList.size() == 0){
+                            noPuppies.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        }else{
+                            noPuppies.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
                     }
+                    loader.setVisibility(View.GONE);
                 }
 
                 @Override

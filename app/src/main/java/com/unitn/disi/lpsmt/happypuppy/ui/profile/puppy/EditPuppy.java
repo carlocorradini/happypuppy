@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
@@ -106,6 +107,7 @@ public class EditPuppy extends AppCompatActivity {
                     }
                     if (puppy.dateOfBirth != null)
                         puppyAge.setText(puppy.dateOfBirth.toString());
+                    Picasso.get().load(String.valueOf(puppy.avatar)).into(imageAvatar);
                 } else if (response.code() == HttpStatus.SC_NOT_FOUND) {
                     Log.i(TAG, "Didn't found this puppy ");
                 } else {
@@ -207,7 +209,9 @@ public class EditPuppy extends AppCompatActivity {
             updatePuppy(v, puppy);
         });
 
-        buttonBack.setOnClickListener(v -> finish());
+        buttonBack.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void updatePuppy(View v, Puppy puppy) {

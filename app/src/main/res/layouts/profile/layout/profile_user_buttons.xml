@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="@string/edit_profile"
+            android:visibility="gone"
             android:layout_width="match_parent" />
 
         <Button
@@ -24,6 +25,7 @@
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:text="@string/add_puppy"
+            android:visibility="gone"
             android:layout_width="match_parent" />
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

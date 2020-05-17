@@ -162,7 +162,8 @@ public class ProfilePuppy extends AppCompatActivity {
             gender.setText(getString(R.string.male));
         else
             gender.setText(getString(R.string.female));
-        String specie = String.valueOf(thisPuppy.specie);
+        int indexSpecie = Integer.parseInt(String.valueOf(thisPuppy.specie))-1;
+        String specie = getResources().getStringArray(R.array.animal_kinds)[indexSpecie];
         this.specie.setText(specie);
 
         if(thisPuppy.weight != null) {

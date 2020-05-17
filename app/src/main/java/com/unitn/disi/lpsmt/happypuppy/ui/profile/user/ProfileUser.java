@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -34,6 +35,7 @@ import com.unitn.disi.lpsmt.happypuppy.api.service.UserFriendService;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.RegisterPuppy;
+import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
 import retrofit2.Call;
@@ -48,6 +50,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.UUID;
 
 public class ProfileUser extends AppCompatActivity {
@@ -71,6 +74,7 @@ public class ProfileUser extends AppCompatActivity {
     TextView numberPuppies;
     LinearLayout buttonsUser;
     LinearLayout buttonsVisit;
+    SwipeRefreshLayout refreshUser;
     Button button1;
     Button button2;
 
@@ -101,19 +105,78 @@ public class ProfileUser extends AppCompatActivity {
 
         buttonsUser = findViewById(R.id.profile_user_buttons_profile);
         buttonsVisit = findViewById(R.id.profile_user_buttons_visit);
+        refreshUser = findViewById(R.id.profile_user_swipe_refresh);
 
         uuid = UUID.fromString(getIntent().getStringExtra("uuid_user"));
         friendship = new UserFriend();
 
+        loadData();
+
+        refreshUser.setOnRefreshListener(() -> {
+            refreshUser.setRefreshing(false);
+            loadData();
+        });
+
+        buttonBack.setOnClickListener(v -> {
+            finish();
+        });
+        buttonSignOut.setOnClickListener(v -> {
+            AlertDialog alertDialog = new AlertDialog.Builder(ProfileUser.this).create();
+            alertDialog.setTitle(getResources().getString(R.string.sign_out));
+            alertDialog.setMessage(getResources().getString(R.string.sign_out_confirm));
+            alertDialog.setIcon(R.drawable.ic_sign_out);
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.confirm),
+                    (dialog, which) -> {
+                        AuthManager.getInstance().clearToken();
+                        Intent intent = new Intent(v.getContext(), Launcher.class);
+                        startActivity(intent);
+                        finish();
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.dismiss),
+                    (dialog, which) -> alertDialog.dismiss());
+            alertDialog.show();
+        });
+    }
+
+    /**
+     * Load/Download useful data used in the current {@link ActivityCompat activity} and {@link GoogleMap map}.
+     * It can be called once.
+     */
+    private void loadData(){
         if (AuthManager.getInstance().isCurrentAuthUser(uuid)) {
 
-            loadData();
+            if (user != null && userAvatar != null) return;
+
+            new UserUtil.DownloadAuthUser(user -> {
+                if(user == null) return;
+                this.user = user;
+                Picasso.get().load(String.valueOf(this.user.avatar)).into(this.userAvatarView);
+                this.numberPuppies.setText(String.valueOf(this.user.puppies.size()));
+
+                this.numberFriends.setText(String.valueOf(this.user.friends));
+                if(user.gender == User.Gender.MALE) {
+                    gender.setText(getResources().getString(R.string.male));
+                }
+                else if(user.gender == User.Gender.FEMALE) {
+                    gender.setText(getResources().getString(R.string.female));
+                }
+                if(user.name != null && user.surname != null){
+                    fullName.setText(user.name.concat(" ").concat(user.surname));
+                }
+                if(user.dateOfBirth != null) {
+                    birthDate.setText(user.dateOfBirth.toString());
+                }
+                this.usernameTop.setText(this.user.username);
+            }).execute();
 
             buttonsUser.setVisibility(View.VISIBLE);
             buttonsVisit.setVisibility(View.GONE);
 
             button1 = findViewById(R.id.profile_user_button_edit_profile);
             button2 = findViewById(R.id.profile_user_button_add_puppy);
+            button1.setVisibility(View.VISIBLE);
+            button2.setVisibility(View.VISIBLE);
+
 
             button1.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), EditUser.class);
@@ -151,7 +214,7 @@ public class ProfileUser extends AppCompatActivity {
                         if(user.dateOfBirth != null)
                             birthDate.setText(user.dateOfBirth.toString());
                         usernameTop.setText(user.username);
-                        Log.e(TAG, "Successfully downloaded current visited User");
+                        Log.i(TAG, "Successfully downloaded current visited User");
                     } else {
                         Log.e(TAG, "Unable to download current visited User due to failure response " + response.code() + "received");
                     }
@@ -172,56 +235,6 @@ public class ProfileUser extends AppCompatActivity {
 
             viewFriendship();
         }
-
-        buttonBack.setOnClickListener(v -> {
-            finish();
-        });
-        buttonSignOut.setOnClickListener(v -> {
-            AlertDialog alertDialog = new AlertDialog.Builder(ProfileUser.this).create();
-            alertDialog.setTitle(getResources().getString(R.string.sign_out));
-            alertDialog.setMessage(getResources().getString(R.string.sign_out_confirm));
-            alertDialog.setIcon(R.drawable.ic_sign_out);
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.confirm),
-                    (dialog, which) -> {
-                        AuthManager.getInstance().clearToken();
-                        Intent intent = new Intent(v.getContext(), Launcher.class);
-                        startActivity(intent);
-                        finish();
-                    });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.dismiss),
-                    (dialog, which) -> alertDialog.dismiss());
-            alertDialog.show();
-        });
-    }
-
-    /**
-     * Load/Download useful data used in the current {@link ActivityCompat activity} and {@link GoogleMap map}.
-     * It can be called once.
-     */
-    private void loadData() {
-        if (user != null && userAvatar != null) return;
-
-        new UserUtil.DownloadAuthUser(user -> {
-            if(user == null) return;
-            this.user = user;
-            Picasso.get().load(String.valueOf(this.user.avatar)).into(this.userAvatarView);
-            this.numberPuppies.setText(String.valueOf(this.user.puppies.size()));
-
-            this.numberFriends.setText(String.valueOf(this.user.friends));
-            if(user.gender == User.Gender.MALE) {
-                gender.setText(getResources().getString(R.string.male));
-            }
-            else if(user.gender == User.Gender.FEMALE) {
-                gender.setText(getResources().getString(R.string.female));
-            }
-            if(user.name != null && user.surname != null){
-                fullName.setText(user.name.concat(" ").concat(user.surname));
-            }
-            if(user.dateOfBirth != null) {
-                birthDate.setText(user.dateOfBirth.toString());
-            }
-            this.usernameTop.setText(this.user.username);
-        }).execute();
     }
 
     public void viewFriendship() {
@@ -253,7 +266,7 @@ public class ProfileUser extends AppCompatActivity {
             public void onResponse(@NotNull Call<API.Response<UUID>> call, @NotNull Response<API.Response<UUID>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     viewFriendship();
-                    reload();
+                    loadData();
                 }
             }
 
@@ -273,7 +286,7 @@ public class ProfileUser extends AppCompatActivity {
             public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     viewFriendship();
-                    reload();
+                    loadData();
                 }
             }
 
@@ -297,7 +310,7 @@ public class ProfileUser extends AppCompatActivity {
                         public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
                             if (response.isSuccessful()) {
                                 viewFriendship();
-                                reload();
+                                loadData();
                             }
                         }
 
@@ -325,7 +338,7 @@ public class ProfileUser extends AppCompatActivity {
                         public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
                             if (response.isSuccessful()) {
                                 viewFriendship();
-                                reload();
+                                loadData();
                             }
                         }
 
@@ -347,6 +360,7 @@ public class ProfileUser extends AppCompatActivity {
                     Log.i(TAG, "We are friends");
                     button1.setText(getResources().getString(R.string.remove_friend));
                     button1.setVisibility(View.VISIBLE);
+                    button2.setText(getResources().getString(R.string.view_puppies));
                     button2.setVisibility(View.VISIBLE);
                     button1.setOnClickListener(v -> {
                         removeFriend();
@@ -391,6 +405,7 @@ public class ProfileUser extends AppCompatActivity {
                     break;
             }
         } else {
+            button1.setText(getResources().getString(R.string.add_friend));
             button1.setVisibility(View.VISIBLE);
             button2.setVisibility(View.GONE);
             button1.setOnClickListener(v -> {

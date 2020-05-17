@@ -34,7 +34,7 @@
         </activity>
         <activity android:name=".ui.auth.SignIn" />
         <activity android:name=".ui.auth.SignUp" />
-        <activity android:name=".ui.HomePage" />
+        <activity android:name=".ui.HomePage" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.profile.puppy.RegisterPuppy" />
         <activity android:name=".ui.auth.ForgotPassword" />
         <activity android:name=".ui.auth.ActivateProfile" />

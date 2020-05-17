@@ -5,35 +5,55 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
     <!-- List puppies -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_notifications_refresh">
     <ScrollView
         android:id="@+id/scroll_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/content_recycler"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/notifications_fragment_view_loader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/notifications_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <RelativeLayout
+            <ProgressBar
+                android:id="@+id/notifications_fragment_loader"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:progressTint="@color/colorSecondary"
+                android:layout_marginTop="30dp"
+                android:rotation="180" />
+        </LinearLayout>
+            <TextView
                 android:id="@+id/no_notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center"
-                android:visibility="invisible">
+                android:textAlignment="center"
+                android:layout_marginTop="50dp"
+                android:text="@string/no_notifications"
+                android:visibility="invisible"
+                android:textSize="@dimen/text_size_standard" />
+            <LinearLayout
+                android:id="@+id/content_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-                <TextView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/notifications_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="@string/no_notifications"
-                    android:textSize="@dimen/text_size_standard" />
-            </RelativeLayout>
-        </LinearLayout>
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

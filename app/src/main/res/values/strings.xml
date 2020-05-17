@@ -6,10 +6,7 @@
 
     <string name="user_friends">Friends</string>
     <string name="user_puppies">Puppies</string>
-    <string name="user_friends_number"></string>
-    <string name="user_puppies_number"></string>
     <!-- -->
-
     <!-- Labels for Button -->
     <string name="notification">Notifications</string>
     <string name="explore">Explore</string>
@@ -67,6 +64,7 @@
 
     <string name="month">Months</string>
     <string name="year">Years</string>
+    <string name="resultsSearch">Found: </string>
     <!-- -->
 
     <!-- Strings for privacy settings.. -->
@@ -84,6 +82,8 @@
     <!-- General Errors -->
     <string name="wrong_email">Invalid email address.</string>
     <string name="no_notifications">No notifications</string>
+    <string name="no_puppies">No puppies</string>
+    <string name="no_result">No result</string>
     <!-- -->
 
     <!-- Errors -->

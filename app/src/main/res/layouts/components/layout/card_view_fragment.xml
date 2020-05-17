@@ -19,7 +19,7 @@
             android:orientation="horizontal"
             android:background="@drawable/bg_card_1">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/card_view_fragment_avatar_profile"
                 android:layout_gravity="center"
                 android:layout_width="50dp"
