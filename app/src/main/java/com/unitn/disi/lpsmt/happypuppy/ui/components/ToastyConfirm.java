@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
+
 import com.unitn.disi.lpsmt.happypuppy.R;
 
 public class ToastyConfirm extends android.widget.Toast {
@@ -27,5 +29,9 @@ public class ToastyConfirm extends android.widget.Toast {
         toast.setDuration(android.widget.Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+    }
+
+    public ToastyConfirm(Context c, View v, @StringRes int message) {
+        this(c, v, c.getResources().getString(message));
     }
 }

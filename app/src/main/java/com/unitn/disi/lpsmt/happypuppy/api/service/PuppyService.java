@@ -4,7 +4,7 @@ import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -93,7 +93,7 @@ public interface PuppyService {
      */
     @PATCH("auth/puppy/{id}/avatar")
     @Multipart
-    Call<API.Response<URL>> updateAvatar(@Path("id") Long id, @Part MultipartBody.Part avatar);
+    Call<API.Response<URI>> updateAvatar(@Path("id") Long id, @Part MultipartBody.Part avatar);
 
     /**
      * Delete the {@link Puppy} that has the given {@link Puppy} {@link Long id}

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.unitn.disi.lpsmt.happypuppy">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,10 +12,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="q">
 
         <!-- Google Maps Key -->
         <meta-data
@@ -35,11 +38,11 @@
         <activity android:name=".ui.profile.puppy.RegisterPuppy" />
         <activity android:name=".ui.auth.ForgotPassword" />
         <activity android:name=".ui.auth.ActivateProfile" />
-        <activity android:name=".ui.profile.user.ProfileUser"/>
-        <activity android:name=".ui.profile.puppy.ProfilePuppy"/>
-        <activity android:name=".ui.profile.user.EditUser"/>
-        <activity android:name=".ui.profile.puppy.ListPuppy"/>
-        <activity android:name=".ui.profile.puppy.EditPuppy"/>
+        <activity android:name=".ui.profile.user.ProfileUser" />
+        <activity android:name=".ui.profile.puppy.ProfilePuppy" />
+        <activity android:name=".ui.profile.user.EditUser" />
+        <activity android:name=".ui.profile.puppy.ListPuppy" />
+        <activity android:name=".ui.profile.puppy.EditPuppy" />
     </application>
 
 </manifest>

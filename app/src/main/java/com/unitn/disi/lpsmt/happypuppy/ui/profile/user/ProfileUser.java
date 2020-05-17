@@ -34,7 +34,6 @@ import com.unitn.disi.lpsmt.happypuppy.api.service.UserFriendService;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.RegisterPuppy;
-import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
 import retrofit2.Call;
@@ -49,7 +48,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.UUID;
 
 public class ProfileUser extends AppCompatActivity {
@@ -69,7 +67,6 @@ public class ProfileUser extends AppCompatActivity {
     ImageView buttonSignOut;
     ImageView userAvatarView;
     Bitmap userAvatar;
-    Button changeAvatar;
     TextView numberFriends;
     TextView numberPuppies;
     LinearLayout buttonsUser;
@@ -95,7 +92,6 @@ public class ProfileUser extends AppCompatActivity {
         usernameTop = findViewById(R.id.profile_user_username);
         buttonSignOut = findViewById(R.id.profile_user_sign_out);
         userAvatarView = findViewById(R.id.profile_user_profile_image);
-        changeAvatar = findViewById(R.id.profile_user_button_image);
         numberFriends = findViewById(R.id.profile_user_number_friends);
         numberPuppies = findViewById(R.id.profile_user_number_puppies);
 
@@ -115,12 +111,9 @@ public class ProfileUser extends AppCompatActivity {
 
             buttonsUser.setVisibility(View.VISIBLE);
             buttonsVisit.setVisibility(View.GONE);
-            changeAvatar.setVisibility(View.VISIBLE);
 
             button1 = findViewById(R.id.profile_user_button_edit_profile);
             button2 = findViewById(R.id.profile_user_button_add_puppy);
-
-            changeAvatar.setOnClickListener(this::showFileChooser);
 
             button1.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), EditUser.class);
@@ -172,7 +165,6 @@ public class ProfileUser extends AppCompatActivity {
 
             buttonsUser.setVisibility(View.GONE);
             buttonsVisit.setVisibility(View.VISIBLE);
-            changeAvatar.setVisibility(View.GONE);
             buttonSignOut.setVisibility(View.GONE);
 
             button1 = findViewById(R.id.profile_user_button_friendship);
@@ -405,93 +397,6 @@ public class ProfileUser extends AppCompatActivity {
                 addFriend();
             });
         }
-    }
-
-    /* Open FileChooser Dialog */
-    public void showFileChooser(View arg0) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-
-        // Prende tutti i file indistintamente dalla tipologia
-        intent.setType("image/*");
-
-        // In questo modo vengono visualizzati solamente i file presenti in locale. Volendo si puo' anche integrare la ricerca su Google Drive, ma per ora la lascerei fuori.
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-
-        // Volendo si possono impostare dei filtri sulle tipologie dei file. Per essere generici mantieni pure lo 0
-        int REQUEST_CODE = 0;
-        startActivityForResult(intent, REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Ritorna se l'utente non ha selezionato nulla
-        if (requestCode != REQUEST_CODE || resultCode != RESULT_OK) {
-            return;
-        }
-        // Importa il file
-        try {
-            importFile(data.getData());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void importFile(Uri uri) throws IOException {
-        String fileName = getFileName(uri);
-        // Gestione del file temporaneo
-        File tmp_file = new File(fileName);
-        // File fileCopy = copyToTempFile(uri, tmp_file);
-        // Done!
-    }
-
-    /**
-     * Gestisce il file temporaneo
-     *
-     * @param uri
-     * @param tempFile
-     * @return il file temporaneo
-     * @throws IOException se accadono errori
-     */
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    private File copyToTempFile(Uri uri, File tempFile) throws IOException {
-        // Ottiene l'input stream del file
-        InputStream inputStream = getContentResolver().openInputStream(uri);
-        OutputStream outStream = null;
-        if (inputStream == null) {
-            throw new IOException("Unable to obtain input stream from URI");
-        }
-
-        // Copia lo stream sul file temporaneo
-        assert outStream != null;
-        FileUtils.copy(inputStream, outStream);
-
-        return tempFile;
-    }
-
-    /**
-     * Ottiene il nome del file. Maggiori informazioni qui
-     * https://developer.android.com/training/secure-file-sharing/retrieve-info.html#RetrieveFileInfo
-     *
-     * @param uri
-     * @return il nome del file senza il path
-     * @throws IllegalArgumentException
-     */
-    private String getFileName(Uri uri) throws IllegalArgumentException {
-        // Ottiene il cursore della risorsa
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-
-        assert cursor != null;
-        if (cursor.getCount() <= 0) {
-            cursor.close();
-            throw new IllegalArgumentException("Can't obtain file name, cursor is empty");
-        }
-        cursor.moveToFirst();
-        String fileName = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
-        cursor.close();
-        return fileName;
     }
 
     public void reload() {

@@ -1,14 +1,12 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.FileUtils;
-import android.provider.OpenableColumns;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,12 +17,13 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
 import com.unitn.disi.lpsmt.happypuppy.R;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
@@ -33,13 +32,13 @@ import com.unitn.disi.lpsmt.happypuppy.ui.components.dialog.AnimalBreedsDialog;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.dialog.AnimalPersonalitiesDialog;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.dialog.AnimalSpecieDialog;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.URI;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,12 +46,26 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterPuppy extends AppCompatActivity {
-    private static final int REQUEST_CODE = 6384; //onActivityResult request
+    /**
+     * {@link Log} TAG of this class
+     */
+    private static final String TAG = RegisterPuppy.class.getName();
+    /**
+     * {@link User} avatar image max size in KB
+     */
+    private static final int AVATAR_MAX_SIZE_KB = 2048;
+    /**
+     * {@link User} avatar image max dimension in pixel
+     */
+    private static final Pair<Integer, Integer> AVATAR_DIMENSIONS = Pair.of(512, 512);
 
     private LinearLayout loader;
     private LinearLayout root;
@@ -64,11 +77,12 @@ public class RegisterPuppy extends AppCompatActivity {
     //private Spinner sizePuppy;
     private Spinner unitWeightPuppy;
     private EditText weightPuppy;
-    private ImageView avatarPuppy;
+    private ImageView imageAvatar;
+    private ImageView inputAvatar;
+    private File fileAvatar = null;
     private TextView date;
     private Button personality;
     private Button confirm;
-    private Button imgPuppy;
     private Button buttonBack;
 
     @Override
@@ -95,7 +109,7 @@ public class RegisterPuppy extends AppCompatActivity {
         weightPuppy = findViewById(R.id.register_puppy_input_weight_puppy);
         date = findViewById(R.id.register_puppy_input_age);
         date.setInputType(InputType.TYPE_NULL);
-        avatarPuppy = findViewById(R.id.register_puppy_profile_image);
+        imageAvatar = findViewById(R.id.register_puppy_avatar_image);
         personality = findViewById(R.id.register_puppy_button_input_personality);
         personality.setInputType(InputType.TYPE_NULL);
         AnimalPersonalitiesDialog animalPersonalitiesDialog = new AnimalPersonalitiesDialog();
@@ -103,9 +117,14 @@ public class RegisterPuppy extends AppCompatActivity {
         buttonBack = findViewById(R.id.register_puppy_button_back);
 
         /* Image input for puppy */
-        imgPuppy = findViewById(R.id.register_puppy_button_image);
-
-        imgPuppy.setOnClickListener(this::showFileChooser);
+        inputAvatar = findViewById(R.id.register_puppy_avatar_input);
+        inputAvatar.setOnClickListener(v -> ImagePicker
+                .Companion
+                .with(this)
+                .cropSquare()
+                .compress(AVATAR_MAX_SIZE_KB)
+                .maxResultSize(AVATAR_DIMENSIONS.getLeft(), AVATAR_DIMENSIONS.getRight())
+                .start());
         buttonBack.setOnClickListener(v -> finish());
 
         /* Reset hint for optional fields */
@@ -205,9 +224,9 @@ public class RegisterPuppy extends AppCompatActivity {
             new Toasty(getBaseContext(), v, R.string.select_gender);
             return false;
         }
-        if(unitWeightPuppy.getSelectedItemPosition() == 0)
-            if(puppy.weight != null)
-                puppy.weight = puppy.weight*1000;
+        if (unitWeightPuppy.getSelectedItemPosition() == 0)
+            if (puppy.weight != null)
+                puppy.weight = puppy.weight * 1000;
         return true;
     }
 
@@ -224,10 +243,15 @@ public class RegisterPuppy extends AppCompatActivity {
             @Override
             public void onResponse(@NotNull Call<API.Response<Long>> call, @NotNull Response<API.Response<Long>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Intent intent = new Intent(v.getContext(), ProfilePuppy.class);
-                    intent.putExtra("id_puppy", response.body().data.toString());
-                    startActivity(intent);
-                    finish();
+                    Long puppyId = response.body().data;
+                    if (fileAvatar != null) {
+                        updatePuppyAvatar(puppyId, fileAvatar);
+                    } else {
+                        Intent intent = new Intent(v.getContext(), ProfilePuppy.class);
+                        intent.putExtra("id_puppy", puppyId.toString());
+                        startActivity(intent);
+                        finish();
+                    }
                 } else if (response.errorBody() != null) {
                     switch (response.code()) {
                         case HttpStatus.SC_CONFLICT: {
@@ -251,6 +275,13 @@ public class RegisterPuppy extends AppCompatActivity {
                 } else {
                     new Toasty(getApplicationContext(), v, R.string.error_unknown);
                 }
+
+                loader.setVisibility(View.GONE);
+                for (int i = 0; i < root.getChildCount(); i++) {
+                    View child = root.getChildAt(i);
+                    child.setEnabled(true);
+                    child.setClickable(true);
+                }
             }
 
             @Override
@@ -266,88 +297,65 @@ public class RegisterPuppy extends AppCompatActivity {
         });
     }
 
-    /* Open FileChooser Dialog */
-    public void showFileChooser(View arg0) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    /**
+     * Update the current {@link Puppy} avatar image with the given avatar {@link File}.
+     * This method can be called only from registerPuppy.
+     *
+     * @param id     The {@link Puppy} id to update
+     * @param avatar The avatar {@link File} to change to
+     */
+    private void updatePuppyAvatar(final Long id, final File avatar) {
+        if (id == null || avatar == null) return;
+        MultipartBody.Part avatarPart = MultipartBody.Part.createFormData("image", fileAvatar.getName(), RequestBody.create(avatar, MediaType.parse("image/*")));
 
-        // Prende tutti i file indistintamente dalla tipologia
-        intent.setType("image/*");
+        API.getInstance().getClient().create(PuppyService.class).updateAvatar(id, avatarPart).enqueue(new Callback<API.Response<URI>>() {
+            @Override
+            public void onResponse(@NotNull Call<API.Response<URI>> call, @NotNull Response<API.Response<URI>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    fileAvatar = null;
+                    Intent intent = new Intent(getBaseContext(), ProfilePuppy.class);
+                    intent.putExtra("id_puppy", id.toString());
+                    startActivity(intent);
+                    finish();
+                } else {
+                    loader.setVisibility(View.GONE);
+                    for (int i = 0; i < root.getChildCount(); i++) {
+                        View child = root.getChildAt(i);
+                        child.setEnabled(true);
+                        child.setClickable(true);
+                    }
 
-        // In questo modo vengono visualizzati solamente i file presenti in locale. Volendo si puo' anche integrare la ricerca su Google Drive, ma per ora la lascerei fuori.
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                    new Toasty(root.getContext(), root, R.string.error_unknown);
+                }
+            }
 
-        // Volendo si possono impostare dei filtri sulle tipologie dei file. Per essere generici mantieni pure lo 0
-        int REQUEST_CODE = 0;
-        startActivityForResult(intent, REQUEST_CODE);
+            @Override
+            public void onFailure(@NotNull Call<API.Response<URI>> call, @NotNull Throwable t) {
+                ErrorHelper.showFailureError(root.getContext(), root, t);
+                loader.setVisibility(View.GONE);
+                for (int i = 0; i < root.getChildCount(); i++) {
+                    View child = root.getChildAt(i);
+                    child.setEnabled(true);
+                    child.setClickable(true);
+                }
+            }
+        });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Uri avatarUri;
 
-        // Ritorna se l'utente non ha selezionato nulla
-        if (requestCode != REQUEST_CODE || resultCode != RESULT_OK) {
-            return;
+        if (resultCode == Activity.RESULT_OK && data != null && (avatarUri = data.getData()) != null) {
+            Log.d(TAG, "Image picked successfully");
+            fileAvatar = avatarUri.getPath() != null ? new File(avatarUri.getPath()) : null;
+            imageAvatar.setImageURI(avatarUri);
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Log.e(TAG, "Error picking the image due to " + ImagePicker.Companion.getError(data));
+            new Toasty(this, root, ImagePicker.Companion.getError(data));
+        } else {
+            Log.i(TAG, "Image picker task cancelled");
         }
-        // Importa il file
-        try {
-            importFile(data.getData());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void importFile(Uri uri) throws IOException {
-        String fileName = getFileName(uri);
-        // Gestione del file temporaneo
-        File tmp_file = new File(fileName);
-        // File fileCopy = copyToTempFile(uri, tmp_file);
-        // Done!
-    }
-
-    /**
-     * Gestisce il file temporaneo
-     *
-     * @param uri
-     * @param tempFile
-     * @return il file temporaneo
-     * @throws IOException se accadono errori
-     */
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    private File copyToTempFile(Uri uri, File tempFile) throws IOException {
-        // Ottiene l'input stream del file
-        InputStream inputStream = getContentResolver().openInputStream(uri);
-        OutputStream outStream = null;
-        if (inputStream == null) {
-            throw new IOException("Unable to obtain input stream from URI");
-        }
-
-        // Copia lo stream sul file temporaneo
-        FileUtils.copy(inputStream, outStream);
-
-        return tempFile;
-    }
-
-    /**
-     * Ottiene il nome del file. Maggiori informazioni qui
-     * https://developer.android.com/training/secure-file-sharing/retrieve-info.html#RetrieveFileInfo
-     *
-     * @param uri
-     * @return il nome del file senza il path
-     * @throws IllegalArgumentException
-     */
-    private String getFileName(Uri uri) throws IllegalArgumentException {
-        // Ottiene il cursore della risorsa
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-
-        if (cursor.getCount() <= 0) {
-            cursor.close();
-            throw new IllegalArgumentException("Can't obtain file name, cursor is empty");
-        }
-        cursor.moveToFirst();
-        String fileName = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
-        cursor.close();
-        return fileName;
     }
 }

@@ -7,7 +7,6 @@
     tools:context=".ui.profile.user.Tab_info">
 
     <ScrollView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:padding="@dimen/padding">
@@ -18,6 +17,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dip">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/profile_user_edit_avatar_image"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:contentDescription="@string/avatar"/>
+
+                <ImageView
+                    android:id="@+id/profile_user_edit_avatar_input"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="113dp"
+                    android:src="@drawable/ic_add_avatar"
+                    android:contentDescription="@string/edit_profile" />
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/profile_user_edit_input_first_name"
@@ -44,19 +64,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/profile_user_edit_input_gender_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/male"/>
+                    android:text="@string/male" />
+
                 <RadioButton
                     android:id="@+id/profile_user_edit_input_gender_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/female"/>
+                    android:text="@string/female" />
             </RadioGroup>
 
             <EditText
@@ -66,11 +87,11 @@
                 android:layout_marginTop="@dimen/margin"
                 android:drawableEnd="@drawable/ic_birthday"
                 android:drawableTint="@color/colorAccent"
+                android:focusable="false"
                 android:hint="@string/age"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions"
-                android:windowSoftInputMode="stateAlwaysHidden"
-                android:focusable="false"/>
+                android:windowSoftInputMode="stateAlwaysHidden" />
 
             <Button
                 android:id="@+id/profile_user_edit_button_save_changes"
@@ -81,13 +102,14 @@
                 android:text="@string/save_changes" />
         </LinearLayout>
     </ScrollView>
+
     <LinearLayout
         android:id="@+id/profile_user_edit_info_view_loader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/colorAccentOpacity"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <ProgressBar
@@ -95,8 +117,8 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
-            android:progressTint="@color/colorPrimary"
             android:layout_marginBottom="@dimen/logo_height"
+            android:progressTint="@color/colorPrimary"
             android:rotation="180" />
     </LinearLayout>
 </FrameLayout>
