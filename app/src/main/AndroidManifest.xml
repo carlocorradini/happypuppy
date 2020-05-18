@@ -43,6 +43,7 @@
         <activity android:name=".ui.profile.user.EditUser" />
         <activity android:name=".ui.profile.puppy.ListPuppy" />
         <activity android:name=".ui.profile.puppy.EditPuppy" />
+        <activity android:name=".ui.profile.user.ListPuppyVisit" />
     </application>
 
 </manifest>

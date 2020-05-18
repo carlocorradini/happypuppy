@@ -31,7 +31,7 @@
             android:padding="4dp" />
     </com.google.android.material.navigation.NavigationView>
 
-    <!-- Map -->
+    <!-- Content -->
     <FrameLayout
         android:id="@+id/container_fragment"
         android:layout_width="match_parent"

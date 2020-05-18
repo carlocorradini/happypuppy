@@ -54,5 +54,4 @@
             </RelativeLayout>
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <!-- Bottom Navigation Bar -->
 </RelativeLayout>

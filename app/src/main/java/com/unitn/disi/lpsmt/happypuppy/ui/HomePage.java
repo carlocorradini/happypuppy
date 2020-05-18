@@ -9,8 +9,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.R;
@@ -18,22 +16,14 @@ import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.ListPuppy;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.user.ProfileUser;
-import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 /**
- * Home page {@link AppCompatActivity activity} with {@link GoogleMap map} integration
+ * Home page {@link AppCompatActivity activity}
  *
- * @author Carlo Corradini
+ * @author Anthony Farina
  */
 public class HomePage extends AppCompatActivity {
-    /**
-     * {@link User} {@link Marker} size
-     */
-    private static final Pair<Integer, Integer> USER_MARKER_SIZE = Pair.of(128, 128);
-
     /**
      * Bottom Navigation View
      */
@@ -70,7 +60,6 @@ public class HomePage extends AppCompatActivity {
 
         imageUserAvatar.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), ProfileUser.class);
-            /* PASS AuthManager.getInstance().getAuthUserId().toString() or UUID USER FOR TESTING: ddcf9b0d-0abc-4953-9a5e-ed125fde5495 */
             intent.putExtra("uuid_user", AuthManager.getInstance().getAuthUserId().toString());
             startActivity(intent);
         });

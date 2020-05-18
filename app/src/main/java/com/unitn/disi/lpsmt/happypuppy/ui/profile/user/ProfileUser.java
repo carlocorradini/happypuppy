@@ -1,13 +1,8 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.FileUtils;
-import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +11,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
 import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.Launcher;
 import com.unitn.disi.lpsmt.happypuppy.R;
@@ -35,31 +28,18 @@ import com.unitn.disi.lpsmt.happypuppy.api.service.UserFriendService;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.RegisterPuppy;
-import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
 import java.util.UUID;
 
 public class ProfileUser extends AppCompatActivity {
-    private static final int REQUEST_CODE = 6384;
-
-    /**
-     * {@link User} {@link Marker} size
-     */
-    private static final Pair<Integer, Integer> USER_MARKER_SIZE = Pair.of(128, 128);
     /**
      * {@link Log} TAG of this class
      */
@@ -366,7 +346,9 @@ public class ProfileUser extends AppCompatActivity {
                         removeFriend();
                     });
                     button2.setOnClickListener(v -> {
-                        /* View friend's puppies */
+                        Intent intent = new Intent(v.getContext(), ListPuppyVisit.class);
+                        intent.putExtra("uuid_user", uuid.toString());
+                        startActivity(intent);
                     });
                     break;
                 case BLOCKED:

@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +42,7 @@ public class ListPuppy extends Fragment {
     private SwipeRefreshLayout refresh;
     private TextView noPuppies;
     private LinearLayout loader;
+    private UUID user;
 
     @Nullable
     @Override
@@ -61,12 +63,18 @@ public class ListPuppy extends Fragment {
 
         return view;
     }
+    public ListPuppy(){
+        this.user = AuthManager.getInstance().getAuthUserId();
+    }
+    public ListPuppy(final UUID uuid_user){
+        this.user = uuid_user;
+    }
 
     public void loadPuppies(View view){
         loader.setVisibility(View.VISIBLE);
         List<InfoCardView> cardList = new ArrayList<>();
         try {
-            Call<API.Response<List<Puppy>>> call = API.getInstance().getClient().create(PuppyService.class).findByUser(AuthManager.getInstance().getAuthUserId());
+            Call<API.Response<List<Puppy>>> call = API.getInstance().getClient().create(PuppyService.class).findByUser(this.user);
             call.enqueue(new Callback<API.Response<List<Puppy>>>() {
                 @Override
                 public void onResponse(@NotNull Call<API.Response<List<Puppy>>> call, @NotNull Response<API.Response<List<Puppy>>> response) {

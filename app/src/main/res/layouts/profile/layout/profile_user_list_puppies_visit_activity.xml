@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:visibility="visible">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/profile_user_list_puppies_top_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary">
+
+        <Button
+            android:id="@+id/profile_user_list_puppies_button_back"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="49dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:foreground="@drawable/ic_arrow_back"
+            android:foregroundTint="@color/colorSecondary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profile_user_list_puppies_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="50dp"
+            android:text="@string/user_puppies"
+            android:textSize="@dimen/text_size_default" />
+
+    </com.google.android.material.navigation.NavigationView>
+    <!-- Content -->
+    <FrameLayout
+        android:id="@+id/profile_user_list_puppies_container_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/profile_user_list_puppies_top_navigation" >
+    </FrameLayout>
+</RelativeLayout>
