@@ -158,6 +158,20 @@ public class ProfilePuppy extends AppCompatActivity {
         numberPersonalities.setText(String.valueOf(thisPuppy.personalities.size()));
         Picasso.get().load(thisPuppy.avatar.toString()).into(puppyAvatar);
 
+        StringBuilder breeds = new StringBuilder();
+        for(int i=0;i<thisPuppy.breeds.size();i++) {
+            String breed = getResources().getStringArray(R.array.animal_breeds)[Integer.parseInt(String.valueOf(thisPuppy.breeds.get(i)))-1];
+            breeds.append(breed).append("\n");
+        }
+        races.setText(breeds.toString());
+
+        StringBuilder personalities = new StringBuilder();
+        for(int i=0;i<thisPuppy.personalities.size();i++) {
+            String personality = getResources().getStringArray(R.array.list_personalities)[Integer.parseInt(String.valueOf(thisPuppy.personalities.get(i)))-1];
+            personalities.append(personality).append("\n");
+        }
+        this.personalities.setText(personalities.toString());
+
         if(thisPuppy.gender == Puppy.Gender.MALE)
             gender.setText(getString(R.string.male));
         else

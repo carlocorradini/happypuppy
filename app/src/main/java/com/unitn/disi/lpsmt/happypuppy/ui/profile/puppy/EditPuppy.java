@@ -78,6 +78,7 @@ public class EditPuppy extends AppCompatActivity {
     LinearLayout loader;
     LinearLayout root;
     Spinner spinnerWeight;
+    AnimalBreedsDialog animalBreedsDialog;
 
     Puppy puppy;
 
@@ -95,6 +96,18 @@ public class EditPuppy extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     puppy = response.body().data;
                     namePuppy.setText(puppy.name);
+                    animalBreedsDialog = new AnimalBreedsDialog(puppy);
+                    // Animal Breeds
+                    puppyRaces.setOnClickListener(v -> {
+                        if (!animalBreedsDialog.isAdded())
+                            animalBreedsDialog.show(getSupportFragmentManager(), AnimalBreedsDialog.class.getName());
+                    });
+                    animalBreedsDialog.setOnDialogSelectionListener(animalBreeds -> {
+                        if (animalBreeds == null) return;
+                        if (puppy.breeds == null) puppy.breeds = new ArrayList<>();
+                        puppy.breeds.clear();
+                        animalBreeds.forEach(animalBreed -> puppy.breeds.add(animalBreed.id));
+                    });
                     if (puppy.weight != null) {
                         if (puppy.weight > 1000) {
                             String weight = Long.toString(puppy.weight / 1000);
@@ -129,7 +142,6 @@ public class EditPuppy extends AppCompatActivity {
         spinnerWeight = findViewById(R.id.profile_puppy_edit_input_spinner_weight);
         puppyRaces = findViewById(R.id.profile_puppy_edit_input_race);
         puppyRaces.setInputType(InputType.TYPE_NULL);
-        AnimalBreedsDialog animalBreedsDialog = new AnimalBreedsDialog(id_puppy);
         puppyAge = findViewById(R.id.profile_puppy_edit_input_age);
         puppyWeight = findViewById(R.id.profile_puppy_edit_input_weight_puppy);
         buttonBack = findViewById(R.id.profile_puppy_edit_button_back);
@@ -153,17 +165,6 @@ public class EditPuppy extends AppCompatActivity {
         adapterUnit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerWeight.setAdapter(adapterUnit);
 
-        // Animal Breeds
-        puppyRaces.setOnClickListener(v -> {
-            if (!animalBreedsDialog.isAdded())
-                animalBreedsDialog.show(getSupportFragmentManager(), AnimalBreedsDialog.class.getName());
-        });
-        animalBreedsDialog.setOnDialogSelectionListener(animalBreeds -> {
-            if (animalBreeds == null) return;
-            if (puppy.breeds == null) puppy.breeds = new ArrayList<>();
-            puppy.breeds.clear();
-            animalBreeds.forEach(animalBreed -> puppy.breeds.add(animalBreed.id));
-        });
         // Animal Personalities
         personalities.setOnClickListener(v -> {
             if (!animalPersonalitiesDialog.isAdded())
@@ -196,8 +197,6 @@ public class EditPuppy extends AppCompatActivity {
             if (!namePuppy.getText().toString().isEmpty()) {
                 puppy.name = namePuppy.getText().toString();
             }
-            //puppy.personalities = this.puppy.personalities;
-            //puppy.breeds = this.puppy.breeds;
             puppy.dateOfBirth = this.puppy.dateOfBirth;
             if (!puppyWeight.getText().toString().isEmpty())
                 puppy.weight = Long.parseLong(puppyWeight.getText().toString());
@@ -205,6 +204,9 @@ public class EditPuppy extends AppCompatActivity {
                 puppy.weight = 0L;
             if (spinnerWeight.getSelectedItemPosition() == 0 && puppy.weight != 0L)
                 puppy.weight = puppy.weight * 1000;
+
+            puppy.personalities = this.puppy.personalities;
+            puppy.breeds = this.puppy.breeds;
             // Validation
             updatePuppy(v, puppy);
         });

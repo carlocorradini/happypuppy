@@ -121,7 +121,7 @@ public final class AnimalSpecieDialog extends AppCompatDialogFragment {
             currentAnimalSpecie = index >= animalSpecies.size() ? null : animalSpecies.get(index);
         });
 
-        loadCars();
+        loadAnimalSpecie();
 
         return new AlertDialog.Builder(requireActivity())
                 .setView(view)
@@ -129,7 +129,7 @@ public final class AnimalSpecieDialog extends AppCompatDialogFragment {
                 .setNegativeButton(R.string.dismiss, (dialog, which) -> dialog.dismiss())
                 .setPositiveButton(R.string.confirm, (dialog, which) -> {
                     savedAnimalSpecie = currentAnimalSpecie;
-                    if (currentAnimalSpecie != null && listener != null)
+                    if (listener != null)
                         listener.onDialogSelection(currentAnimalSpecie);
                 })
                 .create();
@@ -146,7 +146,7 @@ public final class AnimalSpecieDialog extends AppCompatDialogFragment {
      * Load all available {@link AnimalSpecie Animal Species} calling the {@link AnimalSpecieService} find method
      * If the animal species list is not empty no call will be generated
      */
-    private void loadCars() {
+    private void loadAnimalSpecie() {
         if (!animalSpecies.isEmpty()) showAnimalSpecies();
         else
             API.getInstance().getClient().create(AnimalSpecieService.class).find().enqueue(new Callback<API.Response<List<AnimalSpecie>>>() {
@@ -174,7 +174,8 @@ public final class AnimalSpecieDialog extends AppCompatDialogFragment {
     private void showAnimalSpecies() {
         for (int i = 0; i < animalSpecies.size(); ++i) {
             RadioButton carRadioButton = new RadioButton(getContext());
-            carRadioButton.setText(animalSpecies.get(i).name);
+            String specie = getResources().getStringArray(R.array.animal_kinds)[Integer.parseInt(animalSpecies.get(i).id.toString())-1];
+            carRadioButton.setText(specie);
             carRadioButton.setTag(i);
             animalSpeciesContainer.addView(carRadioButton);
             if (savedAnimalSpecie != null && savedAnimalSpecie.equals(animalSpecies.get(i)))

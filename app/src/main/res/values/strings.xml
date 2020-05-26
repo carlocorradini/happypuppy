@@ -138,11 +138,142 @@
     </string-array>
     <!-- -->
     <string-array name="animal_kinds">
-        <item>Dog</item>
+        <item>Alligator</item>
+        <item>Ant</item>
+        <item>Badger</item>
+        <item>Bat</item>
+        <item>Bear</item>
+        <item>Beaver</item>
+        <item>Bee</item>
+        <item>Bird</item>
+        <item>Bug</item>
+        <item>Bull</item>
+        <item>Bumblebee</item>
+        <item>Butterfly</item>
+        <item>Camel</item>
         <item>Cat</item>
-        <item>Pig</item>
+        <item>Caterpillar</item>
+        <item>Chicken</item>
+        <item>Chinchilla</item>
+        <item>Coral</item>
         <item>Cow</item>
+        <item>Crab</item>
+        <item>Deer</item>
+        <item>Dog</item>
+        <item>Donkey</item>
+        <item>Dragonfly</item>
+        <item>Elephant</item>
+        <item>Fish</item>
+        <item>Flea</item>
+        <item>Fly</item>
+        <item>Fox</item>
+        <item>Frog</item>
+        <item>Giraffe</item>
+        <item>Gorilla</item>
+        <item>Grasshopper</item>
+        <item>Hamster</item>
+        <item>Hippopotamus</item>
+        <item>Hornet</item>
         <item>Horse</item>
+        <item>Jaguar</item>
+        <item>Jellyfish</item>
+        <item>Kangaroo</item>
+        <item>Ladybird</item>
+        <item>Lamb</item>
+        <item>Lemur</item>
+        <item>Leopard</item>
+        <item>Lion</item>
+        <item>Llama</item>
+        <item>Lobster</item>
+        <item>Mite</item>
+        <item>Mosquito</item>
+        <item>Mouse</item>
+        <item>Nautilus</item>
+        <item>Octopus</item>
+        <item>Panda</item>
+        <item>Phasmatodea</item>
+        <item>Pig</item>
+        <item>Platypus</item>
+        <item>Prawn</item>
         <item>Rabbit</item>
+        <item>Rhinoceros</item>
+        <item>Scarab</item>
+        <item>Seahorse</item>
+        <item>Seal</item>
+        <item>Sheep</item>
+        <item>Sloth</item>
+        <item>Slug</item>
+        <item>Snail</item>
+        <item>Snake</item>
+        <item>Spider</item>
+        <item>Squirrel</item>
+        <item>Starfish</item>
+        <item>Suricate</item>
+        <item>Sworm</item>
+        <item>Tapir</item>
+        <item>Trilobite</item>
+        <item>Turtle</item>
+        <item>Walrus</item>
+        <item>Wasp</item>
+        <item>Wildebeest</item>
+        <item>Wolf</item>
+        <item>Zebra</item>
+    </string-array>
+    <string-array name="animal_breeds">
+        <item>Budgie</item>
+        <item>Crane</item>
+        <item>Dove</item>
+        <item>Duck</item>
+        <item>Falcon</item>
+        <item>Flamingo</item>
+        <item>Hummingbird</item>
+        <item>Kiwi</item>
+        <item>Ostrich</item>
+        <item>Owl</item>
+        <item>Parrot</item>
+        <item>Peacock</item>
+        <item>Pelican</item>
+        <item>Puffin</item>
+        <item>Quail</item>
+        <item>Seagull</item>
+        <item>Stork</item>
+        <item>Swan</item>
+        <item>Woodpecker</item>
+        <item>Machaon</item>
+        <item>Monarch</item>
+        <item>Parantica Sita</item>
+        <item>Tiger</item>
+        <item>Beagle</item>
+        <item>Corgi</item>
+        <item>German Shepherd</item>
+        <item>Papillon</item>
+        <item>Poodle</item>
+        <item>Pug</item>
+        <item>Shiba Inu</item>
+        <item>Yorkshire Terrier</item>
+        <item>Bream</item>
+        <item>Clown</item>
+        <item>Dolphin</item>
+        <item>Koi</item>
+        <item>Orca</item>
+        <item>Perch</item>
+        <item>Pike</item>
+        <item>Roach</item>
+        <item>Stingray</item>
+        <item>Whale</item>
+        <item>Red</item>
+        <item>Rattlesnake</item>
+    </string-array>
+    <string-array name="list_personalities">
+        <item>Big eater</item>
+        <item>Fun-loving</item>
+        <item>Sad</item>
+        <item>Friendly</item>
+        <item>Hippy</item>
+        <item>Sedentary</item>
+        <item>Hyperactive</item>
+        <item>Sleepyhead</item>
+        <item>Child friendly</item>
+        <item>Bungler</item>
     </string-array>
 </resources>

@@ -155,7 +155,8 @@ public class RegisterPuppy extends AppCompatActivity {
             puppy.specie = animalSpecie.id;
             animalBreedsDialog.setAnimalSpecie(animalSpecie.id);
             raceAnimal.setEnabled(true);
-            kindAnimal.setText(animalSpecie.name);
+            String specie = getResources().getStringArray(R.array.animal_kinds)[Integer.parseInt(animalSpecie.id.toString())-1];
+            kindAnimal.setText(specie);
         });
 
         // Animal Breeds
@@ -203,7 +204,8 @@ public class RegisterPuppy extends AppCompatActivity {
             else if (genderMale.isChecked())
                 puppy.gender = Puppy.Gender.MALE;
 
-            puppy.weight = Long.parseLong(weightPuppy.getText().toString());
+            if(!weightPuppy.getText().toString().isEmpty())
+                puppy.weight = Long.parseLong(weightPuppy.getText().toString());
             // Validation
             if (validatePuppy(v, puppy)) {
                 registerPuppy(v, puppy);

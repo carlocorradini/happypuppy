@@ -139,12 +139,143 @@
     </string-array>
 
     <string-array name="animal_kinds">
-        <item>Cane</item>
+        <item>Alligatore</item>
+        <item>Formica</item>
+        <item>Tasso</item>
+        <item>Pippistrello</item>
+        <item>Orso</item>
+        <item>Castoro</item>
+        <item>Ape</item>
+        <item>Uccello</item>
+        <item>Insetto</item>
+        <item>Toro</item>
+        <item>Bombo</item>
+        <item>Farfalla</item>
+        <item>Cammello</item>
         <item>Gatto</item>
-        <item>Maiale</item>
+        <item>Bruco</item>
+        <item>Pollo/Gallina</item>
+        <item>Cincillà</item>
+        <item>Corallo</item>
         <item>Mucca</item>
+        <item>Granchio</item>
+        <item>Cervo</item>
+        <item>Cane</item>
+        <item>Asino</item>
+        <item>Libellula</item>
+        <item>Elefante</item>
+        <item>Pesce</item>
+        <item>Pulce</item>
+        <item>Mosca</item>
+        <item>Volpe</item>
+        <item>Rana</item>
+        <item>Giraffa</item>
+        <item>Gorilla</item>
+        <item>Cavalletta</item>
+        <item>Criceto</item>
+        <item>Ippopotamo</item>
+        <item>Calabrone</item>
         <item>Cavallo</item>
+        <item>Giaguaro</item>
+        <item>Medusa</item>
+        <item>Canguro</item>
+        <item>Coccinella</item>
+        <item>Agnello</item>
+        <item>Lemure</item>
+        <item>Leopardo</item>
+        <item>Leone</item>
+        <item>Lama</item>
+        <item>Aragosta</item>
+        <item>Acaro</item>
+        <item>Zanzara</item>
+        <item>Topo</item>
+        <item>Nautilo</item>
+        <item>Polpo/Piovra</item>
+        <item>Panda</item>
+        <item>Fasmidi</item>
+        <item>Maiale</item>
+        <item>Ornitorinco becco d\'anatra</item>
+        <item>Gamberetti</item>
         <item>Coniglio</item>
+        <item>Rinoceronte</item>
+        <item>Scarabeo</item>
+        <item>Cavalluccio marino</item>
+        <item>Foca</item>
+        <item>Pecora</item>
+        <item>Bradipo</item>
+        <item>Lumacone</item>
+        <item>Chiocciola</item>
+        <item>Serpente</item>
+        <item>Ragno</item>
+        <item>Scoiattolo</item>
+        <item>Stella di mare</item>
+        <item>Suricato</item>
+        <item>Verme</item>
+        <item>Tapiro</item>
+        <item>Trilobite</item>
+        <item>Tartaruga</item>
+        <item>Tricheco</item>
+        <item>Vespa</item>
+        <item>Gnu</item>
+        <item>Lupo</item>
+        <item>Zebra</item>
+    </string-array>
+    <string-array name="animal_breeds">
+        <item>Pappagallino</item>
+        <item>Gru</item>
+        <item>Colomba</item>
+        <item>Papera</item>
+        <item>Falcone</item>
+        <item>Fenicottero</item>
+        <item>Colibrì</item>
+        <item>Kiwi</item>
+        <item>Struzzo</item>
+        <item>Gufo</item>
+        <item>Pappagallo</item>
+        <item>Pavone</item>
+        <item>Pellicano</item>
+        <item>Pulcinella di mare</item>
+        <item>Quaglia</item>
+        <item>Gabbiano</item>
+        <item>Cicogna</item>
+        <item>Cigno</item>
+        <item>Picchio</item>
+        <item>Machaon</item>
+        <item>Monarca</item>
+        <item>Parantica Sita</item>
+        <item>Tigre</item>
+        <item>Beagle</item>
+        <item>Corgi</item>
+        <item>German Shepherd</item>
+        <item>Papillon</item>
+        <item>Barboncino</item>
+        <item>Carlino</item>
+        <item>Shiba Inu</item>
+        <item>Yorkshire Terrier</item>
+        <item>Abramide/Persico</item>
+        <item>Pagliaccio</item>
+        <item>Delfino</item>
+        <item>Koi</item>
+        <item>Orca</item>
+        <item>Persico</item>
+        <item>Luccio</item>
+        <item>Rutilo</item>
+        <item>Pastinaca</item>
+        <item>Balena</item>
+        <item>Rosso</item>
+        <item>Serpente a sonagli</item>
+    </string-array>
+    <string-array name="list_personalities">
+        <item>Mangione</item>
+        <item>Giocherellone</item>
+        <item>Triste</item>
+        <item>Amichevole</item>
+        <item>Hippy</item>
+        <item>Sedentario</item>
+        <item>Iperattivo</item>
+        <item>Dormiglione</item>
+        <item>Amico dei bambini</item>
+        <item>Pasticcione</item>
     </string-array>
     <!-- -->
 

@@ -155,8 +155,11 @@ public final class AnimalPersonalitiesDialog extends AppCompatDialogFragment {
                 .setNegativeButton(R.string.dismiss, (dialog, which) -> dialog.dismiss())
                 .setPositiveButton(R.string.confirm, (dialog, which) -> {
                     savedAnimalPersonalities = new ArrayList<>(currentAnimalPersonalities);
-                    if (!currentAnimalPersonalities.isEmpty() && listener != null)
-                        listener.onDialogSelection(currentAnimalPersonalities);
+                    if (!savedAnimalPersonalities.isEmpty() && listener != null)
+                        listener.onDialogSelection(savedAnimalPersonalities);
+                    else if(listener != null){
+                        listener.onDialogSelection(savedAnimalPersonalities);
+                    }
                 })
                 .create();
     }
@@ -225,7 +228,8 @@ public final class AnimalPersonalitiesDialog extends AppCompatDialogFragment {
     private void showAnimalPersonalities() {
         for (int i = 0; i < animalPersonalities.size(); ++i) {
             CheckBox animalPersonalityCheckBox = new CheckBox(getContext());
-            animalPersonalityCheckBox.setText(animalPersonalities.get(i).name);
+            String personality = getResources().getStringArray(R.array.list_personalities)[Integer.parseInt(animalPersonalities.get(i).id.toString())-1];
+            animalPersonalityCheckBox.setText(personality);
             animalPersonalityCheckBox.setTag(i);
             animalPersonalityCheckBox.setOnCheckedChangeListener((personalityCheckbox, isChecked) -> {
                 int index = (int) personalityCheckbox.getTag();
