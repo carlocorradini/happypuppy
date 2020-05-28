@@ -44,7 +44,6 @@ LICENSE         text eol=lf
 NEWS            text eol=lf
 readme          text eol=lf
 *README*        text eol=lf
-TODO            text eol=lf
 
 ## TEMPLATES
 *.dot           text eol=lf
