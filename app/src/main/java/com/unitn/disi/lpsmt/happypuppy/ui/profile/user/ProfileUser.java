@@ -140,11 +140,18 @@ public class ProfileUser extends AppCompatActivity {
                 else if(user.gender == User.Gender.FEMALE) {
                     gender.setText(getResources().getString(R.string.female));
                 }
+                else{
+                    gender.setText(getResources().getString(R.string.unknown));
+                }
                 if(user.name != null && user.surname != null){
                     fullName.setText(user.name.concat(" ").concat(user.surname));
+                }else{
+                    fullName.setText(getResources().getString(R.string.unknown));
                 }
                 if(user.dateOfBirth != null) {
                     birthDate.setText(user.dateOfBirth.toString());
+                }else{
+                    birthDate.setText(getResources().getString(R.string.unknown));
                 }
                 this.usernameTop.setText(this.user.username);
             }).execute();

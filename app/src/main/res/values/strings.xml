@@ -88,6 +88,7 @@
 
     <!-- Errors -->
     <string name="error_unknown">Unknown error</string>
+    <string name="unknown">Unknown</string>
     <string name="error_connection_timeout">The server is unreachable</string>
     <string name="error_conversion">Conversion error</string>
     <string name="unauthorized">Unauthorized</string>

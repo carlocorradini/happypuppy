@@ -58,13 +58,16 @@ public class SearchFragment extends Fragment {
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                loader.setVisibility(View.VISIBLE);
                 cardList = new ArrayList<>();
+                loader.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 if (!inputSearch.getText().toString().isEmpty()) {
                     Map<String, String> searchUsers = new HashMap<>();
                     searchUsers.put("username", inputSearch.getText().toString());
@@ -75,11 +78,12 @@ public class SearchFragment extends Fragment {
                             public void onResponse(@NotNull Call<API.Response<List<User>>> call, @NotNull Response<API.Response<List<User>>> response) {
                                 if (response.isSuccessful() && response.body() != null) {
                                     List<User> results = response.body().data;
+                                    cardList.clear();
                                     for (int i = 0; i < results.size(); i++) {
                                         User user = results.get(i);
                                         String name;
                                         if (user.name == null) {
-                                            name = "";
+                                            name = getResources().getString(R.string.unknown);
                                         } else {
                                             name = user.name;
                                         }
@@ -96,10 +100,10 @@ public class SearchFragment extends Fragment {
                                         noResults.setVisibility(View.VISIBLE);
                                         resultsSearch.setVisibility(View.GONE);
                                         recyclerView.setVisibility(View.GONE);
-                                        adapter = new CardViewAdapter(view.getContext(), cardList);
-                                        recyclerView.setAdapter(adapter);
                                     }
+                                    System.out.println("CARDLIST SIZE: "+ cardList.size());
                                     adapter = new CardViewAdapter(view.getContext(), cardList);
+                                    adapter.notifyDataSetChanged();
                                     recyclerView.setAdapter(adapter);
                                 }
                             }
@@ -113,21 +117,16 @@ public class SearchFragment extends Fragment {
                         Log.e("ErrList","Cannot load users due to exception: "+e.getMessage());
                     }
                 }else{
+                    cardList.clear();
                     noResults.setVisibility(View.VISIBLE);
                     resultsSearch.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.GONE);
                     adapter = new CardViewAdapter(view.getContext(), cardList);
                     recyclerView.setAdapter(adapter);
                 }
-                loader.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
+            loader.setVisibility(View.GONE);
+        }
+    });
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
     }

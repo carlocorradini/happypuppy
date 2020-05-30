@@ -13,9 +13,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.unitn.disi.lpsmt.happypuppy.R;
-import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
-import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.AdapterEditProfile;
 
 public class EditUser extends AppCompatActivity {
@@ -24,7 +21,6 @@ public class EditUser extends AppCompatActivity {
     TabLayout mTabLayout;
     PagerAdapter adapter;
     Button buttonBack;
-    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

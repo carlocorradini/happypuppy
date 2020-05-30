@@ -158,19 +158,27 @@ public class ProfilePuppy extends AppCompatActivity {
         numberPersonalities.setText(String.valueOf(thisPuppy.personalities.size()));
         Picasso.get().load(thisPuppy.avatar.toString()).into(puppyAvatar);
 
-        StringBuilder breeds = new StringBuilder();
-        for(int i=0;i<thisPuppy.breeds.size();i++) {
-            String breed = getResources().getStringArray(R.array.animal_breeds)[Integer.parseInt(String.valueOf(thisPuppy.breeds.get(i)))-1];
-            breeds.append(breed).append("\n");
+        if(thisPuppy.breeds.size() > 0) {
+            StringBuilder breeds = new StringBuilder();
+            for (int i = 0; i < thisPuppy.breeds.size(); i++) {
+                String breed = getResources().getStringArray(R.array.animal_breeds)[Integer.parseInt(String.valueOf(thisPuppy.breeds.get(i))) - 1];
+                breeds.append(breed).append("\n");
+            }
+            races.setText(breeds.toString());
+        }else{
+            races.setText(getResources().getString(R.string.unknown));
         }
-        races.setText(breeds.toString());
 
-        StringBuilder personalities = new StringBuilder();
-        for(int i=0;i<thisPuppy.personalities.size();i++) {
-            String personality = getResources().getStringArray(R.array.list_personalities)[Integer.parseInt(String.valueOf(thisPuppy.personalities.get(i)))-1];
-            personalities.append(personality).append("\n");
+        if(thisPuppy.personalities.size() > 0) {
+            StringBuilder personalities = new StringBuilder();
+            for (int i = 0; i < thisPuppy.personalities.size(); i++) {
+                String personality = getResources().getStringArray(R.array.list_personalities)[Integer.parseInt(String.valueOf(thisPuppy.personalities.get(i))) - 1];
+                personalities.append(personality).append("\n");
+            }
+            this.personalities.setText(personalities.toString());
+        }else{
+            this.personalities.setText(getResources().getString(R.string.unknown));
         }
-        this.personalities.setText(personalities.toString());
 
         if(thisPuppy.gender == Puppy.Gender.MALE)
             gender.setText(getString(R.string.male));
@@ -188,9 +196,13 @@ public class ProfilePuppy extends AppCompatActivity {
                 String weight = Long.toString(thisPuppy.weight);
                 this.weight.setText(weight.concat(" G"));
             }
+        }else{
+            this.weight.setText(getResources().getString(R.string.unknown));
         }
         if(thisPuppy.dateOfBirth != null){
             dateOfBirth.setText(thisPuppy.dateOfBirth.toString());
+        }else{
+            dateOfBirth.setText(getResources().getString(R.string.unknown));
         }
     }
 

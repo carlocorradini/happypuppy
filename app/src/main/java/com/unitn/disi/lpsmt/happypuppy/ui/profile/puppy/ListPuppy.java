@@ -91,6 +91,8 @@ public class ListPuppy extends Fragment {
                                     age = now.getMonthValue() - puppies.get(i).dateOfBirth.getMonthValue();
                                     textAge = age+" "+getResources().getString(R.string.month);
                                 }
+                            }else{
+                                textAge = getResources().getString(R.string.unknown);
                             }
                             String specie = getResources().getStringArray(R.array.animal_kinds)[Integer.parseInt(puppies.get(i).specie.toString())-1];
                             InfoCardView tmp = new InfoCardView(puppies.get(i).avatar, puppies.get(i).name, specie , textAge, puppies.get(i).id);
