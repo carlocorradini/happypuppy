@@ -1,10 +1,7 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +11,10 @@ import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.ListPuppy;
 
 import java.util.UUID;
 
+/**
+ * ListPuppyVisit class
+ * @author Anthony Farina
+ */
 public class ListPuppyVisit extends AppCompatActivity {
     UUID user;
     Button buttonBack;

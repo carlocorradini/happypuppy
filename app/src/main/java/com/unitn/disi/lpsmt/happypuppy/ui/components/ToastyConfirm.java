@@ -2,7 +2,6 @@ package com.unitn.disi.lpsmt.happypuppy.ui.components;
 
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,18 @@ import androidx.annotation.StringRes;
 
 import com.unitn.disi.lpsmt.happypuppy.R;
 
+/**
+ * ToastyConfirm class for good operation
+ *
+ * @author Anthony Farina
+ */
 public class ToastyConfirm extends android.widget.Toast {
-
+    /**
+     *
+     * @param c context
+     * @param v view
+     * @param message message to display
+     */
     public ToastyConfirm(Context c, View v, String message){
         super(c);
         LayoutInflater inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -31,6 +40,12 @@ public class ToastyConfirm extends android.widget.Toast {
         toast.show();
     }
 
+    /**
+     *
+     * @param c context
+     * @param v view
+     * @param message message to display
+     */
     public ToastyConfirm(Context c, View v, @StringRes int message) {
         this(c, v, c.getResources().getString(message));
     }

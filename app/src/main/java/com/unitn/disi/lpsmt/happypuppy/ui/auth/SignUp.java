@@ -1,9 +1,9 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.auth;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.content.Intent;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -15,17 +15,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
-import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 
 import net.rimoto.intlphoneinput.IntlPhoneInput;
 
+import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
@@ -40,8 +41,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import org.apache.http.HttpStatus;
-
+/**
+ * SignUp class
+ * @author Anthony Farina
+ */
 public class SignUp extends AppCompatActivity {
 
     private LinearLayout root;
@@ -63,6 +66,10 @@ public class SignUp extends AppCompatActivity {
     private Button buttonBack;
     private TextView visitEula;
 
+    /**
+     *
+     * @param savedInstanceState saved
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +163,12 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @param v view for toasts
+     * @param user user
+     * @return boolean
+     */
     private boolean validateUser(final View v, final User user) {
         if (user.username.isEmpty()) {
             new Toasty(getBaseContext(), v, R.string.insert_username);
@@ -186,6 +199,11 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
+    /**
+     *
+     * @param v view for toasts
+     * @param user user
+     */
     private void signUp(final View v, final User user) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);

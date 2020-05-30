@@ -2,7 +2,6 @@ package com.unitn.disi.lpsmt.happypuppy.ui.components;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,37 +13,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.unitn.disi.lpsmt.happypuppy.R;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.ProfilePuppy;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.user.ProfileUser;
-import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
+/**
+ *  CardViewAdapter
+ *  @author Anthony Farina
+ */
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardViewHolder>{
-    /**
-     * {@link User} {@link Marker} size
-     */
-    private static final Pair<Integer, Integer> USER_MARKER_SIZE = Pair.of(128, 128);
     private Context ctx;
     private List<InfoCardView> profiles;
 
+    /**
+     *
+     * @param ctx context
+     * @param profiles list of profiles
+     */
     public CardViewAdapter(Context ctx, List<InfoCardView> profiles) {
         this.ctx = ctx;
         this.profiles = profiles;
     }
-    public void clearApplications() {
-        int size = this.profiles.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                profiles.remove(0);
-            }
-            this.notifyItemRangeRemoved(0, size);
-        }
-    }
 
+    /**
+     *
+     * @param parent parent
+     * @param viewType viewType
+     * @return constructor
+     */
     @NonNull
     @Override
     public CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,6 +51,11 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         return new CardViewHolder(view);
     }
 
+    /**
+     *
+     * @param holder holder
+     * @param position position of array
+     */
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         InfoCardView profile = profiles.get(position);
@@ -80,18 +82,28 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         }
     }
 
+    /**
+     *
+     * @return size of the array
+     */
     @Override
     public int getItemCount() {
         return profiles.size();
     }
 
+    /**
+     *  CardViewHolder class
+     */
     static class CardViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
         TextView username;
         TextView name;
         TextView age;
 
-
+        /**
+         *
+         * @param itemView cardItem
+         */
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
 

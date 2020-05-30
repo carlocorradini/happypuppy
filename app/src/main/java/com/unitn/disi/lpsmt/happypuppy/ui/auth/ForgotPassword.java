@@ -15,13 +15,17 @@ import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 
+import org.apache.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import org.apache.http.HttpStatus;
-import org.jetbrains.annotations.NotNull;
-
+/**
+ * ForgotPassword class
+ * @author Anthony Farina
+ */
 public class ForgotPassword extends AppCompatActivity {
     private LinearLayout root;
     private Button buttonSendEmail;
@@ -30,6 +34,10 @@ public class ForgotPassword extends AppCompatActivity {
     private LinearLayout loader;
     private Button buttonBack;
 
+    /**
+     *
+     * @param savedInstanceState saved
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +51,10 @@ public class ForgotPassword extends AppCompatActivity {
         buttonBack = findViewById(R.id.forgot_password_button_back);
 
         buttonSendEmail.setOnClickListener(new View.OnClickListener() {
+            /**
+             *
+             * @param v view
+             */
             @Override
             public void onClick(View v) {
                 if (!validateMail()) {
@@ -58,6 +70,11 @@ public class ForgotPassword extends AppCompatActivity {
 
                 Call<API.Response> call = API.getInstance().getClient().create(UserService.class).passwordReset(inputEmail.getText().toString());
                 call.enqueue(new Callback<API.Response>() {
+                    /**
+                     *
+                     * @param call call with api
+                     * @param response response with data
+                     */
                     @Override
                     public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
                         if (response.isSuccessful() && response.body() != null) {
@@ -85,6 +102,11 @@ public class ForgotPassword extends AppCompatActivity {
                         loader.setVisibility(View.GONE);
                     }
 
+                    /**
+                     *
+                     * @param call call with api
+                     * @param t throwable
+                     */
                     @Override
                     public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
                         ErrorHelper.showFailureError(getBaseContext(), v, t);
@@ -97,6 +119,10 @@ public class ForgotPassword extends AppCompatActivity {
                 });
             }
 
+            /**
+             *
+             * @return boolean
+             */
             private boolean validateMail() {
                 return !inputEmail.getText().toString().isEmpty();
             }

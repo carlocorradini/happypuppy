@@ -1,6 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy;
 
-import android.icu.text.IDNA;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +35,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * ListPuppy class
+ * @author Anthony Farina
+ */
 public class ListPuppy extends Fragment {
     private RecyclerView recyclerView;
     private CardViewAdapter adapter;
@@ -63,13 +66,26 @@ public class ListPuppy extends Fragment {
 
         return view;
     }
+
+    /**
+     * ListPuppy constructor for Authenticated User
+     */
     public ListPuppy(){
         this.user = AuthManager.getInstance().getAuthUserId();
     }
+
+    /**
+     * ListPuppy constructor for generic user
+     * @param uuid_user user
+     */
     public ListPuppy(final UUID uuid_user){
         this.user = uuid_user;
     }
 
+    /**
+     * LoadPuppies create alla cards for list Puppies
+     * @param view view
+     */
     public void loadPuppies(View view){
         loader.setVisibility(View.VISIBLE);
         List<InfoCardView> cardList = new ArrayList<>();

@@ -16,9 +16,9 @@ import java.util.UUID;
 import retrofit2.Response;
 
 /**
- * {@link User} utility class
+ * {@link InfoCardView} utility class
  *
- * @author Carlo Corradini
+ * @author Anthony Farina
  */
 public final class CardsUtil {
     /**
@@ -126,6 +126,10 @@ public final class CardsUtil {
             return users;
         }
 
+        /**
+         *
+         * @param friend friend
+         */
         @Override
         protected void onPostExecute(List<UserFriend> friend) {
             listener.onTaskCompleted(friend);

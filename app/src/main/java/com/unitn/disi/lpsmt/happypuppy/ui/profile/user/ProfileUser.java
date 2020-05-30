@@ -30,15 +30,19 @@ import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy.RegisterPuppy;
 import com.unitn.disi.lpsmt.happypuppy.util.UserUtil;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * ProfileUser class
+ * @author Anthony Farina
+ */
 public class ProfileUser extends AppCompatActivity {
     /**
      * {@link Log} TAG of this class
@@ -224,6 +228,9 @@ public class ProfileUser extends AppCompatActivity {
         }
     }
 
+    /**
+     * View Friendship of a visited user
+     */
     public void viewFriendship() {
         Call<API.Response<UserFriend>> call = API.getInstance().getClient().create(UserFriendService.class).findById(uuid);
         call.enqueue(new Callback<API.Response<UserFriend>>() {
@@ -245,6 +252,9 @@ public class ProfileUser extends AppCompatActivity {
         });
     }
 
+    /**
+     * method for addFriend
+     */
     public void addFriend() {
         friendship.friend = uuid;
         Call<API.Response<UUID>> call = API.getInstance().getClient().create(UserFriendService.class).create(friendship);
@@ -263,6 +273,10 @@ public class ProfileUser extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * method for acceptFriendRequest
+     */
     public void acceptFriendRequest() {
         friendship.friend = uuid;
         UserFriend accepted = new UserFriend();
@@ -284,6 +298,9 @@ public class ProfileUser extends AppCompatActivity {
         });
     }
 
+    /**
+     * method for removeFriend
+     */
     public void removeFriend() {
         AlertDialog alertDialog = new AlertDialog.Builder(ProfileUser.this).create();
         alertDialog.setTitle(getResources().getString(R.string.remove_friend));
@@ -312,6 +329,9 @@ public class ProfileUser extends AppCompatActivity {
         alertDialog.show();
     }
 
+    /**
+     * method for canceFriendRequest
+     */
     public void cancelFriendRequest() {
         AlertDialog alertDialog = new AlertDialog.Builder(ProfileUser.this).create();
         alertDialog.setTitle(getResources().getString(R.string.remove_request_friend));
@@ -340,6 +360,10 @@ public class ProfileUser extends AppCompatActivity {
         alertDialog.show();
     }
 
+    /**
+     * Set buttons for friendship
+     * @param friendship friendship between auth user and visited user
+     */
     public void setButtons(UserFriend friendship) {
         if (friendship != null && friendship.type != null) {
             switch (friendship.type) {
@@ -401,12 +425,5 @@ public class ProfileUser extends AppCompatActivity {
                 addFriend();
             });
         }
-    }
-
-    public void reload() {
-        finish();
-        overridePendingTransition(0, 0);
-        startActivity(getIntent());
-        overridePendingTransition(0, 0);
     }
 }

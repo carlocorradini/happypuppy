@@ -6,23 +6,22 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.CheckBox;
-
-import com.unitn.disi.lpsmt.happypuppy.R;
-import com.unitn.disi.lpsmt.happypuppy.api.API;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
-import com.unitn.disi.lpsmt.happypuppy.api.service.AnimalBreedService;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.AnimalSpecie;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.unitn.disi.lpsmt.happypuppy.R;
+import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.AnimalBreed;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.AnimalSpecie;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
+import com.unitn.disi.lpsmt.happypuppy.api.service.AnimalBreedService;
 import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;

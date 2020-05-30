@@ -10,15 +10,16 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.auth0.android.jwt.JWT;
-import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
-import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.UserVerification;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserVerificationService;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
+import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
 
+import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -27,10 +28,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import org.apache.http.HttpStatus;
-
 /**
- * @author 39345
+ * ActivateProfile class
+ * @author Anthony Farina
  */
 public class ActivateProfile extends AppCompatActivity {
     private UUID userId;
@@ -44,7 +44,7 @@ public class ActivateProfile extends AppCompatActivity {
 
     /**
      *
-     * @param savedInstanceState
+     * @param savedInstanceState savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +80,11 @@ public class ActivateProfile extends AppCompatActivity {
 
             Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserVerificationService.class).verify(userVerification);
             call.enqueue(new Callback<API.Response<JWT>>() {
+                /**
+                 *
+                 * @param call call with api
+                 * @param response response with data
+                 */
                 @Override
                 public void onResponse(@NotNull Call<API.Response<JWT>> call, @NotNull Response<API.Response<JWT>> response) {
                     if (response.isSuccessful() && response.body() != null) {
@@ -118,6 +123,11 @@ public class ActivateProfile extends AppCompatActivity {
                     loader.setVisibility(View.GONE);
                 }
 
+                /**
+                 *
+                 * @param call call with API
+                 * @param t throwable
+                 */
                 @Override
                 public void onFailure(@NotNull Call<API.Response<JWT>> call, @NotNull Throwable t) {
                     ErrorHelper.showFailureError(getBaseContext(), v, t);
@@ -142,6 +152,11 @@ public class ActivateProfile extends AppCompatActivity {
 
             Call<API.Response> call = API.getInstance().getClient().create(UserVerificationService.class).resend(userId);
             call.enqueue(new Callback<API.Response>() {
+                /**
+                 *
+                 * @param call call with API
+                 * @param response response with data
+                 */
                 @Override
                 public void onResponse(@NotNull Call<API.Response> call, @NotNull Response<API.Response> response) {
                     if (response.isSuccessful() && response.body() != null) {
@@ -173,6 +188,11 @@ public class ActivateProfile extends AppCompatActivity {
                     loader.setVisibility(View.GONE);
                 }
 
+                /**
+                 *
+                 * @param call call with API
+                 * @param t throwable
+                 */
                 @Override
                 public void onFailure(@NotNull Call<API.Response> call, @NotNull Throwable t) {
                     ErrorHelper.showFailureError(getBaseContext(), v, t);

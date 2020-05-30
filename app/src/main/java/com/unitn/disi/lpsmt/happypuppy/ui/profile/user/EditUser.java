@@ -1,7 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.user;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -15,6 +13,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.AdapterEditProfile;
 
+/**
+ * EditUser class
+ * @author Anthony Farina
+ */
 public class EditUser extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ViewPager pager;

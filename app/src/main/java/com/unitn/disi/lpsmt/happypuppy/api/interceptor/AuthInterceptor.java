@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -12,8 +13,6 @@ import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 
 /**
  * Authentication Interceptor class

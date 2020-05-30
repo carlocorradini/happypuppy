@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,11 +20,13 @@ import com.unitn.disi.lpsmt.happypuppy.ui.components.CardViewAdapter;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.InfoCardView;
 import com.unitn.disi.lpsmt.happypuppy.util.CardsUtil;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * NotificationsFragment subclass
+ * @author Anthony Farina
+ */
 public class NotificationsFragment extends Fragment {
     private RecyclerView recyclerView;
     private CardViewAdapter adapter;
@@ -54,6 +55,11 @@ public class NotificationsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
     }
+
+    /**
+     * Load Notifications
+     * @param view view
+     */
     private void loadNotifications(View view) {
         friends = new ArrayList<>();
         cardList = new ArrayList<>();
@@ -64,6 +70,10 @@ public class NotificationsFragment extends Fragment {
         }).execute();
     }
 
+    /**
+     * create all cards for all notifications
+     * @param view view
+     */
     private void createCards(View view){
         for (int i = 0; i < friends.size(); i++) {
             if (friends.get(i).type.equals(UserFriend.Type.FRIEND_REQUEST)) {

@@ -11,8 +11,18 @@ import androidx.annotation.StringRes;
 
 import com.unitn.disi.lpsmt.happypuppy.R;
 
+/**
+ * Toasty class for errors
+ * @author Anthony Farina
+ */
 public class Toasty extends android.widget.Toast {
 
+    /**
+     *
+     * @param c context
+     * @param v view
+     * @param message message
+     */
     public Toasty(Context c, View v, String message) {
         super(c);
         LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -30,6 +40,12 @@ public class Toasty extends android.widget.Toast {
         toast.show();
     }
 
+    /**
+     *
+     * @param c context
+     * @param v view
+     * @param message message
+     */
     public Toasty(Context c, View v, @StringRes int message) {
         this(c, v, c.getResources().getString(message));
     }

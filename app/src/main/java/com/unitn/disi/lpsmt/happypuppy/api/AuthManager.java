@@ -1,7 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy.api;
 
-import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
-
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -10,6 +8,8 @@ import androidx.preference.PreferenceManager;
 import com.auth0.android.jwt.DecodeException;
 import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.App;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+
 import java.util.UUID;
 
 /**

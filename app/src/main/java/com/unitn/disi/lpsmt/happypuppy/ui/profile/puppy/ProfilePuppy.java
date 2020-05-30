@@ -1,13 +1,7 @@
 package com.unitn.disi.lpsmt.happypuppy.ui.profile.puppy;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.FileUtils;
-import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -31,16 +24,11 @@ import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
 import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
 import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.ui.profile.user.ProfileUser;
-import com.unitn.disi.lpsmt.happypuppy.util.ImageUtil;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -48,16 +36,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * ProfilePuppy class
+ * @author Anthony Farina
+ */
 public class ProfilePuppy extends AppCompatActivity {
     /**
      * {@link Log} TAG of this class
      */
     private static final String TAG = ProfilePuppy.class.getName();
-    /**
-     * {@link User} {@link Marker} size
-     */
-    private static final Pair<Integer, Integer> USER_MARKER_SIZE = Pair.of(128, 128);
-    private static final int REQUEST_CODE = 6384;
 
     Button buttonBack;
     TextView nameTop;
@@ -116,6 +103,11 @@ public class ProfilePuppy extends AppCompatActivity {
             finish();
         });
     }
+
+    /**
+     * Download the puppy
+     * @param id_puppy id_puppy
+     */
     private void downloadPuppy(Long id_puppy){
         Call<API.Response<Puppy>> call = API.getInstance().getClient().create(PuppyService.class).findById(id_puppy);
 
@@ -152,6 +144,9 @@ public class ProfilePuppy extends AppCompatActivity {
         });
     }
 
+    /**
+     * Load data of puppy
+     */
     public void loadDataPuppy(){
         nameTop.setText(thisPuppy.name);
 
@@ -206,6 +201,9 @@ public class ProfilePuppy extends AppCompatActivity {
         }
     }
 
+    /**
+     * Load buttons if user authenticated is not the owner
+     */
     public void loadButtonsVisit(){
         button1 = findViewById(R.id.profile_puppy_button_friendship);
         button2 = findViewById(R.id.profile_puppy_button_view_owner);
@@ -219,6 +217,10 @@ public class ProfilePuppy extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    /**
+     * Load buttons if user authenticated is the owner
+     */
     public void loadButtonsAuth(){
         button1 = findViewById(R.id.profile_puppy_button_edit_puppy);
         button2 = findViewById(R.id.profile_puppy_button_remove_puppy);

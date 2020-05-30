@@ -1,6 +1,5 @@
 package com.unitn.disi.lpsmt.happypuppy.api;
 
-import android.os.Build;
 import android.util.Log;
 
 import com.auth0.android.jwt.JWT;
@@ -14,11 +13,11 @@ import com.unitn.disi.lpsmt.happypuppy.api.adapter.deserializer.JWTDeserializer;
 import com.unitn.disi.lpsmt.happypuppy.api.adapter.deserializer.LocalDateDeserializer;
 import com.unitn.disi.lpsmt.happypuppy.api.adapter.deserializer.LocalDateTimeDeserializer;
 import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.JWTSerializer;
+import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateSerializer;
 import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateTimeSerializer;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.UnprocessableEntityError;
 import com.unitn.disi.lpsmt.happypuppy.api.interceptor.AuthInterceptor;
-import com.unitn.disi.lpsmt.happypuppy.api.adapter.serializer.LocalDateSerializer;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -28,7 +27,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;

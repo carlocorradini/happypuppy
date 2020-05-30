@@ -24,6 +24,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Tab_password subclass
+ * @author Anthony Farina
+ */
 public class Tab_password extends Fragment {
     public EditText password;
     public EditText repeatPassword;
@@ -31,9 +35,10 @@ public class Tab_password extends Fragment {
     public LinearLayout root;
     public LinearLayout loader;
 
-
+    /**
+     * Required empty public constructor
+     */
     public Tab_password() {
-        // Required empty public constructor
     }
 
     @Override
@@ -64,6 +69,13 @@ public class Tab_password extends Fragment {
         });
         return view;
     }
+
+    /**
+     * Validate passwords
+     * @param v view
+     * @param user user
+     * @return boolean
+     */
     private boolean validatePassword(View v, User user){
         if (user.password.isEmpty() || repeatPassword.getText().toString().isEmpty()) {
             new Toasty(getContext(), v, R.string.insert_password);
@@ -75,6 +87,12 @@ public class Tab_password extends Fragment {
         }
         return true;
     }
+
+    /**
+     * If passwords are equal and valid then update password
+     * @param v view
+     * @param user user
+     */
     private void changePassword(final View v, final User user) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);

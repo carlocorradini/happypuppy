@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +49,7 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
+ * @author Anthony Farina
  */
 public class Tab_info extends Fragment {
     /**
@@ -80,8 +80,10 @@ public class Tab_info extends Fragment {
     User user;
     View view;
 
+    /**
+     * Required empty public constructor
+     */
     public Tab_info() {
-        // Required empty public constructor
     }
 
     @Override
@@ -157,6 +159,11 @@ public class Tab_info extends Fragment {
         return view;
     }
 
+    /**
+     * Update data of user auth
+     * @param v view
+     * @param user user
+     */
     private void updateUserData(final View v, final User user) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
@@ -245,6 +252,9 @@ public class Tab_info extends Fragment {
         });
     }
 
+    /**
+     * Load Data of auth user on fields
+     */
     private void loadData() {
         if (user != null) return;
 

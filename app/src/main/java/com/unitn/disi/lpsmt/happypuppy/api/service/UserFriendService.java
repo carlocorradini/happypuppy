@@ -1,8 +1,8 @@
 package com.unitn.disi.lpsmt.happypuppy.api.service;
 
 import com.unitn.disi.lpsmt.happypuppy.api.API;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.UserFriend;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.UserFriend;
 
 import java.util.List;
 import java.util.Map;

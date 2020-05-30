@@ -51,6 +51,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * EditPuppy class
+ * @author Anthony Farina
+ */
 public class EditPuppy extends AppCompatActivity {
     /**
      * {@link Log} TAG of this class
@@ -216,6 +220,11 @@ public class EditPuppy extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @param v view for toasts
+     * @param puppy puppy
+     */
     private void updatePuppy(View v, Puppy puppy) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
@@ -304,6 +313,12 @@ public class EditPuppy extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @param requestCode requestCode
+     * @param resultCode resultCode
+     * @param data data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

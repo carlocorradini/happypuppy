@@ -9,7 +9,15 @@ import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.ui.auth.SignIn;
 
+/**
+ * Launcher of HappyPuppy
+ * @author Anthony Farina
+ */
 public class Launcher extends AppCompatActivity {
+    /**
+     *
+     * @param savedInstanceState savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

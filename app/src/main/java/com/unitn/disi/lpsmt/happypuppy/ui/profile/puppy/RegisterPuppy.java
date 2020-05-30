@@ -20,9 +20,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.Puppy;
-import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.error.ConflictError;
 import com.unitn.disi.lpsmt.happypuppy.api.service.PuppyService;
@@ -53,6 +53,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * RegisterPuppy class
+ * @author Anthony Farina
+ */
 public class RegisterPuppy extends AppCompatActivity {
     /**
      * {@link Log} TAG of this class
@@ -213,6 +217,12 @@ public class RegisterPuppy extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validate fields for puppy form
+     * @param v view
+     * @param puppy puppy
+     * @return boolean
+     */
     public boolean validatePuppy(final View v, final Puppy puppy) {
         if (puppy.name.isEmpty()) {
             new Toasty(getBaseContext(), v, R.string.insert_name);
@@ -232,6 +242,11 @@ public class RegisterPuppy extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * If puppy data is valid then register with this method
+     * @param v view
+     * @param puppy puppy
+     */
     public void registerPuppy(final View v, final Puppy puppy) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);

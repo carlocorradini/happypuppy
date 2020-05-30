@@ -69,6 +69,10 @@ public final class UserUtil {
             return user;
         }
 
+        /**
+         *
+         * @param user user
+         */
         @Override
         protected void onPostExecute(User user) {
             listener.onTaskCompleted(user);

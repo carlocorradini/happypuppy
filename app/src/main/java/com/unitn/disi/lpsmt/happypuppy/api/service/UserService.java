@@ -2,8 +2,8 @@ package com.unitn.disi.lpsmt.happypuppy.api.service;
 
 import com.auth0.android.jwt.JWT;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
-import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
+import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.interceptor.AuthInterceptor;
 
 import java.net.URI;

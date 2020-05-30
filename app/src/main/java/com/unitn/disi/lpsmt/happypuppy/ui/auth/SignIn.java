@@ -10,24 +10,28 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.auth0.android.jwt.JWT;
-import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
-import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.R;
 import com.unitn.disi.lpsmt.happypuppy.api.API;
 import com.unitn.disi.lpsmt.happypuppy.api.AuthManager;
 import com.unitn.disi.lpsmt.happypuppy.api.entity.User;
 import com.unitn.disi.lpsmt.happypuppy.api.service.UserService;
+import com.unitn.disi.lpsmt.happypuppy.helper.ErrorHelper;
+import com.unitn.disi.lpsmt.happypuppy.ui.HomePage;
 import com.unitn.disi.lpsmt.happypuppy.ui.components.Toasty;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * SignIn class
+ * @author Anthony Farina
+ */
 public class SignIn extends AppCompatActivity {
 
     private LinearLayout root;
@@ -90,11 +94,20 @@ public class SignIn extends AppCompatActivity {
         });
     }
 
+    /**
+     * Do nothing if back pressed
+     */
     public void onBackPressed() {
         //do nothing
-        //prevent the back android button
+        //prevent the back android button when user logout and return to signIn
     }
 
+    /**
+     *
+     * @param v view for toasts
+     * @param user user for the login
+     * @return boolean
+     */
     private boolean validateLogin(final View v, final User user) {
         if (user.username.isEmpty()) {
             new Toasty(getBaseContext(), v, R.string.insert_username);
@@ -111,6 +124,11 @@ public class SignIn extends AppCompatActivity {
         return true;
     }
 
+    /**
+     *
+     * @param v view for toasts
+     * @param user user for signIn
+     */
     private void signIn(final View v, final User user) {
         Call<API.Response<JWT>> call = API.getInstance().getClient().create(UserService.class).signIn(user);
         call.enqueue(new Callback<API.Response<JWT>>() {

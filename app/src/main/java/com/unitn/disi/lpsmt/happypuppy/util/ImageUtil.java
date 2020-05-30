@@ -125,6 +125,10 @@ public final class ImageUtil {
             return image;
         }
 
+        /**
+         *
+         * @param image image
+         */
         @Override
         protected void onPostExecute(Bitmap image) {
             listener.onTaskCompleted(image);

@@ -36,6 +36,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * SearchFragment subclass
+ * @author Anthony Farina
+ */
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private CardViewAdapter adapter;
